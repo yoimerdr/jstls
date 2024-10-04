@@ -2,7 +2,7 @@ import {Iter, iterEachOrFindIndex, iterMap} from "./iter";
 import {IterMap, IterMatchCondition} from "../../types/core/iterable";
 import {Maybe} from "../../types/core";
 import {letValue} from "../objects/handlers";
-import {apply} from "../utils/functions";
+import {apply} from "../functions/apply";
 
 /**
  * The iter class for iterating over a indexable object.

@@ -1,8 +1,9 @@
-import {apply, bind} from "../../utils/functions";
 import {isFromUntil} from "../../extensions/number";
 import {ArrayEach, ArrayLike, ArrayLikeEach} from "../../../types/core/array";
 import {slice} from "../../iterable";
 import {Maybe} from "../../../types/core";
+import {bind} from "../../functions/bind";
+import {apply} from "../../functions/apply";
 
 export function findLastIndex<V, T, A extends ArrayLike<V>>(this: A, predicate: ArrayLikeEach<V, T, A, boolean>, thisArg?: T): number;
 export function findLastIndex<V, T>(this: V[], predicate: ArrayEach<V, T | void, boolean>, thisArg?: T): number {

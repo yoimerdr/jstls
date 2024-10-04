@@ -1,6 +1,7 @@
-import {apply, bind} from "../../utils/functions";
 import {getDefined} from "../../objects/validators";
 import {reduce} from "../../iterable";
+import {apply} from "../../functions/apply";
+import {bind} from "../../functions/bind";
 
 export function flat<T>(this: ArrayLike<T>, depth?: number): T[] {
   depth = getDefined(depth, () => 1);

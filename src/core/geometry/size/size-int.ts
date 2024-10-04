@@ -1,7 +1,7 @@
 import {Maybe} from "../../../types/core";
 import {SizeArgument} from "../../../types/core/size";
 import {equalsSize, isSize, parseSize, scaleOrAdjustSize, setSizeProperty, Size, sizeToString, withSize} from "./size";
-import {apply} from "../../utils/functions";
+import {apply} from "../../functions/apply";
 
 /**
  * Represents a size with width and height properties.

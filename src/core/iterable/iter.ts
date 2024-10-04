@@ -6,8 +6,8 @@ import {IterEach, IterEachNext, IterEachPrevious, IterMap, IterMatchCondition} f
 import {Constructor} from "../../types/core";
 import {getDefined} from "../objects/validators";
 import {IllegalAccessError} from "../exceptions";
-import {apply} from "../utils/functions";
 import {ArrayLike} from "../../types/core/array";
+import {apply} from "../functions/apply";
 
 export function iterEachOrFindIndex<T, R>(this: Iter<T>,
                                           restartFn: (this: Iter<T>) => any,

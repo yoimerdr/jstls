@@ -1,6 +1,6 @@
 import {string} from "../../objects/handlers";
-import {apply} from "../../utils/functions";
 import {repeat} from "./es2015";
+import {apply} from "../../functions/apply";
 
 function padString(this: string, length: number, fill?: string, start?: boolean): string {
   fill = string(fill, () => " ");

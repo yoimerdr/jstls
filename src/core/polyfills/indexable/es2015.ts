@@ -1,8 +1,9 @@
 import {isDefined} from "../../objects/types";
 import {requireFunction} from "../../objects/validators";
-import {apply, bind} from "../../utils/functions";
 import {ArrayEach, ArrayLike, ArrayLikeEach} from "../../../types/core/array";
 import {Maybe} from "../../../types/core";
+import {bind} from "../../functions/bind";
+import {apply} from "../../functions/apply";
 
 export function findIndex<V, T, A extends ArrayLike<V>>(this: A, predicate: ArrayLikeEach<V, T, A, boolean>, thisArg?: T): number;
 export function findIndex<V, T>(this: V[], predicate: ArrayEach<V, T | void, boolean>, thisArg?: T): number {

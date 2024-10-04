@@ -1,6 +1,6 @@
 import {string} from "../../objects/handlers";
-import {apply} from "../../utils/functions";
 import {configurables} from "../../definer";
+import {apply} from "../../functions/apply";
 
 let id = 0;
 const postfix = Math.random();

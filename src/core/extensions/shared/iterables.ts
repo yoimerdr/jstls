@@ -1,7 +1,7 @@
 import {WithLength} from "../../../types/core/objects";
 import {IllegalAccessError} from "../../exceptions";
 import {Maybe} from "../../../types/core";
-import {apply} from "../../utils/functions";
+import {apply} from "../../functions/apply";
 
 export function isEmpty<T extends WithLength>(this: T): boolean {
   return this.length === 0;

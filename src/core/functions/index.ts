@@ -1,6 +1,3 @@
-export {apply} from "./apply";
-export {call} from "./call";
-export {bind} from "./bind";
 export function matchName(name: string): string {
   const match = name.match(/function\b(?:\s|\/\*[\S\s]*?\*\/|\/\/[^\n\r]*[\n\r]+)*([^\s(/]*)/);
   return match ? match[1].trim() : '';

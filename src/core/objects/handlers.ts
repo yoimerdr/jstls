@@ -1,6 +1,6 @@
 import {Keys, Maybe} from "../../types/core";
 import {isDefined, isFunction} from "./types";
-import {apply} from "../utils/functions";
+import {apply} from "../functions/apply";
 
 
 /**

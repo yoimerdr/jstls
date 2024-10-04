@@ -2,8 +2,8 @@ import {MethodKeys, SafeParameters, SafeReturnType} from "../../types/core";
 import {ExtendMethodBuilder, ExtendMethodBuilders} from "../../types/core/objects/extender";
 import {multiple} from "../definer/shared";
 import {requiredWithType, requireFunction} from "../objects/validators";
-import {apply} from "../utils/functions";
 import {slice} from "../iterable";
+import {apply} from "../functions/apply";
 
 /**
  * Extends a method to add additional functionality.

@@ -1,7 +1,7 @@
 import {Maybe, Typeof} from "../../types/core";
 import {isDefined, typeIs} from "./types";
 import {IllegalArgumentError} from "../exceptions";
-import {apply} from "../utils/functions";
+import {apply} from "../functions/apply";
 
 /**
  * Checks if the value is defined and returns it.

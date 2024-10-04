@@ -1,6 +1,6 @@
 // hasOwn
 import {Keys} from "../../../types/core";
-import {apply} from "../../utils/functions";
+import {apply} from "../../functions/apply";
 
 export function hasOwn<T, K extends Keys<T>>(target: T, key: K): boolean;
 export function hasOwn<T>(target: T, key: PropertyKey): boolean;

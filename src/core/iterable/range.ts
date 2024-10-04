@@ -1,6 +1,6 @@
 import {Iter} from "./iter";
 import {coerceIn} from "../extensions/number";
-import {apply} from "../utils/functions";
+import {apply} from "../functions/apply";
 
 /**
  * The iter class for iterating over a range.

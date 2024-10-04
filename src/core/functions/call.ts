@@ -1,4 +1,4 @@
-import {slice} from "../../iterable";
+import {slice} from "../iterable";
 
 /**
  * Calls a function with the specified this context and arguments.

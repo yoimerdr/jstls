@@ -1,10 +1,10 @@
-import {apply} from "../utils/functions";
 import {isString} from "../objects/types";
 import {readonly} from "../definer";
 import {KeyableObject} from "../../types/core/objects";
 import {keys} from "../objects/handlers";
 import {each} from "../iterable";
 import {hasOwn} from "./objects/es2022";
+import {apply} from "../functions/apply";
 
 export function fetch(input: RequestInfo | URL, init?: RequestInit) {
   if (typeof XMLHttpRequest === "undefined")

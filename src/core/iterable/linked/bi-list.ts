@@ -1,7 +1,7 @@
 import {linkedAdd, linkedAddedNode, linkedAddNext, LinkedList, linkedPop, linkedRemovedNode} from "./list";
 import {BiNode, MaybeBiNode} from "./bi-node";
 import {Maybe, MaybeNumber} from "../../../types/core";
-import {apply} from "../../utils/functions";
+import {apply} from "../../functions/apply";
 
 function linkedAddPrev<T>(this: BiLinkedList<T>, source: any) {
   source.index = this.size - source.index + 1;

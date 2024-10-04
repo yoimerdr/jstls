@@ -4,7 +4,7 @@ import {ArrayExtensions, ArrayWithExtensions, CountsCompareFn, Pushable} from ".
 
 import {getIf, requireDefined, requireIf} from "../objects/validators";
 import {isDefined, isFunction, isObject} from "../objects/types";
-import {apply,} from "../utils/functions";
+import {apply} from "../functions/apply";
 
 
 export function counts<T, R>(this: T[], value: any, compare?: CountsCompareFn<T, T[], R>, thisArg?: R): number {

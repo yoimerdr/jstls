@@ -3,9 +3,10 @@ import {KeyableObject} from "../../types/core/objects";
 import {configurable, readonlys} from "../definer";
 import {each} from "../iterable";
 import {isDefined, isObject} from "../objects/types";
-import {apply, bind} from "../utils/functions";
 import {deepAssign} from "../objects/factory";
 import {keys} from "../objects/handlers";
+import {apply} from "../functions/apply";
+import {bind} from "../functions/bind";
 
 type SetSource = Readonly<{
   key: MaybeString,

@@ -4,9 +4,9 @@ import {IllegalAccessError} from "../../exceptions";
 import {Keys, Maybe, MaybeKeyType} from "../../../types/core";
 import {KeyableObject, MaybeKeyObjectType} from "../../../types/core/objects";
 import {isDefined, isFunction, isObject} from "../../objects/types";
-import {apply} from "../../utils/functions";
 import {keys} from "../../objects/handlers";
 import {each} from "../../iterable";
+import {apply} from "../../functions/apply";
 
 function checkObjectAccess(optional: OptionalProperties<any>) {
   if (optional.isPresent && !optional.hasObject)

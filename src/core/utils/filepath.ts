@@ -2,10 +2,10 @@ import {Maybe} from "../../types/core";
 import {isEmpty, isNotEmpty} from "../extensions/shared/iterables";
 import {string} from "../objects/handlers";
 import {isDefined} from "../objects/types";
-import {apply} from "./functions";
 import {IllegalArgumentError} from "../exceptions";
 import {readonlys} from "../definer";
 import {each, filter, reach, slice} from "../iterable";
+import {apply} from "../functions/apply";
 
 export const sep = '/';
 

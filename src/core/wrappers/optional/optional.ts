@@ -2,7 +2,7 @@ import {Wrapper} from "../wrapper";
 import {Maybe} from "../../../types/core";
 import {readonlys} from "../../definer";
 import {isDefined} from "../../objects/types";
-import {apply} from "../../utils/functions";
+import {apply} from "../../functions/apply";
 
 
 /**

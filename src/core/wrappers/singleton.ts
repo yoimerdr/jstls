@@ -1,6 +1,5 @@
 import {readonly} from "../definer";
 import {SingletonConstructor} from "../../types/core/wrappers";
-import {apply, name} from "../utils/functions";
 import {ConstructorParameters, ConstructorType, MaybeBoolean, Mutable} from "../../types/core";
 import {IllegalAccessError} from "../exceptions";
 import {isDefined} from "../objects/types";
@@ -8,6 +7,8 @@ import {is} from "../polyfills/objects/es2015";
 import {uid} from "../polyfills/symbol";
 import {get} from "../objects/handlers";
 import {slice} from "../iterable";
+import {name} from "../functions";
+import {apply} from "../functions/apply";
 
 const instanceSymbol = uid('SingletonInstance');
 export class Singleton<S extends Singleton<S>> {

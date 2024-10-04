@@ -1,9 +1,10 @@
 import {ArrayLike, ArrayLikeEach, ArrayLikeReduce, ArrayLikeType} from "../../types/core/array";
-import {apply, bind} from "../utils/functions";
 import {KeyableObject} from "../../types/core/objects";
 import {Foreachable, ForeachableEach, IterableLike, IterableLikeEach} from "../../types/core/iterable";
 import {isFunction} from "../objects/types";
 import {get} from "../objects/handlers";
+import {apply} from "../functions/apply";
+import {bind} from "../functions/bind";
 
 
 export function slice<T extends any>(source: ArrayLike<T>, startIndex?: number, endIndex?: number): T[] {

@@ -2,7 +2,7 @@ import {Maybe} from "../../../types/core";
 import {writeables} from "../../definer";
 import {isNotEmpty} from "../../extensions/shared/iterables";
 import {isDefined} from "../../objects/types";
-import {apply} from "../../utils/functions";
+import {apply} from "../../functions/apply";
 
 export type MaybeNode<T> = Maybe<Node<T>>;
 
