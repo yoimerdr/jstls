@@ -4,8 +4,10 @@ import {string} from "../objects/handlers";
 import {isDefined} from "../objects/types";
 import {IllegalArgumentError} from "../exceptions";
 import {readonlys} from "../definer";
-import {each, filter, reach, slice} from "../iterable";
+import {slice} from "../iterable";
 import {apply} from "../functions/apply";
+import {each, reach} from "../iterable/each";
+import {filter} from "../iterable/filter";
 
 export const sep = '/';
 

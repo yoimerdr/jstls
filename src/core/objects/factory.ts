@@ -2,8 +2,8 @@ import {AssignMode, KeyableObject} from "../../types/core/objects";
 import {isDefined, isObject, isPlainObject} from "./types";
 import {Entry, Maybe} from "../../types/core";
 import {keys} from "./handlers";
-import {each} from "../iterable";
 import {hasOwn} from "../polyfills/objects/es2022";
+import {each} from "../iterable/each";
 
 type AssignNoObjectFn<T> = (target: T, source: T, mode: AssignMode) => void;
 
