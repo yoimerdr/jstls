@@ -4,7 +4,7 @@ import {KeyableObject} from "../../types/core/objects";
 import {isFunction} from "../objects/types";
 import {get} from "../objects/handlers";
 import {bind} from "../functions/bind";
-import {apply} from "../functions/apply";
+import {protoapply} from "../functions/prototype";
 
 export function each<T, I extends ArrayLike<T>, R = void>(source: I, each: ArrayLikeEach<T, R, I>, thisArg?: R): void;
 export function each<T, I extends Foreachable<T>, R = void>(source: I, each: ForeachableEach<T, R, I>, thisArg?: R): void;
@@ -17,7 +17,7 @@ export function each<T, R>(source: IterableLike<T> & KeyableObject, callbackfn: 
       callbackfn(value, index, source);
       index++;
     })
-  } else apply(Array.prototype.forEach, source, [<any>callbackfn, thisArg])
+  } else protoapply(Array<any>, "forEach", <any> source, [<any> callbackfn, thisArg])
 }
 
 export function reach<T, I extends ArrayLike<T>, R = void>(source: I, each: ArrayLikeEach<T, R, I>, thisArg?: R): void;

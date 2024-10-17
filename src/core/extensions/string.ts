@@ -19,7 +19,7 @@ export function toFloat(this: string | number | StringExtensions): MaybeNumber {
  * @see {StringExtensions}
  */
 export function applyStringExtensions() {
-  readonlys<StringWithExtensions>(String.prototype,{
+  readonlys(<StringWithExtensions>String.prototype,{
     isEmpty,
     isNotEmpty,
     toInt,
@@ -33,5 +33,5 @@ export function applyStringExtensions() {
  * @see {StringExtensions}
  */
 export function stringExtensions(extensions: Partial<StringExtensions>) {
-  readonlys<StringWithExtensions>(String.prototype, extensions);
+  readonlys(String.prototype, extensions);
 }

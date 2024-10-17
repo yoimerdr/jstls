@@ -2,6 +2,7 @@ import {getDefined} from "../../objects/validators";
 import {reduce} from "../../iterable";
 import {apply} from "../../functions/apply";
 import {bind} from "../../functions/bind";
+import {ArrayLike} from "../../../types/core/array";
 
 export function flat<T>(this: ArrayLike<T>, depth?: number): T[] {
   depth = getDefined(depth, () => 1);
@@ -14,7 +15,7 @@ export function flat<T>(this: ArrayLike<T>, depth?: number): T[] {
 }
 
 
-export function flatMap<T, U, A extends ArrayLike<T>, R>(this: A, callback: (this: R, value: T, index: number, array: A) => U[], thisArg?: R): U[];
+export function flatMap<T, U, A extends ArrayLike<T> = ArrayLike<T>, R = any>(this: A, callback: (this: R, value: T, index: number, array: A) => U[], thisArg?: R): U[];
 export function flatMap<T, U, R>(this: ArrayLike<T>, callback: (this: R | void, value: T, index: number, array: ArrayLike<T>,) => U[], thisArg?: R): U[] {
   callback = bind(callback, thisArg)
   return reduce(this, (arr, value, index, array) => {

@@ -14,7 +14,7 @@ export type ArrayLikeEachNext<V, T, A extends ArrayLike<V> = ArrayLike<V>, R = v
 export type ArrayLikeEachPrevious<V, T, A extends ArrayLike<V> = ArrayLike<V>, R = void> = (this: T, value: ArrayLikeType<A>, previous: ArrayLikeType<A>, index: number, iterable: A) => R;
 
 export type ArrayLike<T = any> = WithLength & Indexable<T>;
-export type ArrayLikeReduce<T, A extends ArrayLike<T> = ArrayLike<T>, U = T> = (previousValue: U, currentValue: ArrayLikeType<A>, currentIndex: number, array: A) => U;
+export type ArrayLikeReduce<T, A extends ArrayLike<T> = ArrayLike<T>, U = ArrayLikeType<A>> = (previousValue: U, currentValue: ArrayLikeType<A>, currentIndex: number, array: A) => U;
 
 
 declare global {

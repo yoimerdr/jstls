@@ -5,7 +5,7 @@ import {Maybe} from "../../../types/core";
 import {bind} from "../../functions/bind";
 import {apply} from "../../functions/apply";
 
-export function findLastIndex<V, T, A extends ArrayLike<V>>(this: A, predicate: ArrayLikeEach<V, T, A, boolean>, thisArg?: T): number;
+export function findLastIndex<V, T = any, A extends ArrayLike<V> = ArrayLike<V>>(this: A, predicate: ArrayLikeEach<V, T, A, boolean>, thisArg?: T): number;
 export function findLastIndex<V, T>(this: V[], predicate: ArrayEach<V, T | void, boolean>, thisArg?: T): number {
   predicate = bind(predicate, thisArg);
   let index = this.length;
@@ -17,7 +17,7 @@ export function findLastIndex<V, T>(this: V[], predicate: ArrayEach<V, T | void,
   return -1;
 }
 
-export function findLast<V, T, A extends ArrayLike<V>>(this: A, predicate: ArrayLikeEach<V, T, A, boolean>, thisArg?: T): Maybe<V>;
+export function findLast<V, T = any, A extends ArrayLike<V> = ArrayLike<V>>(this: A, predicate: ArrayLikeEach<V, T, A, boolean>, thisArg?: T): Maybe<V>;
 export function findLast<V, T>(this: ArrayLike<V>, predicate: ArrayLikeEach<V, T | void, ArrayLike<V>, boolean>, thisArg?: T): Maybe<V> {
   predicate = bind(predicate, thisArg);
   const index = apply(findLastIndex, this, [<any>predicate, thisArg]);

@@ -1,6 +1,6 @@
 import {Maybe} from "../../types/core";
 import {readonlys} from "../definer";
-import { apply } from "../functions/apply";
+import {apply} from "../functions/apply";
 import {isFunction} from "../objects/types";
 import {requiredWithType} from "../objects/validators";
 

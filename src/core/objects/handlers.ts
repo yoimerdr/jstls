@@ -1,6 +1,7 @@
 import {Keys, Maybe} from "../../types/core";
 import {isDefined, isFunction} from "./types";
 import {apply} from "../functions/apply";
+import {KeyableObject} from "../../types/core/objects";
 
 
 /**
@@ -45,13 +46,47 @@ export function string<T>(value: Maybe<T>, nullableString?: () => string): strin
   return nullableString();
 }
 
+/**
+ * Returns the names of the enumerable properties and methods of an object.
+ *
+ * This is a short for {@link Object.keys}.
+ * @param object The target object
+ * @see {Object.keys}
+ */
 export function keys<T>(object: T): Keys<T>[] {
   return Object.keys(object)
 }
 
-export function get<T, K extends Keys<T>>(target: T, key: K): T[K];
-export function get<T>(target: T, key: PropertyKey): any;
-export function get<T, K extends Keys<T>>(target: T & any, key: K | PropertyKey): Maybe<T[K]> {
-  return target[key]
+/**
+ * Returns the names of the all (including non-enumerable) properties and methods of an object.
+ *
+ * This is a short for {@link Object.getOwnPropertyNames}.
+ *
+ * @param object The target object
+ * @see {Object.getOwnPropertyNames}
+ */
+export function propertyNames<T>(object: T): Keys<T>[] {
+  return Object.getOwnPropertyNames(object) as Keys<T>[]
+}
+
+/**
+ * Returns the value of the `key` property in the target `object`.
+ * @example
+ * const value = get(object, 'key') // object[key]
+ * @param object The target object
+ * @param key The target object property name.
+ */
+export function get<T, K extends Keys<T>>(object: T, key: K): T[K];
+
+/**
+ * Returns the value of the `key` property in the target `object`.
+ * @example
+ * const value = get(object, 'key') // object[key]
+ * @param object The target object
+ * @param key The target object property name.
+ */
+export function get<T>(object: T, key: PropertyKey): any;
+export function get<T, K extends Keys<T>>(object: T & KeyableObject, key: K | PropertyKey): Maybe<T[K]> {
+  return object[key]
 }
 

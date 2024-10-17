@@ -1,4 +1,4 @@
-import {Constructor, Maybe, MaybeNumber} from "../../../types/core";
+import {Instanceable, Maybe, MaybeNumber} from "../../../types/core";
 import {writeables} from "../../definer";
 import {getDefined} from "../../objects/validators";
 import {MaybeNode, Node} from "./node";
@@ -6,7 +6,7 @@ import {apply} from "../../functions/apply";
 import {each} from "../each";
 
 
-export function linkedAdd<T, N extends Node<T>>(this: LinkedList<T>, constructor: Constructor<N, [value: T]>, value: T, index?: number) {
+export function linkedAdd<T, N extends Node<T>>(this: LinkedList<T>, constructor: Instanceable<N, [value: T]>, value: T, index?: number) {
   const node = new constructor(value);
   index = getDefined(index, function () {
     return this.size;

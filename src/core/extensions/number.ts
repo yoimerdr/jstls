@@ -35,7 +35,7 @@ export function isFromUntil(this: Number, minimum: number, maximum: number) {
  * @see {NumberExtensions}
  */
 export function numberExtensions(extensions: Partial<NumberExtensions>) {
-  readonlys<NumberWithExtensions>(Number.prototype, extensions);
+  readonlys(Number.prototype, extensions);
 }
 
 /**
@@ -43,7 +43,7 @@ export function numberExtensions(extensions: Partial<NumberExtensions>) {
  * @see {NumberExtensions}
  */
 export function applyNumberExtensions() {
-  readonlys(Number.prototype, {
+  readonlys(<NumberWithExtensions>Number.prototype, {
     coerceAtLeast,
     coerceAtMost,
     coerceIn,

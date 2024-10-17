@@ -1,15 +1,22 @@
-import {NumberExtensions, NumberWithExtensions} from "./extensions/number";
-import {StringExtensions, StringWithExtensions} from "./extensions/string";
-import {ArrayExtensions, ArrayWithExtensions} from "./extensions/array";
-
-export interface Constructor<R = any, P = any[]> {
-  // @ts-ignore
+export interface Instanceable<R = any, P extends any[] = any[]> {
   new(...args: P): R;
 }
 
-export type ConstructorParameters<T> = T extends Constructor<any, infer P> ? P : never;
 
-export type ConstructorType<T> = T extends Constructor<infer P> ? P : never;
+export type Instance = abstract new (...args: any[]) => any;
+
+export type InstanceableType<T> = T extends Instanceable<infer P> ? P : never;
+
+export type InstanceKeys<T extends Instanceable> = Keys<InstanceableType<T>>;
+
+export type InstanceMethodKeys<T extends Instanceable> = MethodKeys<InstanceType<T>> | PropertyKey;
+
+export type InstanceMethodReturn<T extends Instanceable, P extends InstanceMethodKeys<T> | PropertyKey> = NoExtends<SafeReturnType<InstanceType<T>[P]>, never>;
+
+export type InstanceMethodParameters<T extends Instanceable, P extends InstanceMethodKeys<T> | PropertyKey> = NoExtends<SafeParameters<InstanceType<T>[P]>, never>;
+
+export type InstanceableParameters<T> = T extends Instanceable<any, infer P> ? P : never;
+
 
 export type Mutable<T> = {
   -readonly [P in Keys<T>]: T[P];
@@ -37,6 +44,15 @@ export type IncludeThisParameter<T, This = any, Not = unknown> = T extends (...a
 export type Extends<T, U, If = T, Not = never> = T extends U ? If : Not;
 
 /**
+ * Extract 'Not' from T if it extends U.
+ * @template T The type.
+ * @template U The extends restriction type.
+ * @template If The extract type. Default T.
+ * @template Not The type if T not extends U. Default never.
+ */
+export type NoExtends<T, U, If = never, Not = T> = T extends U ? If : Not;
+
+/**
  * Extracts the keys of T
  */
 export type Keys<T> = Extract<keyof T, PropertyKey>
@@ -54,6 +70,18 @@ export type KeysType<T> = NonNullable<T>[Keys<T>] | T[Keys<T>]
 export type Only<T, U> = {
   [P in Keys<T> as Extends<T[P], U, P>]: T[P]
 }
+
+export type All<T> = {
+  [P in keyof T]: T[P]
+}
+
+export type Join<T extends any[]> = T extends [infer F, ...infer R] ? F & Join<R> : unknown;
+
+export type Split<T extends any[]> = T extends [infer F, ...infer R] ? F | Split<R> : never;
+
+export type JoinInstanceableTypes<T> = T extends [infer F, ...infer R] ? InstanceableType<F> & JoinInstanceableTypes<R> : unknown;
+export type SplitInstanceableTypes<T> = T extends [infer F, ...infer R] ? InstanceableType<F> | SplitInstanceableTypes<R> : never;
+
 
 /**
  * Constructs a type with all keys of T whose type does not extend U.
@@ -130,26 +158,3 @@ export type SafeReturnType<T> = T extends (...args: any[]) => any ? ReturnType<T
 
 export type SafeThisParameterType<T> = ThisParameterType<T> extends Object ? ThisParameterType<T> : void | null;
 
-
-declare global {
-  interface Number extends NumberExtensions {
-  }
-
-  interface String extends StringExtensions {
-  }
-
-  interface Array<T> extends ArrayExtensions<T> {
-  }
-
-  interface ArrayConstructor {
-    readonly prototype: ArrayWithExtensions<any>
-  }
-
-  interface StringConstructor {
-    readonly prototype: StringWithExtensions
-  }
-
-  interface NumberConstructor {
-    readonly prototype: NumberWithExtensions
-  }
-}

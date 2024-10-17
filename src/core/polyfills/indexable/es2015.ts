@@ -5,7 +5,7 @@ import {Maybe} from "../../../types/core";
 import {bind} from "../../functions/bind";
 import {apply} from "../../functions/apply";
 
-export function findIndex<V, T, A extends ArrayLike<V>>(this: A, predicate: ArrayLikeEach<V, T, A, boolean>, thisArg?: T): number;
+export function findIndex<V, T = any, A extends ArrayLike<V> = ArrayLike<V>>(this: A, predicate: ArrayLikeEach<V, T, A, boolean>, thisArg?: T): number;
 export function findIndex<V, T>(this: V[], predicate: ArrayEach<V, T | void, boolean>, thisArg?: T): number {
   requireFunction(predicate, "predicate");
   predicate = bind(predicate, thisArg)
@@ -16,14 +16,14 @@ export function findIndex<V, T>(this: V[], predicate: ArrayEach<V, T | void, boo
   return -1;
 }
 
-export function find<V, T, A extends ArrayLike<V>>(this: A, predicate: ArrayLikeEach<V, T, A, boolean>, thisArg?: T): Maybe<V>;
+export function find<V, T = any, A extends ArrayLike<V> = ArrayLike<V>>(this: A, predicate: ArrayLikeEach<V, T, A, boolean>, thisArg?: T): Maybe<V>;
 export function find<V, T>(this: V[], predicate: ArrayEach<V, T, boolean>, thisArg?: T): Maybe<V> {
   const index = apply(findIndex, this, [<any>predicate, thisArg]);
   return index === -1 ? undefined : this[index];
 }
 
 
-export function fill<T, A extends ArrayLike<T>>(this: A, value: T, start?: number, end?: number): A {
+export function fill<T, A extends ArrayLike<T> = ArrayLike<T>>(this: A, value: T, start?: number, end?: number): A {
   if (!this.length)
     return this;
   start = start! >> 0;
@@ -43,7 +43,7 @@ function copyWithinCheckIndex(index: number, length: number): number {
   return index < 0 ? Math.max(length + index, 0) : Math.min(index, length);
 }
 
-export function copyWithin<T, A extends ArrayLike<T>>(this: A, target: number, start: number, end?: number): A {
+export function copyWithin<T, A extends ArrayLike<T> = ArrayLike<T>>(this: A, target: number, start: number, end?: number): A {
   if (!this.length)
     return this;
   target = copyWithinCheckIndex(target, this.length);

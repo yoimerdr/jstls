@@ -3,7 +3,7 @@ import {coerceAtLeast, coerceAtMost, coerceIn, isFromTo} from "../extensions/num
 import {isEmpty} from "../extensions/shared/iterables";
 import {WithLength} from "../../types/core/objects";
 import {IterEach, IterEachNext, IterEachPrevious, IterMap, IterMatchCondition} from "../../types/core/iterable";
-import {Constructor} from "../../types/core";
+import {Instanceable} from "../../types/core";
 import {getDefined} from "../objects/validators";
 import {IllegalAccessError} from "../exceptions";
 import {ArrayLike} from "../../types/core/array";
@@ -35,7 +35,7 @@ export function iterEachOrFindIndex<T, R>(this: Iter<T>,
 }
 
 export function iterMap<T, R, A, I extends Iter<A>>(this: Iter<T>,
-                                                    constructor: Constructor<I, [value: ArrayLike<any>]>,
+                                                    constructor: Instanceable<I, [value: ArrayLike<any>]>,
                                                     iterate: ((this: Iter<T>, fn: IterEach<T, R>, thisArg?: R) => void),
                                                     fn?: IterMap<T, A, R>,
                                                     thisArg?: R,
