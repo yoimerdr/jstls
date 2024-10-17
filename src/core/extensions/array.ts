@@ -34,7 +34,7 @@ export function filterDefined<T>(this: T[]): NonNullable<T>[] {
  * @see {ArrayExtensions}
  */
 export function arrayExtensions(extensions: Partial<ArrayExtensions<any>>) {
-  readonlys(Array.prototype, extensions)
+  readonlys(<any>Array.prototype, extensions)
 }
 
 /**
@@ -42,7 +42,7 @@ export function arrayExtensions(extensions: Partial<ArrayExtensions<any>>) {
  * @see {ArrayExtensions}
  */
 export function applyArrayExtensions() {
-  readonlys(Array.prototype, {
+  readonlys(<any>Array.prototype, {
     first,
     firstOrNull,
     isEmpty,
