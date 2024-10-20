@@ -2,7 +2,6 @@ import {ArrayLike, ArrayLikeEach, ArrayLikeEachNext, ArrayLikeEachPrevious} from
 import {Foreachable, ForeachableEach, IterableLike, IterableLikeEach} from "../../types/core/iterable";
 import {KeyableObject} from "../../types/core/objects";
 import {isFunction} from "../objects/types";
-import {get} from "../objects/handlers/getset";
 import {bind} from "../functions/bind";
 import {protoapply} from "../functions/prototype";
 
@@ -10,7 +9,7 @@ export function each<T, I extends ArrayLike<T>, R = void>(source: I, each: Array
 export function each<T, I extends Foreachable<T>, R = void>(source: I, each: ForeachableEach<T, R, I>, thisArg?: R): void;
 export function each<T, R = void>(source: IterableLike<T> & KeyableObject, each: IterableLikeEach<T, R>, thisArg?: R): void;
 export function each<T, R>(source: IterableLike<T> & KeyableObject, callbackfn: IterableLikeEach<T, R | void>, thisArg?: R): void {
-  if (isFunction(get(source, 'forEach'))) {
+  if (isFunction(source['forEach'])) {
     callbackfn = bind(callbackfn, thisArg);
     let index = 0;
     source.forEach((value: T) => {
