@@ -1,6 +1,6 @@
 import {PromiseExecutor, PromiseFilled, PromiseRejected, PromiseState} from "../../types/core/polyfills"
 import {requireFunction} from "../objects/validators";
-import {writeable, writeables} from "../definer";
+import {writeable} from "../definer";
 import {loop} from "../utils";
 import {isFunction} from "../objects/types";
 import {uid} from "./symbol";

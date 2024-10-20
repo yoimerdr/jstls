@@ -6,7 +6,8 @@ import {
   parseSize,
   scaleOrAdjustSize,
   setSizeProperty,
-  Size, sizeHeight,
+  Size,
+  sizeHeight,
   sizeToString,
   sizeWidth,
   withSize

@@ -1,6 +1,6 @@
 import {readonlys} from "../definer";
 import {first, firstOrNull, isEmpty, isNotEmpty, last, lastOrNull} from "./shared/iterables";
-import {ArrayExtensions, ArrayWithExtensions, CountsCompareFn, Pushable} from "../../types/core/extensions/array";
+import {ArrayExtensions, CountsCompareFn, Pushable} from "../../types/core/extensions/array";
 
 import {getIf, requireDefined, requireIf} from "../objects/validators";
 import {isDefined, isFunction, isObject} from "../objects/types";
