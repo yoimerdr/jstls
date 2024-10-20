@@ -1,5 +1,5 @@
 import {Keys, KeysType} from "../../../types/core";
-import {keys} from "../../objects/handlers";
+import {keys} from "../../objects/handlers/properties";
 
 export function entries<T>(object: T): [Keys<T>, T[Keys<T>]][] {
   return keys(object)

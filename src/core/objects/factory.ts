@@ -1,7 +1,7 @@
 import {AssignMode, KeyableObject} from "../../types/core/objects";
 import {isDefined, isObject, isPlainObject} from "./types";
 import {Entry, Maybe} from "../../types/core";
-import {keys} from "./handlers";
+import {keys} from "./handlers/properties";
 import {hasOwn} from "../polyfills/objects/es2022";
 import {each} from "../iterable/each";
 

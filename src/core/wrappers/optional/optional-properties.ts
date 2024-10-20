@@ -4,7 +4,7 @@ import {IllegalAccessError} from "../../exceptions";
 import {Keys, Maybe, MaybeKeyType} from "../../../types/core";
 import {KeyableObject, MaybeKeyObjectType} from "../../../types/core/objects";
 import {isDefined, isFunction, isObject} from "../../objects/types";
-import {keys} from "../../objects/handlers";
+import {keys} from "../../objects/handlers/properties";
 import {apply} from "../../functions/apply";
 import {each} from "../../iterable/each";
 

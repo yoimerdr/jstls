@@ -2,7 +2,7 @@ import {ArrayLike, ArrayLikeEach, ArrayLikeEachNext, ArrayLikeEachPrevious} from
 import {Foreachable, ForeachableEach, IterableLike, IterableLikeEach} from "../../types/core/iterable";
 import {KeyableObject} from "../../types/core/objects";
 import {isFunction} from "../objects/types";
-import {get} from "../objects/handlers";
+import {get} from "../objects/handlers/getset";
 import {bind} from "../functions/bind";
 import {protoapply} from "../functions/prototype";
 

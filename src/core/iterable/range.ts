@@ -1,7 +1,7 @@
 import {Iter, iterIndex} from "./iter";
 import {coerceIn} from "../extensions/number";
 import {apply} from "../functions/apply";
-import {set} from "../objects/handlers";
+import {set} from "../objects/handlers/getset";
 
 /**
  * The iter class for iterating over a range.

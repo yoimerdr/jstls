@@ -3,7 +3,7 @@ import {KeyableObject} from "../../types/core/objects";
 import {configurable, readonlys} from "../definer";
 import {isDefined, isObject} from "../objects/types";
 import {deepAssign} from "../objects/factory";
-import {keys} from "../objects/handlers";
+import {keys} from "../objects/handlers/properties";
 import {apply} from "../functions/apply";
 import {bind} from "../functions/bind";
 import {each} from "../iterable/each";

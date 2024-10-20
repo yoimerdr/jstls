@@ -5,11 +5,11 @@ import {IllegalAccessError} from "../exceptions";
 import {isDefined, isFunction} from "../objects/types";
 import {is} from "../polyfills/objects/es2015";
 import {uid} from "../polyfills/symbol";
-import {get} from "../objects/handlers";
 import {slice} from "../iterable";
 import {apply} from "../functions/apply";
 import {hasOwn} from "../polyfills/objects/es2022";
 import {SingletonInit} from "../../types/core/wrappers/singleton";
+import {get} from "../objects/handlers/getset";
 
 const singletonSymbol = uid('SingletonInstance');
 

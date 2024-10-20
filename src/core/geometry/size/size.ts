@@ -5,10 +5,11 @@ import {MaybeSizeArgument, SizeArgument, SizeConstructor} from "../../../types/c
 import {writeables} from "../../definer";
 import {isDefined, isNumber} from "../../objects/types";
 import {requiredWithType} from "../../objects/validators";
-import {get, string} from "../../objects/handlers";
 import {apply} from "../../functions/apply";
 import {uid} from "../../polyfills/symbol";
 import {KeyableObject} from "../../../types/core/objects";
+import {string} from "../../objects/handlers";
+import {get} from "../../objects/handlers/getset";
 
 export function isSize(value: any): boolean {
   return value instanceof Size;

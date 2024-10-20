@@ -4,10 +4,10 @@ import {writeable} from "../definer";
 import {loop} from "../utils";
 import {isFunction} from "../objects/types";
 import {uid} from "./symbol";
-import {get, set} from "../objects/handlers";
 import {hasOwn} from "./objects/es2022";
 import {apply} from "../functions/apply";
 import {bind} from "../functions/bind";
+import {get, set} from "../objects/handlers/getset";
 
 const promiseState = uid("Promise#state")
 const promiseResult = uid("Promise#result")

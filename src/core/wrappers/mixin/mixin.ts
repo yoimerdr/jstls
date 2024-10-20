@@ -2,7 +2,7 @@ import {Instanceable,} from "../../../types/core";
 import {MixinOptions} from "../../../types/core/wrappers/mixin";
 import {readonly} from "../../definer";
 import {uid} from "../../polyfills/symbol";
-import {get, propertyNames} from "../../objects/handlers";
+import {propertyNames} from "../../objects/handlers/properties";
 import {isDefined, isPlainObject} from "../../objects/types";
 import {KeyableObject} from "../../../types/core/objects";
 import {apply} from "../../functions/apply";
@@ -11,6 +11,7 @@ import {IllegalAccessError, RequiredArgumentError} from "../../exceptions";
 import {hasOwn} from "../../polyfills/objects/es2022";
 import {each} from "../../iterable/each";
 import {is} from "../../polyfills/objects/es2015";
+import {get} from "../../objects/handlers/getset";
 
 
 const mixinKey = uid("MixinClasses");

@@ -8,8 +8,8 @@ import {
   SafeReturnType
 } from "../../types/core";
 import {apply} from "./apply";
-import {get} from "../objects/handlers";
 import {ArrayLike} from "../../types/core/array";
+import {get} from "../objects/handlers/getset";
 
 export function constructor<T extends Instanceable>(cls: T, instance: InstanceableType<T>, ...args: InstanceableParameters<T>): SafeReturnType<InstanceableType<T>> {
   return protoapply(cls, "constructor", instance, <any>protoapply(Array, "slice", arguments, [2]))

@@ -9,7 +9,7 @@ import {IllegalAccessError} from "../exceptions";
 import {ArrayLike} from "../../types/core/array";
 import {apply} from "../functions/apply";
 import {uid} from "../polyfills/symbol";
-import {get, set} from "../objects/handlers";
+import {get, set} from "../objects/handlers/getset";
 
 export function iterEachOrFindIndex<T, R>(this: Iter<T>,
                                           restartFn: (this: Iter<T>) => any,

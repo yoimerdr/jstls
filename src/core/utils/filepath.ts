@@ -1,6 +1,5 @@
 import {Maybe} from "../../types/core";
 import {isEmpty, isNotEmpty} from "../extensions/shared/iterables";
-import {get, string} from "../objects/handlers";
 import {isDefined} from "../objects/types";
 import {IllegalArgumentError} from "../exceptions";
 import {readonlys} from "../definer";
@@ -10,6 +9,8 @@ import {each, reach} from "../iterable/each";
 import {filter} from "../iterable/filter";
 import {uid} from "../polyfills/symbol";
 import {KeyableObject} from "../../types/core/objects";
+import {get} from "../objects/handlers/getset";
+import {string} from "../objects/handlers";
 
 export const sep = '/';
 const pathName = uid("Path#name");
