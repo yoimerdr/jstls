@@ -1,59 +1,91 @@
 import {PromiseExecutor, PromiseFilled, PromiseRejected, PromiseState} from "../../types/core/polyfills"
 import {requireFunction} from "../objects/validators";
-import {writeables} from "../definer";
+import {writeable, writeables} from "../definer";
 import {loop} from "../utils";
 import {isFunction} from "../objects/types";
+import {uid} from "./symbol";
+import {get, set} from "../objects/handlers";
+import {hasOwn} from "./objects/es2022";
+import {apply} from "../functions/apply";
+import {bind} from "../functions/bind";
+
+const promiseState = uid("Promise#state")
+const promiseResult = uid("Promise#result")
+const promiseCalls = uid("Promise#calls")
+
+function resolveOrReject(this: Promise<any>, state: PromiseState, value: any, index: number) {
+  if (get(this, promiseState) !== "pending")
+    return;
+  if (value && isFunction(value.then)) {
+    const rej = bind(reject, this);
+    const res = bind(resolve, this);
+    if (value === this)
+      rej(new TypeError("Chaining cycle detected for promise."))
+    else value.then(res, rej)
+    return;
+  }
+  set(this, promiseState, state);
+  set(this, promiseResult, value);
+
+  if (!hasOwn(this, promiseCalls))
+    return;
+  const calls: Function[] = get(this, promiseCalls);
+  if (calls.length === 1)
+    calls[0](value)
+  else calls[index](value)
+}
+
+function resolve(this: Promise<any>, value: any) {
+  apply(resolveOrReject, this, ["fulfilled", value, 0])
+}
+
+function reject(this: Promise<any>, reason: any) {
+  apply(resolveOrReject, this, ["rejected", reason, 1])
+}
+
+function resolverPromise(resolve: Function, reject: Function, resolver: any) {
+  return (result: any) => {
+    setTimeout(() => {
+      if (isFunction(resolver)) {
+        try {
+          resolve(resolver!(result))
+        } catch (e) {
+          reject(e)
+        }
+      } else resolve(result)
+    }, 0)
+  }
+}
+
+function finallyPromise(target: Promise<any>, resolve: Function, reject: Function, final: any, first?: boolean) {
+  return () => {
+    setTimeout(() => {
+      if (first)
+        final();
+      resolve(target);
+      if (!first)
+        final()
+    }, 0)
+  }
+
+}
 
 export class Promise<T> {
-  private __state__!: PromiseState;
-  private __callbacks__!: Function[]
-  private __result__!: T
 
   constructor(executor: PromiseExecutor<T>) {
     requireFunction(executor);
 
-    const resolveOrReject = (state: PromiseState, value: PromiseLike<T> | T, index: number) => {
-      if (this.__state__ !== "pending")
-        return;
-      if (value && isFunction((value as PromiseLike<T>).then)) {
-        if (value === this)
-          reject(new TypeError("Chaining cycle detected for promise."))
-        else (value as PromiseLike<T>).then(resolve, reject)
-        return;
-      }
-
-      this.__state__ = state;
-      this.__result__ = (value as T)
-
-      if (!this.__callbacks__)
-        return;
-
-      if (this.__callbacks__.length === 1)
-        this.__callbacks__[0](value)
-      else this.__callbacks__[index](value)
-    }
-
-    function resolve(value: T | PromiseLike<T>) {
-      resolveOrReject("fulfilled", value, 0)
-    }
-
-    function reject(reason: any) {
-      resolveOrReject("rejected", reason, 1)
-    }
-
+    writeable(this as Promise<T>, promiseState, 'pending');
+    const rej = bind(reject, this);
     try {
-      executor(resolve, reject)
+      executor(bind(resolve, this), rej)
     } catch (e) {
-      reject(e)
+      rej(e)
     }
-
-    writeables(this as Promise<T>, {
-      _state: 'pending'
-    })
   }
 
   toString() {
-    return `Promise { <${this.__state__}> }`
+    return `Promise { <${get(this, promiseState)}> }`
   }
 
   static resolve<T>(value: T | PromiseLike<T>): Promise<Awaited<T>> {
@@ -88,18 +120,15 @@ export class Promise<T> {
 
   finally<U>(onFinally?: () => U | Promise<U>): Promise<U> {
     return new Promise<U>((resolve, reject) => {
-      this.__callbacks__ = [
-        () => {
-          setTimeout(() => {
-            try {
-              resolve(this as any)
-            } catch (e) {
-              reject(e)
-            }
-            onFinally!()
-          }, 0)
-        }
-      ]
+      switch (get(this, promiseState) as PromiseState) {
+        case "pending":
+          set(this, promiseCalls, [finallyPromise(this, resolve, reject, onFinally)]);
+          break;
+        case "fulfilled":
+        case "rejected":
+          finallyPromise(this, resolve, reject, onFinally, true)();
+          break;
+      }
     })
   }
 
@@ -109,41 +138,23 @@ export class Promise<T> {
 
   then<R = never>(onfulfilled?: PromiseFilled<T, R>, onrejected?: PromiseRejected<T, R>): Promise<R> {
     return new Promise<R>((resolve, reject) => {
-      const res = (result: T) => {
-        setTimeout(() => {
-          if (isFunction(onfulfilled)) {
-            try {
-              resolve(onfulfilled!(result))
-            } catch (e) {
-              reject(e)
-            }
-          } else resolve(result as any)
-        }, 0)
-      }
+      const res = resolverPromise(resolve, reject, onfulfilled);
+      const rej = resolverPromise(reject, reject, onrejected);
 
-      const rej = (reason: any) => {
-        setTimeout(() => {
-          if (isFunction(onrejected)) {
-            try {
-              reject(onrejected!(reason))
-            } catch (e) {
-              reject(e)
-            }
-          } else reject(reason)
-        }, 0)
-      }
-      switch (this.__state__) {
+      const result = get(this, promiseResult);
+      switch (get(this, promiseState) as PromiseState) {
         case "pending":
-          this.__callbacks__ = [res, rej];
+          set(this, promiseCalls, [res, rej]);
           break;
         case "fulfilled":
-          res(this.__result__)
+          res(result)
           break;
         case "rejected":
-          rej(this.__result__)
+          rej(result)
           break;
       }
     })
+
   }
 
 }

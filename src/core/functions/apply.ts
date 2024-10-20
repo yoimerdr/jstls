@@ -13,6 +13,16 @@ export function apply<F extends (this: void) => any>(fn: F): ReturnType<F>;
  * @returns The result of the function application.
  */
 export function apply<F extends (...args: void[]) => any>(fn: F, thisArg: ThisParameterType<F>): ReturnType<F>;
+
+/**
+ * Applies a function with the specified this context and arguments.
+ *
+ * @param fn - The function to be applied.
+ * @param thisArg - The context for the function application.
+ * @returns The result of the function application.
+ */
+export function apply<F extends (...args: undefined[]) => any>(fn: F, thisArg: ThisParameterType<F>): ReturnType<F>;
+
 /**
  * Applies a function with the specified this context and arguments.
  *

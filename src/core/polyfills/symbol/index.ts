@@ -28,5 +28,4 @@ export function Symbol(description: any ): SymbolLike {
   })
 
   return symbol;
-
 }

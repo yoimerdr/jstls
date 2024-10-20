@@ -1,6 +1,6 @@
 import {readonlys} from "../definer";
 import {IllegalArgumentError} from "../exceptions";
-import {NumberExtensions, NumberWithExtensions} from "../../types/core/extensions/number";
+import {NumberExtensions} from "../../types/core/extensions/number";
 
 export function coerceAtLeast(this: Number, minimum: number) {
   const value = this.valueOf();

@@ -24,6 +24,9 @@ export function getMixinBases(instance: Object) {
  *
  * Mixin the properties names from bases prototypes to the target class property.
  * @param bases Other classes references (or objects with a `prototype` object).
+ * @see {mixer}
+ * @see {mixerSuper}
+ * @see {mixerInit}
  */
 export function mixin<T extends Instanceable[]>(bases: T): Function;
 /**
@@ -31,6 +34,9 @@ export function mixin<T extends Instanceable[]>(bases: T): Function;
  *
  * Mixin the properties names from bases prototypes to the target class property.
  * @param options The mixin options.
+ * @see {mixer}
+ * @see {mixerSuper}
+ * @see {mixerInit}
  */
 export function mixin<T extends Instanceable[]>(options: MixinOptions<T>): Function;
 export function mixin<T extends Instanceable[]>(options: T | MixinOptions<T>) {
@@ -91,6 +97,9 @@ export function mixin<T extends Instanceable[]>(options: T | MixinOptions<T>) {
  * const c: MixinC = new C();
  * c.sayA(); // In typescript, if C did not inherit from Mixin<MixinCTypes>, this line would throw an error.
  * (C as MixinCStatics).sayStaticA();
+ * @see {mixer}
+ * @see {mixerSuper}
+ * @see {mixerInit}
  */
 export class Mixin<T extends Instanceable[]> {
 
@@ -102,6 +111,9 @@ export class Mixin<T extends Instanceable[]> {
    * @param statics If true, it also mixes the static property names.  Default true.
    * @param force If true, if any value already exists for any property name in target, it will be replaced.
    * by the value of the last base with that property name.
+   * @see {mixer}
+   * @see {mixerSuper}
+   * @see {mixerInit}
    */
   static mix<I extends Instanceable[], T extends Mixin<I>>(this: T, bases: I, statics?: boolean, force?: boolean) {
     if (is((this as KeyableObject).prototype.constructor, Mixin.prototype.constructor))
@@ -159,6 +171,9 @@ export class Mixin<T extends Instanceable[]> {
  * @param statics If true, it also mixes the static property names.  Default true.
  * @param force If true, if any value already exists for any property name in target, it will be replaced.
  * by the value of the last base with that property name.
+ * @see {mixer}
+ * @see {mixerSuper}
+ * @see {mixerInit}
  */
 export function mixinPrototype<T extends Instanceable[]>(target: Instanceable, bases: T, statics?: boolean, force?: boolean) {
   if (apply(isEmpty, bases))

@@ -1,5 +1,5 @@
 import {readonlys} from "../definer";
-import {StringExtensions, StringWithExtensions} from "../../types/core/extensions/string";
+import {StringExtensions} from "../../types/core/extensions/string";
 import {MaybeNumber} from "../../types/core";
 import {isEmpty, isNotEmpty} from "./shared/iterables";
 

@@ -1,10 +1,13 @@
 import {isString} from "../objects/types";
 import {readonly} from "../definer";
 import {KeyableObject} from "../../types/core/objects";
-import {keys} from "../objects/handlers";
-import {hasOwn} from "./objects/es2022";
+import {keys, setTo} from "../objects/handlers";
 import {apply} from "../functions/apply";
 import {each} from "../iterable/each";
+import {PromiseConstructor} from "../../types/core/polyfills";
+import {extend} from "../extensions/array";
+
+declare const Promise: PromiseConstructor;
 
 export function fetch(input: RequestInfo | URL, init?: RequestInit) {
   if (typeof XMLHttpRequest === "undefined")
@@ -18,40 +21,26 @@ export function fetch(input: RequestInfo | URL, init?: RequestInit) {
       headers: {},
       body: <ReadableStream<Uint8Array> | null | BodyInit>null
     }
-    if (!isPlainUrl) {
-      if (hasOwn(input, "url"))
-        options.url = (input as Request).url;
-      if (hasOwn(input, "method"))
-        options.method = (input as Request).method;
-      if (hasOwn(input, "headers"))
-        options.headers = (input as Request).headers;
-      if (hasOwn(input, "body"))
-        options.body = (input as Request).body;
-    }
+    const assignKeys: any[] = ["url", "method", "headers"]
+    if (!isPlainUrl)
+      setTo(input as Request, apply(extend<any>, assignKeys, [["url"]]), options)
 
     // map init object
-    if (init) {
-      if (init.method)
-        options.method = init.method;
-      if (init.headers)
-        options.headers = init.headers;
-      if (init.body)
-        options.body = init.body;
-    }
+    if (init)
+      setTo(init, assignKeys, options)
 
     function createResponse(this: XMLHttpRequest): Response {
-      const response = new Response(this.response, <ResponseInit>{
-        status: this.status,
-        headers: this.getAllResponseHeaders()
-          .split('\r\n')
-          .reduce((acc, current) => {
-            const [name, value] = current.split(': ');
-            if (name && value)
-              acc[name] = value;
-            return acc;
-          }, <KeyableObject>{}),
-        statusText: this.statusText,
-      })
+      const init = <ResponseInit>{};
+      setTo(this, ["status", "statusText"], init);
+      init.headers = this.getAllResponseHeaders()
+        .split('\r\n')
+        .reduce((acc, current) => {
+          const [name, value] = current.split(': ');
+          if (name && value)
+            acc[name] = value;
+          return acc;
+        }, <KeyableObject>{})
+      const response = new Response(this.response, init);
       readonly(response, 'url', this.responseURL)
       return response
     }

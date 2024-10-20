@@ -1,6 +1,6 @@
 import {Maybe} from "../../types/core";
 import {isEmpty, isNotEmpty} from "../extensions/shared/iterables";
-import {string} from "../objects/handlers";
+import {get, string} from "../objects/handlers";
 import {isDefined} from "../objects/types";
 import {IllegalArgumentError} from "../exceptions";
 import {readonlys} from "../definer";
@@ -8,8 +8,12 @@ import {slice} from "../iterable";
 import {apply} from "../functions/apply";
 import {each, reach} from "../iterable/each";
 import {filter} from "../iterable/filter";
+import {uid} from "../polyfills/symbol";
+import {KeyableObject} from "../../types/core/objects";
 
 export const sep = '/';
+const pathName = uid("Path#name");
+const pathParent = uid("Path#parent");
 
 function pathSuffix(this: Path, start?: number): string {
   const name = this.name();
@@ -25,10 +29,10 @@ function fromNormalizedParts(parts: string[], path?: Maybe<Path>): Path {
   const root: Path = isDefined(path) ? path! : Object.create(Path.prototype);
   path = root;
   reach(parts, (value, index) => {
-    readonlys(path, {
-      __name__: value,
-      __parent__: index === 0 ? null : Object.create(Path.prototype)
-    });
+    const init: KeyableObject = {};
+    init[pathName] =  value;
+    init[pathParent] = index === 0 ? null : Object.create(Path.prototype);
+    readonlys(path, init);
     path = path!.parent()
   })
 
@@ -36,9 +40,6 @@ function fromNormalizedParts(parts: string[], path?: Maybe<Path>): Path {
 }
 
 export class Path {
-  protected readonly __name__!: string;
-  protected readonly __parent__: Maybe<Path>;
-
   constructor(path: string | Path) {
     const parts = path instanceof Path ? path.parts() : normalize(path)
       .split(sep);
@@ -59,11 +60,11 @@ export class Path {
   }
 
   parent(): Maybe<Path> {
-    return this.__parent__;
+    return get(this, pathParent);
   }
 
   name(): string {
-    return this.__name__;
+    return get(this, pathName);
   }
 
   prefix(): string {

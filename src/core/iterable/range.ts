@@ -1,6 +1,7 @@
-import {Iter} from "./iter";
+import {Iter, iterIndex} from "./iter";
 import {coerceIn} from "../extensions/number";
 import {apply} from "../functions/apply";
+import {set} from "../objects/handlers";
 
 /**
  * The iter class for iterating over a range.
@@ -22,7 +23,7 @@ export class IterRange extends Iter<number> {
     if (index < 0)
       index += this.endIndex + 1;
     const current = apply(coerceIn, index, [this.startIndex, this.endIndex]);
-    this._index = current;
+    set(this, iterIndex, current);
     return current !== index ? undefined! : current;
   }
 

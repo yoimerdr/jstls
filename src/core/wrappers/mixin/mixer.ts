@@ -24,6 +24,8 @@ function checkMixin(instance: Object) {
 
 /**
  * Apply the base class method with the {@link target} instance as this argument.
+ * @example
+ *
  * @param target The target mixed class instance.
  * @param cls The base class with which the instance has been mixed.
  * @param key The property name (method).

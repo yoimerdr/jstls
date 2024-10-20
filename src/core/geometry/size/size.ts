@@ -5,8 +5,10 @@ import {MaybeSizeArgument, SizeArgument, SizeConstructor} from "../../../types/c
 import {writeables} from "../../definer";
 import {isDefined, isNumber} from "../../objects/types";
 import {requiredWithType} from "../../objects/validators";
-import {string} from "../../objects/handlers";
+import {get, string} from "../../objects/handlers";
 import {apply} from "../../functions/apply";
+import {uid} from "../../polyfills/symbol";
+import {KeyableObject} from "../../../types/core/objects";
 
 export function isSize(value: any): boolean {
   return value instanceof Size;
@@ -78,7 +80,7 @@ export function scaleOrAdjustSize<R extends Size>(this: Size, target: SizeArgume
 }
 
 
-export function setSizeProperty(this: Size, args: IArguments, property: '__width__' | '__height__',
+export function setSizeProperty(this: Size & KeyableObject, args: IArguments, property: string,
                                 isSize: (value: any) => boolean,
                                 modify?: (value: number) => number): number {
   if (args.length > 0) {
@@ -107,15 +109,14 @@ export function sizeToString(this: Size, name: string): string {
   return `${name} { width: ${this.getWidth()}, height: ${this.getHeight()} }`;
 }
 
+export const sizeWidth = uid("Size#width");
+export const sizeHeight = uid("Size#height");
+
 /**
  * Represents a size with width and height properties.
  * @class
  */
 export class Size {
-
-  protected __width__!: number;
-  protected __height__!: number;
-
 
   constructor(
     width: SizeArgument,
@@ -126,11 +127,10 @@ export class Size {
       width = width.getWidth();
     } else if (!isDefined(height))
       height = width as number;
-
-    writeables(this as Size, {
-      _width: undefined,
-      _height: undefined,
-    });
+    const source: KeyableObject = {};
+    source[sizeHeight] = undefined;
+    source[sizeWidth] = undefined;
+    writeables(this as Size, source);
 
     this.width(width);
     this.height(height);
@@ -180,7 +180,7 @@ export class Size {
    * @returns The width of the size.
    */
   width(width?: MaybeSizeArgument): number {
-    return apply(setSizeProperty, this, [arguments, '__width__', isSize]);
+    return apply(setSizeProperty, this, [arguments, sizeWidth, isSize]);
   }
 
   /**
@@ -189,7 +189,7 @@ export class Size {
    * @returns The height of the size.
    */
   height(height?: MaybeSizeArgument): number {
-    return apply(setSizeProperty, this, [arguments, '__height__', isSize]);
+    return apply(setSizeProperty, this, [arguments, sizeHeight, isSize]);
   }
 
   /**
@@ -197,7 +197,7 @@ export class Size {
    * @returns The width of the size.
    */
   getWidth(): number {
-    return this.__width__;
+    return get(this, sizeWidth);
   }
 
   /**
@@ -213,7 +213,7 @@ export class Size {
    * @returns The height of the size.
    */
   getHeight(): number {
-    return this.__height__;
+    return get(this, sizeHeight);
   }
 
   /**

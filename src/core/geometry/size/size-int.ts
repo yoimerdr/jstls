@@ -1,6 +1,16 @@
 import {Maybe} from "../../../types/core";
 import {SizeArgument} from "../../../types/core/size";
-import {equalsSize, isSize, parseSize, scaleOrAdjustSize, setSizeProperty, Size, sizeToString, withSize} from "./size";
+import {
+  equalsSize,
+  isSize,
+  parseSize,
+  scaleOrAdjustSize,
+  setSizeProperty,
+  Size, sizeHeight,
+  sizeToString,
+  sizeWidth,
+  withSize
+} from "./size";
 import {apply} from "../../functions/apply";
 
 /**
@@ -31,11 +41,11 @@ export class SizeInt extends Size {
   }
 
   width(width?: Maybe<SizeArgument>): number {
-    return apply(setSizeProperty, this, [arguments, '__width__', isSize, Math.round,] );
+    return apply(setSizeProperty, this, [arguments, sizeWidth, isSize, Math.round,] );
   }
 
   height(height?: Maybe<SizeArgument>): number {
-    return apply(setSizeProperty, this, [arguments, '__height__', isSize, Math.round]);
+    return apply(setSizeProperty, this, [arguments, sizeHeight, isSize, Math.round]);
   }
 
   equals(size: SizeArgument): boolean {

@@ -7,7 +7,3 @@ export type PromiseExecutor<T> = (resolve: (value: T | PromiseLike<T>) => void, 
 export type PromiseState = "pending" | "rejected" | "fulfilled"
 
 export type PromiseConstructor = new <T>(executor: PromiseExecutor<T>) => Promise<T>;
-
-declare global {
-  const Promise: PromiseConstructor;
-}

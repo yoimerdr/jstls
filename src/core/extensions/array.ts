@@ -17,7 +17,6 @@ export function counts<T, R = any, I extends ArrayLike<T> = ArrayLike<T>>(this: 
 }
 
 export function extend<I, T extends Pushable<I> = Pushable<I>>(this: T, source: I[]): T;
-export function extend<I, T extends ArrayWithExtensions<I> = ArrayWithExtensions<I>>(this: T, source: I[]): T;
 export function extend<I, T extends Pushable<I> = Pushable<I>>(this: T, source: I[]): T {
   requireIf(source, isObject, "The source must be an indexable object.");
   apply(this.push, this, source);

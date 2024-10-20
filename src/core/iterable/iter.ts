@@ -8,6 +8,8 @@ import {getDefined} from "../objects/validators";
 import {IllegalAccessError} from "../exceptions";
 import {ArrayLike} from "../../types/core/array";
 import {apply} from "../functions/apply";
+import {uid} from "../polyfills/symbol";
+import {get, set} from "../objects/handlers";
 
 export function iterEachOrFindIndex<T, R>(this: Iter<T>,
                                           restartFn: (this: Iter<T>) => any,
@@ -61,13 +63,13 @@ export function iterRepresentation(this: Iter<any>, name: string): string {
 }
 
 
+export const iterIndex = uid("Iter#index")
+
 /**
  * The iter class for iterating over a indexable object.
  * @class
  */
 export class Iter<T> {
-  protected _index!: number;
-
   /**
    * The end index of the iter.
    */
@@ -113,14 +115,14 @@ export class Iter<T> {
       source
     })
 
-    writeable(this as Iter<T>, '_index', start);
+    writeable(this as Iter<T>, iterIndex, start);
   }
 
   /**
    * Gets the current index of the iter.
    */
   index(): number {
-    return this._index;
+    return get(this, iterIndex);
   }
 
   /**
@@ -152,7 +154,7 @@ export class Iter<T> {
     if (target !== index)
       return undefined!;
 
-    this._index = target;
+    set(this, iterIndex, target);
     return this.source[target];
   }
 
@@ -161,7 +163,7 @@ export class Iter<T> {
    * @returns The previous value of the iter.
    */
   previous(): T {
-    this._index = apply(coerceAtLeast, this.index() - this.step, [this.startIndex - this.step]);
+    set(this, iterIndex, apply(coerceAtLeast, this.index() - this.step, [this.startIndex - this.step]));
     return this.source[this.index()];
   }
 
@@ -178,7 +180,7 @@ export class Iter<T> {
    * @returns The next value of the iter.
    */
   next(): T {
-    this._index = apply(coerceAtMost, this.index() + this.step, [this.endIndex + this.step]);
+    set(this, iterIndex, apply(coerceAtMost, this.index() + this.step, [this.endIndex + this.step]));
     return this.source[this.index()];
   }
 
