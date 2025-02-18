@@ -5,6 +5,7 @@ import {Maybe} from "../../../types/core";
 import {bind} from "../../functions/bind";
 import {apply} from "../../functions/apply";
 import {len} from "../../shortcuts/indexable";
+import {concat} from "../../shortcuts/string";
 
 export function findLastIndex<V, T = any, A extends ArrayLike<V> = ArrayLike<V>>(this: A, predicate: ArrayLikeEach<V, T, A, boolean>, thisArg?: T): number;
 export function findLastIndex<V, T>(this: V[], predicate: ArrayEach<V, T | void, boolean>, thisArg?: T): number {
@@ -48,7 +49,7 @@ export function withItem<T>(this: ArrayLike<T>, index: number, value: T): T[] {
   if (i < 0)
     i = len(this) + index;
   if (!apply(isFromUntil, i, [0, len(this)]))
-    throw new RangeError(`Invalid index: ${index}`)
+    throw new RangeError(concat("Invalid index: ", index))
   const copy = slice(this);
   if (i in copy)
     copy[i] = value;

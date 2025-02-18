@@ -7,10 +7,11 @@ import {isDefined, isFunction, isObject} from "../../objects/types";
 import {keys} from "../../objects/handlers/properties";
 import {apply} from "../../functions/apply";
 import {forEach} from "../../shortcuts/array";
+import {concat} from "../../shortcuts/string";
 
 function checkObjectAccess(optional: OptionalProperties<any>) {
   if (optional.isPresent && !optional.hasObject)
-    throw new IllegalAccessError(`The method is only access for object-like values, current type is ${typeof optional.value}`);
+    throw new IllegalAccessError(concat("The method is only access for object-like values, current type is ", typeof optional.value));
   return optional.isPresent;
 }
 

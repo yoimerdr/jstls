@@ -11,6 +11,7 @@ import {KeyableObject} from "../../../types/core/objects";
 import {string} from "../../objects/handlers";
 import {get} from "../../objects/handlers/getset";
 import {len} from "../../shortcuts/indexable";
+import {concat} from "../../shortcuts/string";
 
 export function isSize(value: any): boolean {
   return value instanceof Size;
@@ -43,7 +44,7 @@ export function parseSize<R extends Size>(constructor: SizeConstructor<R>,
     height = width / aspectRatio;
   else if (isDefined(height))
     width = height * aspectRatio;
-  else throw new IllegalArgumentError(`The ${defaultRatio ? 'ratio' : 'format'} '${format}' is not valid.`);
+  else throw new IllegalArgumentError(concat("The ", defaultRatio ? 'ratio' : 'format', " ", format, " is not valid."));
 
   return new constructor(width, height);
 }
@@ -99,7 +100,7 @@ export function withSize<R extends Size>(constructor: SizeConstructor<R>, isSize
                                          ratio?: MaybeSizeArgument): R {
   height = (isSize(height)) ? (<Size>height).getHeight() : height;
   width = (isSize(height)) ? (<Size>width).getWidth() : width;
-  return parseSize(constructor, isSize, `${string(width)}:${string(height)}`, ratio)
+  return parseSize(constructor, isSize, concat(string(width), ":", string(height)), ratio)
 }
 
 export function equalsSize<R extends Size>(this: Size, size: SizeArgument, constructor: SizeConstructor<R>, isSize: (value: any) => boolean): boolean {
@@ -108,7 +109,7 @@ export function equalsSize<R extends Size>(this: Size, size: SizeArgument, const
 }
 
 export function sizeToString(this: Size, name: string): string {
-  return `${name} { width: ${this.getWidth()}, height: ${this.getHeight()} }`;
+  return concat(name, "{ width: ", this.getWidth(), ", height: ", this.getHeight(), " }");
 }
 
 export const sizeWidth = uid("Size#width");
@@ -240,7 +241,7 @@ export class Size {
    * @returns The format of the size.
    */
   toFormat(): string {
-    return `${this.getWidth()}:${this.getHeight()}`;
+    return concat(this.getWidth().toString(), ":", this.getHeight());
   }
 
   /**

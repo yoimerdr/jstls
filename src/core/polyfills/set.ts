@@ -9,6 +9,7 @@ import {bind} from "../functions/bind";
 import {each} from "../iterable/each";
 import {len} from "../shortcuts/indexable";
 import {forEach} from "../shortcuts/array";
+import {concat} from "../shortcuts/string";
 
 type SetSource = Readonly<{
   key: MaybeString,
@@ -20,7 +21,7 @@ const setKeySymbol = '[[PolyfillSetKey]]';
 
 
 function setSource<T>(this: Set<T>, item: T): SetSource {
-  let key = isObject(item) ? null : `${setKeySymbol}:'${item}'`;
+  let key = isObject(item) ? null : concat(setKeySymbol, ":'", item as Object, "'");
   let already: boolean = false;
   let index: number;
   if (!key) {

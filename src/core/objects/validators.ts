@@ -3,6 +3,7 @@ import {isDefined, typeIs} from "./types";
 import {IllegalArgumentError} from "../exceptions";
 import {apply} from "../functions/apply";
 import {isArray} from "../shortcuts/array";
+import {concat} from "../shortcuts/string";
 
 /**
  * Checks if the value is defined and returns it.
@@ -56,7 +57,7 @@ export function requireIf<T>(value: T, condition: (value: T) => boolean, error?:
  */
 export function requireDefined<T>(value: Maybe<T>, name?: string): T {
   name = getDefined(name, () => "value");
-  return requireIf(value, isDefined, `The given ${name} argument must be defined.`)!;
+  return requireIf(value, isDefined, concat("The given ", name, " argument must be defined."),)!;
 }
 
 /**
@@ -70,9 +71,9 @@ export function requiredWithType<T>(value: Maybe<T>, type: Typeof | Typeof[], na
   name = getDefined(name, () => "value");
   if (isArray(type)) {
     if (type.every(it => !typeIs(value, it)))
-      throw new IllegalArgumentError(`The ${name} argument must be be one of these types: [${type}]`);
+      throw new IllegalArgumentError(concat("The ", name, " argument must be be one of these types: [", type, "[]"));
   } else if (!typeIs(value, type))
-    throw new IllegalArgumentError(`The ${name} argument must be a ${type}`);
+    throw new IllegalArgumentError(concat("The ", name," argument must be a ", type));
 
   return value!;
 }

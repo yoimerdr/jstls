@@ -3,12 +3,13 @@ import {apply} from "../../functions/apply";
 import {string} from "../../objects/handlers";
 import {create} from "../../shortcuts/object";
 import {random} from "../../shortcuts/math";
+import {concat} from "../../shortcuts/string";
 
 let id = 0;
 const postfix = random();
 
 export function uid(key: string): string {
-  return `Symbol('${string(key)}')_${apply(1.0.toString, ++id + postfix, [36])}`;
+  return concat("Symbol('", string(key), "')_", apply(1.0.toString, ++id + postfix, [36]));
 }
 
 export type SymbolLike = {

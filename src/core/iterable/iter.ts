@@ -12,6 +12,7 @@ import {uid} from "../polyfills/symbol";
 import {get, set} from "../objects/handlers/getset";
 import {freeze} from "../shortcuts/object";
 import {len} from "../shortcuts/indexable";
+import {concat} from "../shortcuts/string";
 
 export function iterEachOrFindIndex<T, R>(this: Iter<T>,
                                           restartFn: (this: Iter<T>) => any,
@@ -61,7 +62,10 @@ export function iterMap<T, R, A, I extends Iter<A>>(this: Iter<T>,
 
 
 export function iterRepresentation(this: Iter<any>, name: string): string {
-  return `[${this.length()}] ${name} { start: ${this.startIndex}, end: ${this.endIndex}, current: ${this.index()} }`
+  return concat(
+    "[", this.length(), "] ",
+    name, " { start: ", this.startIndex, ", end: ", this.endIndex, ", current: ", this.index()
+  )
 }
 
 

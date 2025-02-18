@@ -9,6 +9,7 @@ import {apply} from "../functions/apply";
 import {bind} from "../functions/bind";
 import {get, set} from "../objects/handlers/getset";
 import {len} from "../shortcuts/indexable";
+import {concat} from "../shortcuts/string";
 
 const promiseState = uid("Promise#state")
 const promiseResult = uid("Promise#result")
@@ -86,7 +87,7 @@ export class Promise<T> {
   }
 
   toString() {
-    return `Promise { <${get(this, promiseState)}> }`
+    return concat("Promise { <", get(this, promiseState), "> }",)
   }
 
   static resolve<T>(value: T | PromiseLike<T>): Promise<Awaited<T>> {
