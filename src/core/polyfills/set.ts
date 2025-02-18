@@ -8,6 +8,7 @@ import {apply} from "../functions/apply";
 import {bind} from "../functions/bind";
 import {each} from "../iterable/each";
 import {len} from "../shortcuts/indexable";
+import { forEach } from "../shortcuts/array";
 
 type SetSource = Readonly<{
   key: MaybeString,
@@ -72,7 +73,7 @@ export class Set<T = any> {
 
   clear(): void {
     this.__objects__.length = 0;
-    each(keys(this.__primitives__), function (key) {
+    forEach(keys(this.__primitives__), function (key) {
       delete this[key]
     }, this.__primitives__)
   }
@@ -98,7 +99,7 @@ export class Set<T = any> {
   forEach<R>(callbackfn: (this: R, value: T, value2: T, set: Set<T>) => void, thisArg?: R): void;
   forEach<R>(callbackfn: (this: R | void, value: T, value2: T, set: Set<T>) => void, thisArg?: R): void {
     callbackfn = bind(callbackfn, thisArg);
-    each(this.__objects__, function (value) {
+    forEach(this.__objects__, function (value) {
       callbackfn(value, value, this);
     }, this);
   }

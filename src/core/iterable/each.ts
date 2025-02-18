@@ -5,6 +5,7 @@ import {isFunction} from "../objects/types";
 import {bind} from "../functions/bind";
 import {protoapply} from "../functions/prototype";
 import {len} from "../shortcuts/indexable";
+import {forEach} from "../shortcuts/array";
 
 export function each<T, I extends ArrayLike<T>, R = void>(source: I, each: ArrayLikeEach<T, R, I>, thisArg?: R): void;
 export function each<T, I extends Foreachable<T>, R = void>(source: I, each: ForeachableEach<T, R, I>, thisArg?: R): void;
@@ -13,7 +14,7 @@ export function each<T, R>(source: IterableLike<T> & KeyableObject, callbackfn: 
   if (isFunction(source['forEach'])) {
     callbackfn = bind(callbackfn, thisArg);
     let index = 0;
-    source.forEach((value: T) => {
+    forEach(source as any, (value: T) => {
       callbackfn(value, index, source);
       index++;
     })

@@ -7,6 +7,7 @@ import {isDefined, isFunction, isObject} from "../../objects/types";
 import {keys} from "../../objects/handlers/properties";
 import {apply} from "../../functions/apply";
 import {each} from "../../iterable/each";
+import {forEach} from "../../shortcuts/array";
 
 function checkObjectAccess(optional: OptionalProperties<any>) {
   if (optional.isPresent && !optional.hasObject)
@@ -71,11 +72,9 @@ export class OptionalProperties<T> extends Optional<T> {
    */
   ikeys(fn: Maybe<(this: NonNullable<T>, key: Keys<T>) => void>): this {
     if (checkObjectAccess(this) && isFunction(fn)) {
-      each(keys(this.value as T),
-        function (key) {
-          apply(fn!, this, [key])
-        }, this.value!
-      );
+      forEach(keys(this.value as T), function (key) {
+        apply(fn!, this, [key])
+      }, this.value!);
     }
     return this;
   }

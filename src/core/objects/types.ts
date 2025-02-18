@@ -1,4 +1,5 @@
 import {Typeof} from "../../types/core";
+import {isArray} from "../shortcuts/array";
 
 /**
  * Checks if the value is of the specified type or types.
@@ -8,7 +9,7 @@ import {Typeof} from "../../types/core";
  */
 export function typeIs<T>(value: T, type: Typeof | Typeof[]): boolean {
   const typeOf = typeof value;
-  return (Array.isArray(type) ? type : [type])
+  return (isArray(type) ? type : [type])
     .every(type => typeOf === type);
 }
 

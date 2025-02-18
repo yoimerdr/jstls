@@ -13,6 +13,7 @@ import {get} from "../objects/handlers/getset";
 import {string} from "../objects/handlers";
 import {create} from "../shortcuts/object";
 import {len} from "../shortcuts/indexable";
+import {forEach} from "../shortcuts/array";
 
 export const sep = '/';
 const pathName = uid("Path#name");
@@ -33,7 +34,7 @@ function fromNormalizedParts(parts: string[], path?: Maybe<Path>): Path {
   path = root;
   reach(parts, (value, index) => {
     const init: KeyableObject = {};
-    init[pathName] =  value;
+    init[pathName] = value;
     init[pathParent] = index === 0 ? null : create(Path.prototype);
     readonlys(path, init);
     path = path!.parent()
@@ -111,8 +112,7 @@ export function normalize(path: string): string {
     return '';
 
   let stack: string[] = [];
-
-  each(
+  forEach(
     parts.map(part => part.trim())
       .filter(part => {
         return apply(isNotEmpty, part) && part !== '.';

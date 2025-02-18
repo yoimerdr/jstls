@@ -7,6 +7,7 @@ import {each} from "../iterable/each";
 import {PromiseConstructor} from "../../types/core/polyfills";
 import {extend} from "../extensions/array";
 import {setTo} from "../objects/handlers/getset";
+import {forEach} from "../shortcuts/array";
 
 declare const Promise: PromiseConstructor;
 
@@ -54,7 +55,7 @@ export function fetch(input: RequestInfo | URL, init?: RequestInit) {
       reject(apply(createResponse, this))
     }
 
-    each(keys(options.headers), function (key) {
+    forEach(keys(options.headers), function (key) {
       this.setRequestHeader(key as string, options.headers[key])
     }, xhr)
 

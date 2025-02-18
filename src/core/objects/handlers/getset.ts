@@ -2,6 +2,8 @@ import {Keys, Maybe} from "../../../types/core";
 import {KeyableObject} from "../../../types/core/objects";
 import {each} from "../../iterable/each";
 import {hasOwn} from "../../polyfills/objects/es2022";
+import {forEach, isArray} from "../../shortcuts/array";
+import {reduce} from "../../iterable";
 
 /**
  * Returns the value of the `key` property in the target `object`.
@@ -79,10 +81,9 @@ export function setTo<T, K extends Keys<T>>(object: T, key: PropertyKey | Proper
 export function setTo(object: KeyableObject, key: PropertyKey | PropertyKey[], target: KeyableObject): boolean;
 export function setTo<T, K extends Keys<T>>(object: T & KeyableObject, key: K | PropertyKey | (K | PropertyKey)[], target: T & KeyableObject): boolean {
   let result = false;
-  if (!Array.isArray(key))
+  if (!isArray(key))
     key = [key];
-
-  each(key, key => {
+  forEach(key, key => {
     result = (hasOwn(object, key) ? (set(target, key, get(object, key)), true) : false);
   })
   return result;

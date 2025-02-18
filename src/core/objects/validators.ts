@@ -2,6 +2,7 @@ import {Maybe, Typeof} from "../../types/core";
 import {isDefined, typeIs} from "./types";
 import {IllegalArgumentError} from "../exceptions";
 import {apply} from "../functions/apply";
+import {isArray} from "../shortcuts/array";
 
 /**
  * Checks if the value is defined and returns it.
@@ -67,7 +68,7 @@ export function requireDefined<T>(value: Maybe<T>, name?: string): T {
  */
 export function requiredWithType<T>(value: Maybe<T>, type: Typeof | Typeof[], name?: string): T {
   name = getDefined(name, () => "value");
-  if (Array.isArray(type)) {
+  if (isArray(type)) {
     if (type.every(it => !typeIs(value, it)))
       throw new IllegalArgumentError(`The ${name} argument must be be one of these types: [${type}]`);
   } else if (!typeIs(value, type))

@@ -12,6 +12,7 @@ import {hasOwn} from "../../polyfills/objects/es2022";
 import {each} from "../../iterable/each";
 import {is} from "../../polyfills/objects/es2015";
 import {get} from "../../objects/handlers/getset";
+import {forEach} from "../../shortcuts/array";
 
 
 const mixinKey = uid("MixinClasses");
@@ -182,25 +183,25 @@ export function mixinPrototype<T extends Instanceable[]>(target: Instanceable, b
   if (hasOwn(target, mixinKey))
     return;
 
-  each(bases, cons => {
-      // prototype methods
-      each(propertyNames(cons.prototype), name => {
-        if (name !== "constructor") {
-          if (!isDefined(target.prototype[name]) || force)
-            target.prototype[name] = cons.prototype[name];
-        }
-      })
-
-      if (!isDefined(statics) || statics) {
-        // static methods
-        const keys = ['length', 'name', 'prototype'];
-        each(propertyNames(cons), (name) => {
-          if (keys.indexOf(name as string) === -1 && (!isDefined(get(target, name)) || force))
-            (target as KeyableObject)[name] = (cons as KeyableObject)[name];
-        })
+  forEach(bases, cons => {
+    // prototype methods
+    forEach(propertyNames(cons.prototype), name => {
+      if (name !== "constructor") {
+        if (!isDefined(target.prototype[name]) || force)
+          target.prototype[name] = cons.prototype[name];
       }
+    })
+
+    if (!isDefined(statics) || statics) {
+      // static methods
+      const keys = ['length', 'name', 'prototype'];
+      forEach(propertyNames(cons), (name) => {
+        if (keys.indexOf(name as string) === -1 && (!isDefined(get(target, name)) || force))
+          (target as KeyableObject)[name] = (cons as KeyableObject)[name];
+      })
     }
-  )
+  })
+
 
   readonly(target, mixinKey, bases);
 }
