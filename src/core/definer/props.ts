@@ -2,6 +2,7 @@ import {multiple} from "./shared";
 import {Keys} from "../../types/core";
 import {DefinePropertyDescriptor, DefinePropertyDescriptors} from "../../types/core/objects/definer";
 import {hasOwn} from "../polyfills/objects/es2022";
+import {defineProperty} from "../shortcuts/object";
 
 /**
  * Define a new property if it doesn't exist.
@@ -13,7 +14,7 @@ import {hasOwn} from "../polyfills/objects/es2022";
  */
 export function prop<T, K extends Keys<T> | PropertyKey>(target: T, key: K, descriptor: DefinePropertyDescriptor<T, K>) {
   if (!hasOwn(target, key))
-    Object.defineProperty(target, key, descriptor);
+    defineProperty(target, key, descriptor);
 }
 /**
  * Define new properties if they don't exist.

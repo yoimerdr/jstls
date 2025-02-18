@@ -13,6 +13,7 @@ import {
   withSize
 } from "./size";
 import {apply} from "../../functions/apply";
+import {round} from "../../shortcuts/math";
 
 /**
  * Represents a size with width and height properties.
@@ -42,11 +43,11 @@ export class SizeInt extends Size {
   }
 
   width(width?: Maybe<SizeArgument>): number {
-    return apply(setSizeProperty, this, [arguments, sizeWidth, isSize, Math.round,] );
+    return apply(setSizeProperty, this, [arguments, sizeWidth, isSize, round,] );
   }
 
   height(height?: Maybe<SizeArgument>): number {
-    return apply(setSizeProperty, this, [arguments, sizeHeight, isSize, Math.round]);
+    return apply(setSizeProperty, this, [arguments, sizeHeight, isSize, round]);
   }
 
   equals(size: SizeArgument): boolean {

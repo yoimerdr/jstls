@@ -10,6 +10,8 @@ import {ArrayLike} from "../../types/core/array";
 import {apply} from "../functions/apply";
 import {uid} from "../polyfills/symbol";
 import {get, set} from "../objects/handlers/getset";
+import {freeze} from "../shortcuts/object";
+import {len} from "../shortcuts/indexable";
 
 export function iterEachOrFindIndex<T, R>(this: Iter<T>,
                                           restartFn: (this: Iter<T>) => any,
@@ -54,7 +56,7 @@ export function iterMap<T, R, A, I extends Iter<A>>(this: Iter<T>,
     thisArg
   ]);
   indexable.length = index;
-  return new constructor(Object.freeze(indexable))
+  return new constructor(freeze(indexable))
 }
 
 
@@ -97,12 +99,12 @@ export class Iter<T> {
       end = source.endIndex;
       step = source.step;
       source = source.source;
-    } else if (source.length > 0) {
+    } else if (len(source) > 0) {
       step = apply(coerceAtLeast, getDefined(step, () => 0), [1]);
-      if (step > source.length)
+      if (step > len(source))
         throw new IllegalAccessError("The step cannot be greater than the source length");
-      start = apply(coerceAtMost, getDefined(start, () => 0), [source.length - step]);
-      end = apply(coerceIn, getDefined(end, () => (<WithLength>source).length), [start, source.length - step]);
+      start = apply(coerceAtMost, getDefined(start, () => 0), [len(source) - step]);
+      end = apply(coerceIn, getDefined(end, () => len((<WithLength>source))), [start, len(source) - step]);
     } else {
       start = end = 0;
       step = 1;
@@ -130,7 +132,7 @@ export class Iter<T> {
    * @see {@link source}
    */
   length(): number {
-    return this.source.length;
+    return len(this.source);
   }
 
   /**
@@ -229,7 +231,7 @@ export class Iter<T> {
    * @param thisArg The context of the function.
    * @returns The new iter.
    */
-  map<A, R>(fn: IterMap<T, A, R>, thisArg?: R): Iter<Readonly<A>> {
+  map<A, R>(fn: IterMap<T, A, R>, thisArg?: R): Iter<A> {
     return apply(iterMap, this, [Iter, this.each, <any>fn, thisArg]) as Iter<A>;
   }
 
@@ -239,7 +241,7 @@ export class Iter<T> {
    * @param thisArg The context of the function.
    * @returns The new iter.
    */
-  rmap<A, R>(fn: IterMap<T, A, R>, thisArg?: R): Iter<Readonly<A>> {
+  rmap<A, R>(fn: IterMap<T, A, R>, thisArg?: R): Iter<A> {
     return apply(iterMap, this, [Iter, this.reach, <any>fn, thisArg]) as Iter<A>;
   }
 

@@ -2,6 +2,10 @@ import {IncludeThisParameter, Keys, MethodKeys, SafeReturnType} from "../index";
 
 export type KeyableObject<R = any> = Record<PropertyKey, R> & Object;
 
+export type RequiredAll<T> = {
+  [P in keyof T]-?: RequiredAll<T[P]>;
+};
+
 export type WithLength = Record<"length", number>;
 
 export type Indexable<R = any> = Record<number, R>;
@@ -54,7 +58,8 @@ export type OnlyObjectMethods<T> = {
 
 declare global {
   export interface ObjectConstructor {
-    keys<T>(object: T): Keys<T>[]
+    keys<T>(object: T): Keys<T>[];
+    getOwnPropertyNames<T>(object: T): Keys<T>[];
   }
 }
 

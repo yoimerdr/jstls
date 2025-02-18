@@ -7,6 +7,7 @@ import {keys} from "../objects/handlers/properties";
 import {apply} from "../functions/apply";
 import {bind} from "../functions/bind";
 import {each} from "../iterable/each";
+import {len} from "../shortcuts/indexable";
 
 type SetSource = Readonly<{
   key: MaybeString,
@@ -114,6 +115,6 @@ export class Set<T = any> {
    * @returns the number of (unique) elements in Set.
    */
   get size(): number {
-    return this.__objects__.length;
+    return len(this.__objects__);
   }
 }

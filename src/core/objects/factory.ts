@@ -4,6 +4,7 @@ import {Entry, Maybe} from "../../types/core";
 import {keys} from "./handlers/properties";
 import {hasOwn} from "../polyfills/objects/es2022";
 import {each} from "../iterable/each";
+import {len} from "../shortcuts/indexable";
 
 type AssignNoObjectFn<T> = (target: T, source: T, mode: AssignMode) => void;
 
@@ -31,7 +32,7 @@ function _assignItems<T extends Object>(mode: AssignMode, target: T, source: IAr
   if (!isDefined(target) || !isDefined(source))
     return target;
 
-  for (let i = 0; i < source.length; i++)
+  for (let i = 0; i < len(source); i++)
     _assign(target, source[i], mode, noObject);
 
   return target;
@@ -59,20 +60,23 @@ export function create(): KeyableObject {
 export function entries(value: Maybe<KeyableObject>[]): Entry<PropertyKey>[][];
 export function entries(value: Maybe<KeyableObject>): Entry<PropertyKey>[];
 export function entries(value: Maybe<KeyableObject>): Entry<PropertyKey>[] | Entry<PropertyKey>[][] {
-  const entry: Entry[] = [];
   if (!isDefined(value))
-    return entry;
+    return [];
 
   if (isObject(value)) {
-    each(keys(value!), key => {
-      entry.push({
-        key,
-        value: isObject(value![key]) ? entries(value![key]) : value![key],
+    return keys(value!)
+      .map(key => {
+        const prop = value![key];
+        return {
+          key,
+          value: isObject(prop) ? entries(prop) : prop
+        }
       });
-    })
-  } else entry.push({
-    key: value!.toString(),
-    value
-  })
-  return entry;
+  }
+  return [
+    {
+      key: value!.toString(),
+      value
+    } as Entry
+  ];
 }

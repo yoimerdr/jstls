@@ -8,6 +8,7 @@ import {hasOwn} from "./objects/es2022";
 import {apply} from "../functions/apply";
 import {bind} from "../functions/bind";
 import {get, set} from "../objects/handlers/getset";
+import {len} from "../shortcuts/indexable";
 
 const promiseState = uid("Promise#state")
 const promiseResult = uid("Promise#result")
@@ -30,7 +31,7 @@ function resolveOrReject(this: Promise<any>, state: PromiseState, value: any, in
   if (!hasOwn(this, promiseCalls))
     return;
   const calls: Function[] = get(this, promiseCalls);
-  if (calls.length === 1)
+  if (len(calls) === 1)
     calls[0](value)
   else calls[index](value)
 }
@@ -99,7 +100,7 @@ export class Promise<T> {
   static all<T extends readonly unknown[] | []>(values: T): Promise<{ -readonly [P in keyof T]: Awaited<T[P]>; }> {
     return new Promise((resolve, reject) => {
       let count = 0;
-      const len = values.length
+      const size = len(values)
       const results: any[] = []
       loop(index => {
         const promise = values[index];
@@ -107,12 +108,12 @@ export class Promise<T> {
           .then(function (result) {
             results[index] = result;
             count++;
-            if (count === len)
+            if (count === size)
               resolve(results as any);
           }, function (reason) {
             reject(reason);
           });
-      }, len)
+      }, size)
       if (count === 0)
         resolve(results as any);
     })

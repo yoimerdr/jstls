@@ -4,11 +4,12 @@ import {slice} from "../../iterable";
 import {Maybe} from "../../../types/core";
 import {bind} from "../../functions/bind";
 import {apply} from "../../functions/apply";
+import {len} from "../../shortcuts/indexable";
 
 export function findLastIndex<V, T = any, A extends ArrayLike<V> = ArrayLike<V>>(this: A, predicate: ArrayLikeEach<V, T, A, boolean>, thisArg?: T): number;
 export function findLastIndex<V, T>(this: V[], predicate: ArrayEach<V, T | void, boolean>, thisArg?: T): number {
   predicate = bind(predicate, thisArg);
-  let index = this.length;
+  let index = len(this);
   while (index > 0) {
     --index;
     if (index in this && predicate(this[index], index, this))
@@ -45,8 +46,8 @@ export function toSorted<T>(this: ArrayLike<T>, comparefn?: (a: T, b: T) => numb
 export function withItem<T>(this: ArrayLike<T>, index: number, value: T): T[] {
   let i = index >> 0;
   if (i < 0)
-    i = this.length + index;
-  if (!apply(isFromUntil, i, [0, this.length]))
+    i = len(this) + index;
+  if (!apply(isFromUntil, i, [0, len(this)]))
     throw new RangeError(`Invalid index: ${index}`)
   const copy = slice(this);
   if (i in copy)

@@ -1,22 +1,20 @@
 import {readonlys} from "../definer";
 import {IllegalArgumentError} from "../exceptions";
 import {NumberExtensions} from "../../types/core/extensions/number";
+import {max, min} from "../shortcuts/math";
 
 export function coerceAtLeast(this: Number, minimum: number) {
-  const value = this.valueOf();
-  return value < minimum ? minimum : value
+  return max(this.valueOf(), minimum)
 }
 
 export function coerceAtMost(this: Number, maximum: number) {
-  const value = this.valueOf();
-  return value > maximum ? maximum : value
+  return min(this.valueOf(), maximum)
 }
 
 export function coerceIn(this: Number, minimum: number, maximum: number) {
   if (minimum > maximum)
     throw new IllegalArgumentError(`Cannot coerce value to an empty range: maximum ${maximum} is less than minimum ${minimum}.`)
-  const value = this.valueOf();
-  return (value < minimum) ? minimum : (value > maximum) ? maximum : value
+  return min(max(this.valueOf(), minimum), maximum)
 }
 
 export function isFromTo(this: Number, minimum: number, maximum: number) {

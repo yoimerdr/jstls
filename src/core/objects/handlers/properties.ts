@@ -1,5 +1,9 @@
 import {Keys} from "../../../types/core";
 
+interface KeysShortcut {
+  <T>(object: T): Keys<T>[];
+}
+
 /**
  * Returns the names of the enumerable properties and methods of an object.
  *
@@ -7,9 +11,7 @@ import {Keys} from "../../../types/core";
  * @param object The target object.
  * @see {Object.keys}
  */
-export function keys<T>(object: T): Keys<T>[] {
-  return Object.keys(object)
-}
+export const keys: KeysShortcut = Object.keys;
 
 /**
  * Returns the names of the all (including non-enumerable) properties and methods of an object.
@@ -19,6 +21,4 @@ export function keys<T>(object: T): Keys<T>[] {
  * @param object The target object.
  * @see {Object.getOwnPropertyNames}
  */
-export function propertyNames<T>(object: T): Keys<T>[] {
-  return Object.getOwnPropertyNames(object) as Keys<T>[]
-}
+export const propertyNames: KeysShortcut = Object.getOwnPropertyNames;

@@ -1,6 +1,8 @@
+import {len} from "../../shortcuts/indexable";
+
 export function at<T>(this: ArrayLike<T>, index: number): T {
   index = index >> 0;
   if (index < 0)
-    index = this.length + index;
+    index = len(this) + index;
   return this[index]
 }

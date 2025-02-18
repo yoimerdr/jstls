@@ -1,15 +1,16 @@
 import {string} from "../../objects/handlers";
 import {repeat} from "./es2015";
 import {apply} from "../../functions/apply";
+import {len} from "../../shortcuts/indexable";
 
 function padString(this: string, length: number, fill?: string, start?: boolean): string {
   fill = string(fill, () => " ");
   length = length >> 0;
-  if(this.length >= length)
+  if(len(this) >= length)
     return this;
-  length -= this.length;
-  if(length > fill.length)
-    fill += apply(repeat, fill, [length / fill.length]);
+  length -= len(this);
+  if(length > len(fill))
+    fill += apply(repeat, fill, [length / len(fill)]);
   fill = fill.slice(0, length)
   return start ? fill + this : this + fill;
 }

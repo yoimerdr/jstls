@@ -29,3 +29,6 @@ export function loop(fn: (index: number) => void | MaybeBoolean, length: number,
 export function self<T>(value: T): T {
   return value;
 }
+
+
+export function noact(...args: any) {}

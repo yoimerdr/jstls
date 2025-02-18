@@ -77,14 +77,14 @@ export class IterMatch<T> extends Iter<T> {
   }
 
 
-  map<A, R>(fn: IterMap<T, A, R>, thisArg?: R): IterMatch<Readonly<A>> {
+  map<A, R>(fn: IterMap<T, A, R>, thisArg?: R): IterMatch<A> {
     return apply(iterMap, this, [
       IterMatch, this.each,
       <any>fn, thisArg
     ]) as IterMatch<A>;
   }
 
-  rmap<A, R>(fn: IterMap<T, A, R>, thisArg?: R): Iter<Readonly<A>> {
+  rmap<A, R>(fn: IterMap<T, A, R>, thisArg?: R): Iter<A> {
     return apply(iterMap, this, [
       IterMatch, this.reach,
       <any>fn, thisArg

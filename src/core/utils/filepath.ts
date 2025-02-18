@@ -11,6 +11,8 @@ import {uid} from "../polyfills/symbol";
 import {KeyableObject} from "../../types/core/objects";
 import {get} from "../objects/handlers/getset";
 import {string} from "../objects/handlers";
+import {create} from "../shortcuts/object";
+import {len} from "../shortcuts/indexable";
 
 export const sep = '/';
 const pathName = uid("Path#name");
@@ -19,7 +21,7 @@ const pathParent = uid("Path#parent");
 function pathSuffix(this: Path, start?: number): string {
   const name = this.name();
   const dot = name.lastIndexOf('.');
-  const end = isDefined(start) ? dot : name.length;
+  const end = isDefined(start) ? dot : len(name);
   if (!isDefined(start))
     start = dot;
   return dot === -1 ? "" : name.substring(start!, end);
@@ -27,12 +29,12 @@ function pathSuffix(this: Path, start?: number): string {
 
 
 function fromNormalizedParts(parts: string[], path?: Maybe<Path>): Path {
-  const root: Path = isDefined(path) ? path! : Object.create(Path.prototype);
+  const root: Path = isDefined(path) ? path! : create(Path.prototype);
   path = root;
   reach(parts, (value, index) => {
     const init: KeyableObject = {};
     init[pathName] =  value;
-    init[pathParent] = index === 0 ? null : Object.create(Path.prototype);
+    init[pathParent] = index === 0 ? null : create(Path.prototype);
     readonlys(path, init);
     path = path!.parent()
   })
@@ -53,7 +55,7 @@ export class Path {
     const parts: string[] = [this.name()];
     let parent = this.parent();
     while (parent) {
-      parts[parts.length] = parent!.name();
+      parts[len(parts)] = parent!.name();
       parent = parent!.parent();
     }
     parts.reverse();
@@ -85,7 +87,7 @@ export class Path {
     if (apply(isEmpty, suffix) || suffix === "." || suffix[0] !== "." || /[\\/]/g.test(suffix))
       throw new IllegalArgumentError("[Path] Invalid suffix: " + suffix)
     const parts = this.parts();
-    parts[parts.length - 1] = this.prefix() + suffix;
+    parts[len(parts) - 1] = this.prefix() + suffix;
     return fromNormalizedParts(parts);
   }
 
@@ -119,7 +121,7 @@ export function normalize(path: string): string {
       if (part === '..') {
         if (apply(isNotEmpty, stack))
           stack.pop();
-      } else stack[stack.length] = part;
+      } else stack[len(stack)] = part;
     })
 
 

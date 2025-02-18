@@ -55,7 +55,7 @@ export type NoExtends<T, U, If = never, Not = T> = T extends U ? If : Not;
 /**
  * Extracts the keys of T
  */
-export type Keys<T> = Extract<keyof T, PropertyKey>
+export type Keys<T, P extends PropertyKey = PropertyKey> = Extract<keyof T, P>
 
 /**
  * Refers to the keys values type of T.

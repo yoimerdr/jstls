@@ -10,6 +10,7 @@ import {uid} from "../../polyfills/symbol";
 import {KeyableObject} from "../../../types/core/objects";
 import {string} from "../../objects/handlers";
 import {get} from "../../objects/handlers/getset";
+import {len} from "../../shortcuts/indexable";
 
 export function isSize(value: any): boolean {
   return value instanceof Size;
@@ -84,7 +85,7 @@ export function scaleOrAdjustSize<R extends Size>(this: Size, target: SizeArgume
 export function setSizeProperty(this: Size & KeyableObject, args: IArguments, property: string,
                                 isSize: (value: any) => boolean,
                                 modify?: (value: number) => number): number {
-  if (args.length > 0) {
+  if (len(args) > 0) {
     let value = (isSize(args[0])) ? args[0][property] : args[0]
     value = requiredWithType(apply(toFloat, value), 'number', property.substring(1));
     this[property] = apply(coerceAtLeast, modify ? modify(value) : value, [0]);

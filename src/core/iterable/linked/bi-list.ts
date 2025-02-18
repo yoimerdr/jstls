@@ -2,6 +2,7 @@ import {linkedAdd, linkedAddedNode, linkedAddNext, LinkedList, linkedPop, linked
 import {BiNode, MaybeBiNode} from "./bi-node";
 import {Maybe, MaybeNumber} from "../../../types/core";
 import {apply} from "../../functions/apply";
+import {round} from "../../shortcuts/math";
 
 function linkedAddPrev<T>(this: BiLinkedList<T>, source: any) {
   source.index = this.size - source.index + 1;
@@ -14,7 +15,7 @@ function linkedAddPrev<T>(this: BiLinkedList<T>, source: any) {
 
 function linkedNode<T>(this: BiLinkedList<T>, source: any) {
   if (source.target !== this.__tail__) {
-    const mid = Math.round(this.size / 2);
+    const mid = round(this.size / 2);
     if (source.index > mid)
       apply(linkedAddPrev, this, [source])
     else apply(linkedAddNext, this, [source]);
