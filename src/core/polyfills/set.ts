@@ -8,7 +8,7 @@ import {apply} from "../functions/apply";
 import {bind} from "../functions/bind";
 import {each} from "../iterable/each";
 import {len} from "../shortcuts/indexable";
-import { forEach } from "../shortcuts/array";
+import {forEach} from "../shortcuts/array";
 
 type SetSource = Readonly<{
   key: MaybeString,

@@ -3,7 +3,6 @@ import {readonly} from "../definer";
 import {KeyableObject} from "../../types/core/objects";
 import {keys} from "../objects/handlers/properties";
 import {apply} from "../functions/apply";
-import {each} from "../iterable/each";
 import {PromiseConstructor} from "../../types/core/polyfills";
 import {extend} from "../extensions/array";
 import {setTo} from "../objects/handlers/getset";

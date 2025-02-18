@@ -1,9 +1,7 @@
 import {Keys, Maybe} from "../../../types/core";
 import {KeyableObject} from "../../../types/core/objects";
-import {each} from "../../iterable/each";
 import {hasOwn} from "../../polyfills/objects/es2022";
 import {forEach, isArray} from "../../shortcuts/array";
-import {reduce} from "../../iterable";
 
 /**
  * Returns the value of the `key` property in the target `object`.

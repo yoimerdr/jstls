@@ -9,7 +9,6 @@ import {apply} from "../../functions/apply";
 import {isEmpty} from "../../extensions/shared/iterables";
 import {IllegalAccessError, RequiredArgumentError} from "../../exceptions";
 import {hasOwn} from "../../polyfills/objects/es2022";
-import {each} from "../../iterable/each";
 import {is} from "../../polyfills/objects/es2015";
 import {get} from "../../objects/handlers/getset";
 import {forEach} from "../../shortcuts/array";

@@ -1,6 +1,5 @@
 import {Keys} from "../../types/core";
 import {keys} from "../objects/handlers/properties";
-import {each} from "../iterable/each";
 import {forEach} from "../shortcuts/array";
 
 export function multiple<T, D>(target: T, descriptors: D, definer: (target: T, key: Keys<D>, descriptor: D[Keys<D>]) => void) {

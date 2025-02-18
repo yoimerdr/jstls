@@ -5,7 +5,7 @@ import {IllegalArgumentError} from "../exceptions";
 import {readonlys} from "../definer";
 import {slice} from "../iterable";
 import {apply} from "../functions/apply";
-import {each, reach} from "../iterable/each";
+import {reach} from "../iterable/each";
 import {filter} from "../iterable/filter";
 import {uid} from "../polyfills/symbol";
 import {KeyableObject} from "../../types/core/objects";
