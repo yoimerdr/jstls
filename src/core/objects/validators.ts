@@ -42,7 +42,7 @@ export function getIf<T, R>(value: Maybe<T>, condition: (value: Maybe<T>) => boo
  */
 export function requireIf<T>(value: T, condition: (value: T) => boolean, error?: string): T {
   condition = requiredWithType(condition, "function", "condition");
-  error = getDefined(error, () => "The given value not meets the given condition.")
+  error = error || "The given value not meets the given condition.";
   if (!condition(value))
     throw new IllegalArgumentError(error);
   return value;
@@ -56,7 +56,7 @@ export function requireIf<T>(value: T, condition: (value: T) => boolean, error?:
  * @see {isDefined}
  */
 export function requireDefined<T>(value: Maybe<T>, name?: string): T {
-  name = getDefined(name, () => "value");
+  name = name || "value";
   return requireIf(value, isDefined, concat("The given ", name, " argument must be defined."),)!;
 }
 
@@ -68,7 +68,7 @@ export function requireDefined<T>(value: Maybe<T>, name?: string): T {
  * @see {typeIs}
  */
 export function requiredWithType<T>(value: Maybe<T>, type: Typeof | Typeof[], name?: string): T {
-  name = getDefined(name, () => "value");
+  name = name || "value";
   if (isArray(type)) {
     if (type.every(it => !typeIs(value, it)))
       throw new IllegalArgumentError(concat("The ", name, " argument must be be one of these types: [", type, "[]"));

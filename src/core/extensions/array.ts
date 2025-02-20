@@ -7,12 +7,13 @@ import {isDefined, isFunction, isObject} from "../objects/types";
 import {apply} from "../functions/apply";
 import {reduce} from "../iterable";
 import {ArrayLike} from "../../types/core/array";
+import {is} from "../polyfills/objects/es2015";
 
 
 export function counts<T, R = any, I extends ArrayLike<T> = ArrayLike<T>>(this: I, value: any, compare?: CountsCompareFn<T, I, R>, thisArg?: R): number {
   requireDefined(value);
   value = value.valueOf();
-  compare = getIf(compare, isFunction, () => (target, current) => target === current)
+  compare = getIf(compare, isFunction, () => is)
   return reduce<T, number, I>(this, (total, it, i, arr) => total + +apply(compare!, thisArg!, [value, it, i, arr]), 0);
 }
 

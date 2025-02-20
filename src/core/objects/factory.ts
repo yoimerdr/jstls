@@ -5,6 +5,7 @@ import {keys} from "./handlers/properties";
 import {hasOwn} from "../polyfills/objects/es2022";
 import {len} from "../shortcuts/indexable";
 import {reduce} from "../iterable";
+import {get, setTo} from "./handlers/getset";
 
 type AssignNoObjectFn<T> = (target: T, source: T, mode: AssignMode) => void;
 
@@ -19,12 +20,12 @@ function _assign<T extends Object>(target: T, source: T, mode: AssignMode, noObj
   }
   return reduce(keys(source), (source, key) => {
     if (mode === 'deep' && hasOwn(target, key)) {
-      const tp = target[key] as T;
-      const ts = source[key] as T;
+      const tp = get(target, key) as T;
+      const ts = get(source, key) as T;
       if (isPlainObject(tp) && isObject(ts))
         _assign(tp, ts, mode)
-      else target[key] = source[key];
-    } else target[key] = source[key];
+      else setTo(source, key, target);
+    } else setTo(source, key, target);
     return source;
   }, source)
 }

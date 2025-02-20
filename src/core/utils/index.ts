@@ -1,5 +1,4 @@
 import {MaybeBoolean} from "../../types/core";
-import {getDefined} from "../objects/validators";
 
 
 /**
@@ -17,7 +16,7 @@ import {getDefined} from "../objects/validators";
  */
 export function loop(fn: (index: number) => void | MaybeBoolean, length: number, start?: number, step?: number): void {
   start = start || 0;
-  step = getDefined(step, () => 1);
+  step = step || 1;
 
   const condition = step < 0 ? (index: number) => index > length : (index: number) => index < length;
   for (let i = start; condition(i); i += step) {

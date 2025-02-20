@@ -1,4 +1,3 @@
-import {getDefined} from "../../objects/validators";
 import {reduce} from "../../iterable";
 import {apply} from "../../functions/apply";
 import {bind} from "../../functions/bind";
@@ -7,7 +6,7 @@ import {len} from "../../shortcuts/indexable";
 import {isArray} from "../../shortcuts/array";
 
 export function flat<T>(this: ArrayLike<T>, depth?: number): T[] {
-  depth = getDefined(depth, () => 1);
+  depth = depth || 1;
   return reduce(this, (arr, value) => {
     if (isArray(value) && depth! > 0)
       return arr.concat(apply(flat, value, [depth! - 1]) as T[])

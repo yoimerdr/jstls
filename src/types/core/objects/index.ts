@@ -63,4 +63,8 @@ declare global {
   }
 }
 
+export type SetToDescriptor<T> = {
+  [P in Keys<T>]?: (value: T[P]) => any;
+}
+
 export type AssignMode = "deep" | "simple";

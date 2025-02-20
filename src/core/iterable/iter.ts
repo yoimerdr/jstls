@@ -4,7 +4,6 @@ import {isEmpty} from "../extensions/shared/iterables";
 import {WithLength} from "../../types/core/objects";
 import {IterEach, IterEachNext, IterEachPrevious, IterMap, IterMatchCondition} from "../../types/core/iterable";
 import {Instanceable} from "../../types/core";
-import {getDefined} from "../objects/validators";
 import {IllegalAccessError} from "../exceptions";
 import {ArrayLike} from "../../types/core/array";
 import {apply} from "../functions/apply";
@@ -104,11 +103,11 @@ export class Iter<T> {
       step = source.step;
       source = source.source;
     } else if (len(source) > 0) {
-      step = apply(coerceAtLeast, getDefined(step, () => 0), [1]);
+      step = apply(coerceAtLeast, step || 0, [1]);
       if (step > len(source))
         throw new IllegalAccessError("The step cannot be greater than the source length");
-      start = apply(coerceAtMost, getDefined(start, () => 0), [len(source) - step]);
-      end = apply(coerceIn, getDefined(end, () => len((<WithLength>source))), [start, len(source) - step]);
+      start = apply(coerceAtMost, start || 0, [len(source) - step]);
+      end = apply(coerceIn, end || len((<WithLength>source)), [start, len(source) - step]);
     } else {
       start = end = 0;
       step = 1;
