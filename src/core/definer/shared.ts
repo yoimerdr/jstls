@@ -7,13 +7,22 @@ export function multiple<T, D>(target: T, descriptors: D, definer: (target: T, k
 }
 
 export function descriptor(value?: any, writable?: boolean, configurable?: boolean,
-                           enumerable?: boolean, get?: () => any, set?: (v: any) => void): PropertyDescriptor {
+                           enumerable?: boolean): PropertyDescriptor {
   return {
     value,
     writable,
     enumerable,
     configurable,
+  }
+}
+
+export function descriptor2(get?: () => any, set?: (v: any) => void, writable?: boolean, configurable?: boolean,
+                            enumerable?: boolean): PropertyDescriptor {
+  return {
     get,
-    set
+    set,
+    writable,
+    configurable,
+    enumerable,
   }
 }
