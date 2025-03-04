@@ -37,6 +37,16 @@ export function ifDefined<T, R>(value: Maybe<T>, fn: (this: R, value: NonNullabl
  *
  * @see {Object.toString}
  */
+export function string<T>(value: Maybe<T>, nullableString: () => string): string;
+/**
+ * Transforms the given object to string.
+ *
+ * If its no defined, use the string builder.
+ * @param value The value to transforms.
+ *
+ * @see {Object.toString}
+ */
+export function string<T>(value: Maybe<T>, ): string;
 export function string<T>(value: Maybe<T>, nullableString?: () => string): string {
   if (isDefined(value))
     return value!.toString();
