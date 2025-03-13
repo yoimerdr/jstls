@@ -1,4 +1,5 @@
 import {slice} from "../iterable";
+import {Instanceable, InstanceableParameters, InstanceableType} from "../../types/core";
 
 /**
  * Calls a function with the specified this context and arguments.
@@ -18,6 +19,7 @@ export function call<F extends (this: void) => any>(fn: F): ReturnType<F>;
  * @returns The result of the function call.
  */
 export function call<F extends (...args: any) => any>(fn: F, thisArg: ThisParameterType<F>, ...args: Parameters<F>): ReturnType<F>;
+export function call<F extends Instanceable>(fn: F, thisArg: InstanceableType<F>, ...args: InstanceableParameters<F>): InstanceableType<F>;
 export function call<F extends (...args: any) => any>(fn: F, thisArg?: ThisParameterType<F>): ReturnType<F> {
   return fn.apply(thisArg, slice(arguments, 2));
 }

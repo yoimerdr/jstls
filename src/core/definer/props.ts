@@ -3,6 +3,7 @@ import {Keys} from "../../types/core";
 import {DefinePropertyDescriptor, DefinePropertyDescriptors} from "../../types/core/objects/definer";
 import {hasOwn} from "../polyfills/objects/es2022";
 import {defineProperty} from "../shortcuts/object";
+import {KeyableObject} from "../../types/core/objects";
 
 /**
  * Define a new property if it doesn't exist.
@@ -23,6 +24,8 @@ export function prop<T, K extends Keys<T> | PropertyKey>(target: T, key: K, desc
  *
  * @see {prop}
  */
+export function props<T>(target: T, descriptors: DefinePropertyDescriptors<T>): void;
+export function props<T>(target: T, descriptors: KeyableObject<PropertyDescriptor>): void;
 export function props<T>(target: T, descriptors: DefinePropertyDescriptors<T>) {
   multiple(target, descriptors, prop)
 }
