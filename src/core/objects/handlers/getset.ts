@@ -2,9 +2,9 @@ import {Keys, Maybe} from "../../../types/core";
 import {KeyableObject, SetToDescriptor} from "../../../types/core/objects";
 import {hasOwn} from "../../polyfills/objects/es2022";
 import {isArray} from "../../shortcuts/array";
-import {isObject, isString} from "../types";
+import {isFunction, isObject, isString} from "../types";
 import {self} from "../../utils";
-import {slice} from "../../iterable";
+import {reduce, slice} from "../../iterable";
 import {len} from "../../shortcuts/indexable";
 import {apply} from "../../functions/apply";
 import {keys} from "./properties";
@@ -133,20 +133,18 @@ export function setTo<T, K extends Keys<T>>(object: T & KeyableObject, key: K | 
   let props: KeyableObject = {};
   if (isString(key)) {
     props[key as string] = self;
-  } else if (isArray(key))
-    for (let i = 0; i < len(key); i++) {
-      const value = key[i];
-      props[value] = (key as any)[value];
-    }
-
-  else if (!isObject(key))
+  } else if (isArray(key)) {
+    props = reduce(key, (props, name) => {
+      const value = (key as KeyableObject)[name];
+      props[name] = isFunction(value) ? value : self;
+      return props;
+    }, props)
+  } else if (!isObject(key))
     return target;
   else props = key as any;
-  key = keys(props);
-  for (let i = 0; i < len(key); i++) {
-    const prop = key[i];
-    if (hasOwn(object, prop))
-      set(target, prop, props[prop](get(object, prop)))
-  }
-  return target;
+
+  return reduce(keys(props), (target, name) => {
+    hasOwn(object, name) && ((target as KeyableObject)[name] = props[name](object[name]));
+    return target;
+  }, target);
 }
