@@ -1,4 +1,5 @@
 import {
+  Applicable,
   Instanceable,
   InstanceableParameters,
   InstanceableType,
@@ -48,6 +49,10 @@ export function apply<F extends (...args: any[]) => any>(fn: F, thisArg: ThisPar
  * @returns The result of the function application.
  */
 export function apply<F extends Instanceable>(fn: F, thisArg: InstanceableType<F>, args: InstanceableParameters<F>): InstanceableType<F>;
+
+export function apply<F extends Applicable>(fn: F,): any;
+export function apply<F extends Applicable>(fn: F, thisArg: any,): any;
+export function apply<F extends Applicable>(fn: F, thisArg: any, args: any[]): any;
 
 export function apply<F extends (...args: any) => any>(fn: F, thisArg?: ThisParameterType<F>, args?: Parameters<F>): ReturnType<F> {
   return fn.apply(thisArg, arguments[2]);

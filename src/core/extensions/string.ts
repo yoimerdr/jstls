@@ -4,13 +4,17 @@ import {MaybeNumber} from "../../types/core";
 import {isEmpty, isNotEmpty} from "./shared/iterables";
 
 
-export function toInt(this: string | number | StringExtensions, radix?: number): MaybeNumber {
-  const value = parseInt(<string> this, radix);
+export function toInt(this: string | number, radix?: number): MaybeNumber;
+export function toInt(radix: MaybeNumber, $this: string | number): MaybeNumber;
+export function toInt(this: string | number, radix?: MaybeNumber, $this?: string | number): MaybeNumber {
+  const value = parseInt(<string>(this || $this), radix!);
   return isNaN(value) ? null : value
 }
 
-export function toFloat(this: string | number | StringExtensions): MaybeNumber {
-  const value = parseFloat(<string> this);
+export function toFloat(this: string | number): MaybeNumber;
+export function toFloat($this: string | number): MaybeNumber;
+export function toFloat(this: string | number, $this?: string | number): MaybeNumber {
+  const value = parseFloat(<string>(this || $this));
   return isNaN(value) ? null : value
 }
 
@@ -19,7 +23,7 @@ export function toFloat(this: string | number | StringExtensions): MaybeNumber {
  * @see {StringExtensions}
  */
 export function applyStringExtensions() {
-  readonlys(<any>String.prototype,{
+  readonlys(<any>String.prototype, {
     isEmpty,
     isNotEmpty,
     toInt,

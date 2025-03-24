@@ -7,6 +7,8 @@ export type Instance = abstract new (...args: any[]) => any;
 
 export type InstanceableType<T> = T extends Instanceable<infer P> ? P : never;
 
+export type InstanceableFunction<T> = T extends Instanceable<infer P, infer A> ? ((this: P, ...args: A) => void | P) : never;
+
 export type InstanceKeys<T extends Instanceable> = Keys<InstanceableType<T>>;
 
 export type InstanceMethodKeys<T extends Instanceable> = MethodKeys<InstanceType<T>> | PropertyKey;
@@ -17,6 +19,17 @@ export type InstanceMethodParameters<T extends Instanceable, P extends InstanceM
 
 export type InstanceableParameters<T> = T extends Instanceable<any, infer P> ? P : never;
 
+export type MethodParameters<T, P extends MethodKeys<T>> = SafeParameters<T[P]>;
+
+export interface Applicable {
+  apply<T, R>(this: (this: T) => R, thisArg: T): R;
+
+  apply<T, A extends any[], R>(this: (this: T, ...args: A) => R, thisArg: T, args: A): R
+}
+
+export interface Callable {
+  call<T, A extends any[], R>(this: (this: T, ...args: A) => R, thisArg: T, ...args: A): R;
+}
 
 export type Mutable<T> = {
   -readonly [P in Keys<T>]: T[P];
@@ -33,6 +46,10 @@ export type WithConstructor = {
  * @template Not The type if T is not a function. Default unknown.
  */
 export type IncludeThisParameter<T, This = any, Not = unknown> = T extends (...args: any) => any ? (this: This, ...args: Parameters<T>) => ReturnType<T> : Not;
+
+export type FunctionType<T, A extends any[] = any[], R = void> = (this: T, ...args: A) => R;
+
+export type EmptyFunctionType<T, R = void> = (this: T,) => R;
 
 /**
  * Extract 'If' from T if it extends U.
@@ -116,6 +133,8 @@ export type MethodKeys<T> = Keys<OnlyMethods<T>>
 export type MaybeKeyType<T, K> = K extends Keys<T> ? T[K] : Maybe<any>;
 
 export type Nullables = undefined | null;
+
+export type Indeterminate = Nullables | void | never;
 
 /**
  * Refers to a null or undefined type T.

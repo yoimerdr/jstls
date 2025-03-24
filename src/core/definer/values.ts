@@ -1,11 +1,11 @@
 import {prop} from "./props";
 import {descriptor, multiple} from "./shared";
 import {Keys} from "../../types/core";
-import {DefinePropertyDescriptor, DefinePropertyValues} from "../../types/core/objects/definer";
+import {DefinePropertyValues} from "../../types/core/objects/definer";
 import {MaybeKeyObjectType} from "../../types/core/objects";
 
-function _value<T, K extends Keys<T> | PropertyKey>(target: T, key: K, value: MaybeKeyObjectType<T, K>, writable: boolean, numerable: boolean) {
-  prop(target, key, <DefinePropertyDescriptor<T, K>>descriptor(value, writable, undefined, numerable))
+function _value<T, K extends Keys<T> | PropertyKey>(target: T, key: K, value: MaybeKeyObjectType<T, K>, writable?: boolean, numerable?: boolean) {
+  prop(target, key, descriptor(value, writable, undefined, numerable))
 }
 
 /**
@@ -27,8 +27,8 @@ function _value<T, K extends Keys<T> | PropertyKey>(target: T, key: K, value: Ma
  *
  * @see {prop}
  */
-export function readonly<T, K extends Keys<T> | PropertyKey>(target: T, key: K, value: MaybeKeyObjectType<T, K>) {
-  _value(target, key, value, false, false)
+export function readonly<T, K extends Keys<T> | PropertyKey = PropertyKey>(target: T, key: K, value: MaybeKeyObjectType<T, K>) {
+  _value(target, key, value,)
 }
 
 /**
@@ -61,8 +61,8 @@ export function readonlys<T>(target: T, values: DefinePropertyValues<T>) {
  *
  * @see {prop}
  */
-export function readonly2<T, K extends Keys<T> | PropertyKey>(target: T, key: K, value: MaybeKeyObjectType<T, K>) {
-  _value(target, key, value, false, true);
+export function readonly2<T, K extends Keys<T> | PropertyKey = PropertyKey>(target: T, key: K, value: MaybeKeyObjectType<T, K>) {
+  _value(target, key, value, undefined, true);
 }
 
 /**
@@ -95,8 +95,8 @@ export function readonlys2<T>(target: T, values: DefinePropertyValues<T>) {
  *
  * @see {prop}
  */
-export function writeable<T, K extends Keys<T> | PropertyKey>(target: T, key: K, value: MaybeKeyObjectType<T, K>) {
-  _value(target, key, value, true, false)
+export function writeable<T, K extends Keys<T> | PropertyKey = PropertyKey>(target: T, key: K, value: MaybeKeyObjectType<T, K>) {
+  _value(target, key, value, true)
 }
 
 /**
@@ -110,10 +110,10 @@ export function writeables<T>(target: T, values: DefinePropertyValues<T>) {
 }
 
 
-export function configurable<T, K extends Keys<T> | PropertyKey>(target: T, key: K, value: MaybeKeyObjectType<T, K>) {
-  prop(target, key, <DefinePropertyDescriptor<T, K>>descriptor(value, undefined, true, false))
+export function configurable<T, K extends Keys<T> | PropertyKey = PropertyKey>(target: T, key: K, value: MaybeKeyObjectType<T, K>) {
+  prop(target, key, descriptor(value, undefined, true))
 }
 
 export function configurables<T>(target: T, values: DefinePropertyValues<T>) {
-  multiple(target, values, writeable)
+  multiple(target, values, configurable)
 }

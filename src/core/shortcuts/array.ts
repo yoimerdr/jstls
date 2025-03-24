@@ -1,5 +1,5 @@
 import {Foreachable, ForeachableEach} from "../../types/core/iterable";
-import {set} from "../objects/handlers/getset";
+import {ArrayLike} from "../../types/core/array";
 
 export const isArray = Array.isArray;
 
@@ -7,6 +7,6 @@ export function forEach<T, This = void>(array: Foreachable<T>, callback: Foreach
   array.forEach(callback as any, thisArg);
 }
 
-export function clear<T>(arr: ArrayLike<T>) {
-  set(arr, "length", 0)
+export function clear(arr: ArrayLike) {
+  arr && (arr.length = 0)
 }

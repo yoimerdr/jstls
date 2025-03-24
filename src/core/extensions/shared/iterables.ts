@@ -1,34 +1,49 @@
 import {WithLength} from "../../../types/core/objects";
 import {IllegalAccessError} from "../../exceptions";
 import {Maybe} from "../../../types/core";
-import {apply} from "../../functions/apply";
-import {ArrayLike} from "../../../types/core/array";
+import {ArrayLike, ArrayLikeType} from "../../../types/core/array";
 import {len} from "../../shortcuts/indexable";
 
-export function isEmpty<T extends WithLength>(this: T): boolean {
-  return len(this) === 0;
+export function isEmpty<T extends WithLength>(this: T): boolean;
+export function isEmpty<T extends WithLength>($this: T): boolean;
+export function isEmpty<T extends WithLength>(this: T, $this?: T): boolean {
+  return len(this || $this) === 0;
 }
 
-export function isNotEmpty<T extends WithLength>(this: T): boolean {
-  return !apply(isEmpty, this);
+export function isNotEmpty<T extends WithLength>(this: T): boolean;
+export function isNotEmpty<T extends WithLength>($this: T): boolean;
+export function isNotEmpty<T extends WithLength>(this: T, $this?: T): boolean {
+  return !isEmpty(this || $this);
 }
 
-export function first<T, I extends ArrayLike<T> = ArrayLike<T>>(this: I): T {
-  if (apply(isEmpty, this))
+export function first<T, I extends ArrayLike<T> = ArrayLike<T>>(this: I): T;
+export function first<T, I extends ArrayLike<T> = ArrayLike<T>>($this: I): ArrayLikeType<I>;
+export function first<T, I extends ArrayLike<T> = ArrayLike<T>>(this: I, $this?: I): T {
+  $this = this || $this;
+  if (isEmpty($this))
     throw new IllegalAccessError("The indexable object is empty.");
-  return this[0];
+  return $this[0];
 }
 
-export function firstOrNull<T, I extends ArrayLike<T> = ArrayLike<T>>(this: I): Maybe<T> {
-  return apply(isEmpty, this) ? null : this[0];
+export function firstOrNull<T, I extends ArrayLike<T> = ArrayLike<T>>(this: I,): Maybe<T>;
+export function firstOrNull<T, I extends ArrayLike<T> = ArrayLike<T>>($this: I): Maybe<ArrayLikeType<I>>;
+export function firstOrNull<T, I extends ArrayLike<T> = ArrayLike<T>>(this: I, $this?: I): Maybe<T> {
+  $this = this || $this;
+  return isEmpty($this) ? null : $this[0];
 }
 
-export function last<T, I extends ArrayLike<T> = ArrayLike<T>>(this: I): T {
-  if (apply(isEmpty, this))
+export function last<T, I extends ArrayLike<T> = ArrayLike<T>>(this: I): T;
+export function last<T, I extends ArrayLike<T> = ArrayLike<T>>($this: I): ArrayLikeType<I>;
+export function last<T, I extends ArrayLike<T> = ArrayLike<T>>(this: I, $this?: I): T {
+  $this = this || $this;
+  if (isEmpty($this))
     throw new IllegalAccessError("The indexable object is empty.");
-  return this[len(this) - 1];
+  return $this[len($this) - 1];
 }
 
-export function lastOrNull<T, I extends ArrayLike<T> = ArrayLike<T>>(this: I): Maybe<T> {
-  return apply(isEmpty, this) ? null : this[len(this) - 1];
+export function lastOrNull<T, I extends ArrayLike<T> = ArrayLike<T>>(this: I): Maybe<T>;
+export function lastOrNull<T, I extends ArrayLike<T> = ArrayLike<T>>($this: I): Maybe<ArrayLikeType<I>>;
+export function lastOrNull<T, I extends ArrayLike<T> = ArrayLike<T>>(this: I, $this?: I): Maybe<T> {
+  $this = this || $this;
+  return isEmpty($this) ? null : $this[len($this) - 1];
 }

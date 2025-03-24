@@ -13,10 +13,10 @@ import {KeyableObject} from "../../types/core/objects";
  *
  * @see {Object.defineProperty}
  */
-export function prop<T, K extends Keys<T> | PropertyKey>(target: T, key: K, descriptor: DefinePropertyDescriptor<T, K>) {
-  if (!hasOwn(target, key))
-    defineProperty(target, key, descriptor);
+export function prop<T, K extends Keys<T> | PropertyKey = PropertyKey>(target: T, key: K, descriptor: DefinePropertyDescriptor<T, K>) {
+  hasOwn(target, key) || defineProperty(target, key, descriptor);
 }
+
 /**
  * Define new properties if they don't exist.
  * @param target The target value.

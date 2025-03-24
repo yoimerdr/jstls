@@ -1,13 +1,14 @@
 import {Keys} from "../../types/core";
 import {keys} from "../objects/handlers/properties";
 import {forEach} from "../shortcuts/array";
+import {PropertyDescriptor} from "../../types/core/objects/definer";
 
-export function multiple<T, D>(target: T, descriptors: D, definer: (target: T, key: Keys<D>, descriptor: D[Keys<D>]) => void) {
-  forEach(keys(descriptors), key => definer(target, key, descriptors[key]))
+export function multiple<T, D>(target: T, descriptors: D, definer: (target: T, key: Keys<D>, descriptor: NonNullable<D[Keys<D>]>) => void) {
+  forEach(keys(descriptors), key => definer(target, key, descriptors[key]!))
 }
 
-export function descriptor(value?: any, writable?: boolean, configurable?: boolean,
-                           enumerable?: boolean): PropertyDescriptor {
+export function descriptor<T = any, K extends Keys<T> = any>(value?: T[K], writable?: boolean, configurable?: boolean,
+                                                             enumerable?: boolean): PropertyDescriptor {
   return {
     value,
     writable,
@@ -16,12 +17,11 @@ export function descriptor(value?: any, writable?: boolean, configurable?: boole
   }
 }
 
-export function descriptor2(get?: () => any, set?: (v: any) => void, writable?: boolean, configurable?: boolean,
-                            enumerable?: boolean): PropertyDescriptor {
+export function descriptor2<T = any, K extends Keys<T> = any>(get?: (this: T) => T[K], set?: (this: T, v: T[K]) => void, configurable?: boolean,
+                                                              enumerable?: boolean): PropertyDescriptor {
   return {
     get,
     set,
-    writable,
     configurable,
     enumerable,
   }

@@ -7,6 +7,42 @@ import {apply} from "../functions/apply";
 
 /**
  * Extends a method to add additional functionality.
+ * @example
+ * var source = {
+ *   say(name: string) {
+ *     console.log("Hello, " + name + "!")
+ *   }
+ * }
+ *
+ * method(source, "say", {
+ *   afterCall(result, name) {
+ *     console.log("After", name)
+ *   },
+ *   beforeCall(name) {
+ *     console.log("Before", name)
+ *   },
+ *   modifyParameters(name): [name: string] {
+ *     return ["What"]
+ *   }
+ * })
+ *
+ * method(source, "say", {
+ *   afterCall(result, name) {
+ *     console.log("After2", name)
+ *   },
+ *   beforeCall(name) {
+ *     console.log("Before2", name)
+ *   },
+ * })
+ *
+ * // The next call will log
+ * // Before2 Sample
+ * // Before What
+ * // Hello, What!
+ * // After What
+ * // After2 Sample
+ * source.say("Sample")
+ *
  * @param target The target value.
  * @param key The object key. The value of that property must be a function.
  * @param builder The builder with the options to extend.
@@ -15,25 +51,27 @@ export function method<T extends Object, K extends MethodKeys<T>>(target: T, key
 export function method<T extends Object, K extends MethodKeys<T>>(target: T, key: K, builder: ExtendMethodBuilder<T, K>): void {
   builder = requiredWithType(builder, "object", "builder");
   if (["replace", "modifyParameters", "beforeCall", "afterCall"].some(Object.prototype.hasOwnProperty, builder)) {
-    const met = target[key];
+    const met: any = target[key];
     requireFunction(met, 'extend method');
+    const {replace, modifyParameters, beforeCall, afterCall} = builder;
     target[key] = function (this: T): SafeReturnType<T[K]> {
-      let args: SafeParameters<T[K]> = slice(arguments) as any;
-      if (builder.replace)
-        return apply(builder.replace, this, <any>[met].concat(args))
-      if (builder.modifyParameters)
-        args = apply(builder.modifyParameters, this, args)
-      if (builder.beforeCall)
-        apply(builder.beforeCall, this, args)
+      let args: SafeParameters<T[K]> = slice(arguments) as any,
+       $this = this;
+      if (replace)
+        return apply(replace, $this, [met].concat(args));
 
-      let res = apply(met as any, this, args)
-      if (!builder.afterCall)
+      modifyParameters && (args = apply(modifyParameters, $this, args))
+      beforeCall && apply(beforeCall, $this, args)
+
+      let res = apply(met, $this, args)
+      if (!afterCall)
         return res
 
-      return apply(builder.afterCall, this, <any>[res].concat(args))
+      return apply(afterCall, $this, [res].concat(args))
     } as T[K]
   }
 }
+
 /**
  * Extends methods to add additional functionality.
  * @param target The target value.
@@ -41,6 +79,6 @@ export function method<T extends Object, K extends MethodKeys<T>>(target: T, key
  * @see {method}
  */
 export function methods<T extends Object>(target: T, descriptors: ExtendMethodBuilders<T>) {
-  multiple(target, descriptors, <any>method)
+  multiple(target, descriptors, method)
 }
 

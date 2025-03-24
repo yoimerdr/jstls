@@ -8,24 +8,32 @@ import {apply} from "../functions/apply";
 import {reduce} from "../iterable";
 import {ArrayLike} from "../../types/core/array";
 import {is} from "../polyfills/objects/es2015";
+import {returns} from "../utils";
+import {Maybe} from "../../types/core";
 
 
-export function counts<T, R = any, I extends ArrayLike<T> = ArrayLike<T>>(this: I, value: any, compare?: CountsCompareFn<T, I, R>, thisArg?: R): number {
+export function counts<T, R = any, I extends ArrayLike<T> = ArrayLike<T>>(this: I, value: T, compare?: CountsCompareFn<T, I, R>, thisArg?: R): number;
+export function counts<T, R = any, I extends ArrayLike<T> = ArrayLike<T>>(value: T, compare: Maybe<CountsCompareFn<T, I, R>>, thisArg: Maybe<R>, $this: I): number;
+export function counts<T, R = any, I extends ArrayLike<T> = ArrayLike<T>>(this: I, value: any, compare?: Maybe<CountsCompareFn<T, I, R>>, thisArg?: Maybe<R>, $this?: I): number {
   requireDefined(value);
   value = value.valueOf();
-  compare = getIf(compare, isFunction, () => is)
-  return reduce<T, number, I>(this, (total, it, i, arr) => total + +apply(compare!, thisArg!, [value, it, i, arr]), 0);
+  compare = getIf(compare, isFunction, returns(is))
+  return reduce<T, number, I>((this || $this), (total, it, i, arr) => total + +apply(compare!, thisArg!, [value, it, i, arr]), 0);
 }
 
 export function extend<I, T extends Pushable<I> = Pushable<I>>(this: T, source: I[]): T;
-export function extend<I, T extends Pushable<I> = Pushable<I>>(this: T, source: I[]): T {
+export function extend<I, T extends Pushable<I> = Pushable<I>>(source: I[], $this: T): T;
+export function extend<I, T extends Pushable<I> = Pushable<I>>(this: T, source: I[], $this?: T): T {
   requireIf(source, isObject, "The source must be an indexable object.");
-  apply(this.push, this, source);
-  return this;
+  $this = this || $this;
+  apply($this.push, $this, source);
+  return $this;
 }
 
-export function filterDefined<T>(this: T[]): NonNullable<T>[] {
-  return this.filter(isDefined) as NonNullable<T>[];
+export function filterDefined<T>(this: T[]): NonNullable<T>[];
+export function filterDefined<T>($this: T[]): NonNullable<T>[];
+export function filterDefined<T>(this: T[], $this?: T[]): NonNullable<T>[] {
+  return (this || $this).filter(isDefined) as NonNullable<T>[];
 }
 
 /**

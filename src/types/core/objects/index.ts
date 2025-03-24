@@ -1,23 +1,36 @@
-import {IncludeThisParameter, Keys, MethodKeys, SafeReturnType} from "../index";
+import {IncludeThisParameter, Indeterminate, Keys, MethodKeys, SafeReturnType} from "../index";
 
 export type KeyableObject<R = any> = Record<PropertyKey, R> & Object;
 
 export type RequiredAll<T> = {
-  [P in keyof T]-?: RequiredAll<T[P]>;
+  [P in keyof T]-?: T[P] extends (...args: any[]) => void ? T[P] : RequiredAll<T[P]>;
 };
 
 export type WithLength = Record<"length", number>;
 
 export type Indexable<R = any> = Record<number, R>;
 
+export type IndexableType<T> = T extends Indexable<infer R> ? R : any;
+
+export interface Concat {
+  concat(...others: any[]): this;
+}
+
 export type WithSize = Record<"size", number>;
 
 /**
  * Constructs a type with a prototype.
  */
-export type WithPrototype<T extends Object> = {
-  readonly prototype: T
-}
+export type WithPrototype<T extends Object = any> = {
+  readonly prototype: T;
+};
+
+/**
+ * Constructs a type with a prototype.
+ */
+export type IndeterminatePrototype = {
+  readonly prototype: Indeterminate;
+};
 
 /**
  * Refers to a type with prototype.
@@ -28,7 +41,7 @@ export type Prototype<T extends Object, K extends Keys<WithPrototype<T>> = "prot
 /**
  * Refers to T["prototype"] type.
  */
-export type PrototypeType<T extends Prototype<T>> = T["prototype"];
+export type PrototypeType<T> = T extends WithPrototype<infer P> ? P : never;
 
 /**
  * Extracts the keys of T prototype.

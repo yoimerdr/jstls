@@ -1,7 +1,7 @@
 import {prop} from "./props";
-import {multiple} from "./shared";
+import {descriptor2, multiple} from "./shared";
 import {MethodKeys} from "../../types/core";
-import {DefinePropertyDescriptor, DefinePropertyGetter, DefinePropertyGetters} from "../../types/core/objects/definer";
+import {DefinePropertyGetter, DefinePropertyGetters} from "../../types/core/objects/definer";
 
 /**
  * A shortcut for define a new property according to key and getter fn.
@@ -21,11 +21,8 @@ import {DefinePropertyDescriptor, DefinePropertyGetter, DefinePropertyGetters} f
  *
  * @see {prop}
  */
-export function getter<T, K extends MethodKeys<T> | PropertyKey>(target: T, key: K, getter: DefinePropertyGetter<T, K>) {
-  prop(target, key, <DefinePropertyDescriptor<T, K>>{
-    enumerable: false,
-    get: getter
-  })
+export function getter<T, K extends MethodKeys<T> | PropertyKey = PropertyKey>(target: T, key: K, getter: DefinePropertyGetter<T, K>) {
+  prop(target, key, descriptor2(getter,))
 }
 
 /**

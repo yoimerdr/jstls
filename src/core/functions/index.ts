@@ -3,10 +3,8 @@ export function matchName(name: string): string {
   return match ? match[1].trim() : '';
 }
 
-export function name<F extends ((...args: any) => any) | Function>(fn: F): string {
-  if ((fn as any).name)
-    return (fn as any).name;
-  return matchName(fn.toString())
+export function name<F extends CallableFunction>(fn: F): string {
+  return (fn as any).name || matchName(fn.toString())
 }
 
 
