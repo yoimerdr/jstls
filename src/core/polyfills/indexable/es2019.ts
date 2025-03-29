@@ -4,9 +4,11 @@ import {bind} from "../../functions/bind";
 import {ArrayLike} from "../../../types/core/array";
 import {len} from "../../shortcuts/indexable";
 import {isArray} from "../../shortcuts/array";
+import {getDefined} from "../../objects/validators";
+import {returns} from "../../utils";
 
 export function flat<T>(this: ArrayLike<T>, depth?: number): T[] {
-  depth = depth || 1;
+  depth = getDefined(depth, returns(1));
   return reduce(this, (arr, value) => {
     if (isArray(value) && depth! > 0)
       return arr.concat(apply(flat, value, [depth! - 1]) as T[])

@@ -17,6 +17,7 @@ type SetSource = Readonly<{
   isObject: boolean,
   index: number
 }>;
+
 const setKeySymbol = '[[PolyfillSetKey]]';
 
 

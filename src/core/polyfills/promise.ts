@@ -1,7 +1,6 @@
 import {PromiseExecutor, PromiseFilled, PromiseRejected, PromiseState} from "../../types/core/polyfills"
 import {requireFunction} from "../objects/validators";
 import {writeable} from "../definer";
-import {loop} from "../utils";
 import {isFunction} from "../objects/types";
 import {uid} from "./symbol";
 import {hasOwn} from "./objects/es2022";
@@ -9,11 +8,14 @@ import {apply} from "../functions/apply";
 import {bind} from "../functions/bind";
 import {get, set} from "../objects/handlers/getset";
 import {len} from "../shortcuts/indexable";
-import {concat} from "../shortcuts/string";
+import {concat} from "../shortcuts/indexable";
+import {funclass} from "../definer/classes/";
+import {forEach} from "../shortcuts/array";
+import {FunctionClassSimpleStatics} from "../../types/core/definer";
 
-const promiseState = uid("Promise#state")
-const promiseResult = uid("Promise#result")
-const promiseCalls = uid("Promise#calls")
+const promiseState = uid("mS"),
+  promiseResult = uid("mR"),
+  promiseCalls = uid("mC");
 
 function resolveOrReject(this: Promise<any>, state: PromiseState, value: any, index: number) {
   if (get(this, promiseState) !== "pending")
@@ -72,91 +74,103 @@ function finallyPromise(target: Promise<any>, resolve: Function, reject: Functio
 
 }
 
-export class Promise<T> {
+export interface Promise<T> {
+  finally<U>(onFinally?: () => U | Promise<U>): Promise<U>;
 
-  constructor(executor: PromiseExecutor<T>) {
+  catch<R = never>(onrejected?: PromiseRejected<T, R>): Promise<R>;
+
+  then<R = never>(onfulfilled?: PromiseFilled<T, R>, onrejected?: PromiseRejected<T, R>): Promise<R>;
+
+  toString(): string;
+}
+
+export interface PromiseConstructor {
+  resolve<T>(value: T | PromiseLike<T>): Promise<Awaited<T>>;
+
+  reject<T = never>(reason?: any): Promise<T>;
+
+  all<T extends readonly unknown[] | []>(values: T): Promise<{ -readonly [P in keyof T]: Awaited<T[P]>; }>;
+
+  new<T>(executor: PromiseExecutor<T>): Promise<T>;
+}
+
+export const Promise: PromiseConstructor = funclass<PromiseConstructor>({
+  construct(executor) {
     requireFunction(executor);
-
-    writeable(this as Promise<T>, promiseState, 'pending');
+    writeable(this, promiseState, 'pending');
     const rej = bind(reject, this);
     try {
       executor(bind(resolve, this), rej)
     } catch (e) {
       rej(e)
     }
+  },
+  statics: {
+    resolve(value) {
+      return new Promise((res) => res(value));
+    },
+    reject(reason) {
+      return new Promise((_, reject) => reject(reason));
+    },
+    all(values) {
+      return new Promise((resolve, reject) => {
+        let count = 0;
+        const size = len(values),
+          results: any[] = [];
+
+        forEach(values, (promise, index) => {
+          Promise.resolve(promise)
+            .then((result) => {
+              results[index] = result;
+              count++;
+              count === size && resolve(results);
+            }, reject);
+        })
+
+        if (count === 0)
+          resolve(results);
+      })
+    }
+  },
+  prototype: <FunctionClassSimpleStatics<Promise<unknown>>>{
+    finally(onFinally) {
+      const $this = this;
+      return new Promise((resolve, reject) => {
+        switch (get($this, promiseState) as PromiseState) {
+          case "pending":
+            set(this, promiseCalls, [finallyPromise($this, resolve, reject, onFinally)]);
+            break;
+          case "fulfilled":
+          case "rejected":
+            finallyPromise($this, resolve, reject, onFinally, true)();
+            break;
+        }
+      })
+    },
+    catch(onrejected) {
+      return this.then(null, onrejected)
+    },
+    then(onfulfilled, onrejected) {
+      return new Promise((resolve, reject) => {
+        const res = resolverPromise(resolve, reject, onfulfilled),
+          rej = resolverPromise(reject, reject, onrejected),
+          result = get(this, promiseResult);
+
+        switch (get(this, promiseState) as PromiseState) {
+          case "pending":
+            set(this, promiseCalls, [res, rej]);
+            break;
+          case "fulfilled":
+            res(result)
+            break;
+          case "rejected":
+            rej(result)
+            break;
+        }
+      })
+    },
+    toString() {
+      return concat<string>("Promise { <", get(this, promiseState), "> }",)
+    }
   }
-
-  toString() {
-    return concat("Promise { <", get(this, promiseState), "> }",)
-  }
-
-  static resolve<T>(value: T | PromiseLike<T>): Promise<Awaited<T>> {
-    return new Promise(resolve => resolve(value as any))
-  }
-
-  static reject<T = never>(reason?: any): Promise<T> {
-    return new Promise((_, reject) => reject(reason))
-  }
-
-  static all<T extends readonly unknown[] | []>(values: T): Promise<{ -readonly [P in keyof T]: Awaited<T[P]>; }> {
-    return new Promise((resolve, reject) => {
-      let count = 0;
-      const size = len(values)
-      const results: any[] = []
-      loop(index => {
-        const promise = values[index];
-        Promise.resolve(promise)
-          .then(function (result) {
-            results[index] = result;
-            count++;
-            if (count === size)
-              resolve(results as any);
-          }, function (reason) {
-            reject(reason);
-          });
-      }, size)
-      if (count === 0)
-        resolve(results as any);
-    })
-  }
-
-  finally<U>(onFinally?: () => U | Promise<U>): Promise<U> {
-    return new Promise<U>((resolve, reject) => {
-      switch (get(this, promiseState) as PromiseState) {
-        case "pending":
-          set(this, promiseCalls, [finallyPromise(this, resolve, reject, onFinally)]);
-          break;
-        case "fulfilled":
-        case "rejected":
-          finallyPromise(this, resolve, reject, onFinally, true)();
-          break;
-      }
-    })
-  }
-
-  catch<R = never>(onrejected?: PromiseRejected<T, R>): Promise<R> {
-    return this.then(null, onrejected)
-  }
-
-  then<R = never>(onfulfilled?: PromiseFilled<T, R>, onrejected?: PromiseRejected<T, R>): Promise<R> {
-    return new Promise<R>((resolve, reject) => {
-      const res = resolverPromise(resolve, reject, onfulfilled);
-      const rej = resolverPromise(reject, reject, onrejected);
-
-      const result = get(this, promiseResult);
-      switch (get(this, promiseState) as PromiseState) {
-        case "pending":
-          set(this, promiseCalls, [res, rej]);
-          break;
-        case "fulfilled":
-          res(result)
-          break;
-        case "rejected":
-          rej(result)
-          break;
-      }
-    })
-
-  }
-
-}
+})

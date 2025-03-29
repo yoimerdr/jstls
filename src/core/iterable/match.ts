@@ -2,95 +2,123 @@ import {Iter, iterEachOrFindIndex, iterMap} from "./iter";
 import {IterMap, IterMatchCondition} from "../../types/core/iterable";
 import {Maybe} from "../../types/core";
 import {apply} from "../functions/apply";
-import {letValue} from "../objects/handlers";
+import {WithPrototype} from "../../types/core/objects";
+import {ArrayLike} from "../../types/core/array";
+import {funclass} from "../definer/classes";
+import {FunctionClassSimpleStatics} from "../../types/core/definer";
 
-/**
- * The iter class for iterating over a indexable object.
- * @class
- */
-export class IterMatch<T> extends Iter<T> {
-
+export interface IterMatch<T> extends Iter<T> {
   /**
    * Returns the first element that satisfies the condition.
    * @param condition The condition to satisfy.
    * @returns The first element or undefined.
    */
-  first(condition: IterMatchCondition<T>): Maybe<T> {
-    return letValue(this.firstIndex(condition), this.at, this);
-  }
+  first(condition: IterMatchCondition<T>): Maybe<T>
 
   /**
    * Returns the index of the first element that satisfies the condition.
    * @param condition The condition to satisfy.
    * @returns The index of the first element or -1.
    */
-  firstIndex(condition: IterMatchCondition<T>): number {
-    return apply(iterEachOrFindIndex, this, [
-      this.start, this.isInBounds, undefined!,
-      this.next, undefined, false, <any>condition
-    ]);
-  }
+  firstIndex(condition: IterMatchCondition<T>): number
 
   /**
    * Returns the last element that satisfies the condition.
    * @param condition The condition to satisfy.
    * @returns The last element or undefined.
    */
-  last(condition: IterMatchCondition<T>): Maybe<T> {
-    return letValue(this.lastIndex(condition), this.at, this);
-  }
+  last(condition: IterMatchCondition<T>): Maybe<T>
 
   /**
    * Returns the index of the last element that satisfies the condition.
    * @param condition The condition to satisfy.
    * @returns The index of the last element or -1.
    */
-  lastIndex(condition: IterMatchCondition<T>): number {
-    return apply(iterEachOrFindIndex, this, [
-      this.end, this.isInBounds, undefined!,
-      this.previous, undefined, false, <any>condition
-    ]);
-  }
+  lastIndex(condition: IterMatchCondition<T>): number
 
   /**
    * Returns a new iter that contains elements that satisfy the condition.
    * @param condition The condition to satisfy.
    * @returns The new iter.
    */
-  where(condition: IterMatchCondition<T>): IterMatch<T> {
-    return apply(iterMap, this, [
-      IterMatch, this.each, undefined,
-      undefined, <any>condition
-    ]) as IterMatch<T>;
-  }
+  where(condition: IterMatchCondition<T>): IterMatch<T>
 
   /**
    * Returns a new iter that contains elements (in reverse order) that satisfy the condition.
    * @param condition The condition to satisfy.
    * @returns The new iter.
    */
-  rwhere(condition: IterMatchCondition<T>): IterMatch<T> {
-    return apply(iterMap, this, [
-      IterMatch, this.reach, undefined,
-      undefined, <any>condition
-    ]) as IterMatch<T>;
-  }
+  rwhere(condition: IterMatchCondition<T>): IterMatch<T>
 
+  map<A, R>(fn: IterMap<T, A, R>, thisArg?: R): IterMatch<A>;
 
-  map<A, R>(fn: IterMap<T, A, R>, thisArg?: R): IterMatch<A> {
-    return apply(iterMap, this, [
-      IterMatch, this.each,
-      <any>fn, thisArg
-    ]) as IterMatch<A>;
-  }
-
-  rmap<A, R>(fn: IterMap<T, A, R>, thisArg?: R): Iter<A> {
-    return apply(iterMap, this, [
-      IterMatch, this.reach,
-      <any>fn, thisArg
-    ]) as IterMatch<A>;
-  }
+  rmap<A, R>(fn: IterMap<T, A, R>, thisArg?: R): IterMatch<A>
 }
+
+
+export interface IterMatchConstructor extends WithPrototype<IterMatch<any>> {
+  new<T>(source: ArrayLike<T> | Iter<T>, start?: number, end?: number, step?: number): IterMatch<T>;
+}
+
+/**
+ * The iter class for iterating over a indexable object.
+ * @class
+ */
+export const IterMatch: IterMatchConstructor = funclass({
+  prototype: <FunctionClassSimpleStatics<IterMatch<unknown>>>{
+    first(condition) {
+      const $this = this
+      return $this.at($this.firstIndex(condition));
+    },
+    firstIndex(condition) {
+      const $this = this
+      return apply(iterEachOrFindIndex, $this, [
+        $this.start, $this.isInBounds, undefined!,
+        $this.next, undefined, false, condition
+      ]);
+    },
+    last(condition) {
+      const $this = this
+      return $this.at($this.lastIndex(condition));
+    },
+    lastIndex(condition) {
+      const $this = this
+      return apply(iterEachOrFindIndex, $this, [
+        $this.end, $this.isInBounds, undefined!,
+        $this.previous, undefined, false, condition
+      ]);
+    },
+    where(condition) {
+      const $this = this
+      return apply(iterMap, $this, [
+        IterMatch, $this.each, undefined,
+        undefined, condition
+      ]);
+    },
+    rwhere(condition) {
+      const $this = this
+      return apply(iterMap, $this, [
+        IterMatch, $this.reach, undefined,
+        undefined, condition
+      ]);
+    },
+    map(fn, thisArg) {
+      const $this = this
+      return apply(iterMap, $this, [
+        IterMatch, $this.each,
+        fn, thisArg
+      ]);
+    },
+    rmap(fn, thisArg) {
+      const $this = this
+      return apply(iterMap, $this, [
+        IterMatch, $this.reach,
+        fn, thisArg
+      ]);
+    }
+  }
+})
+
 
 /**
  * Creates a new iter match from the given iter.

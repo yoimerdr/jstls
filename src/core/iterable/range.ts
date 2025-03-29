@@ -1,42 +1,46 @@
-import {Iter, iterIndex} from "./iter";
-import {coerceIn} from "../extensions/number";
-import {apply} from "../functions/apply";
-import {set} from "../objects/handlers/getset";
+import {Iter} from "./iter";
+import {WithPrototype} from "../../types/core/objects";
+import {funclass} from "../definer/classes";
+import {call} from "../functions/call";
+import {FunctionClassSimpleStatics} from "../../types/core/definer";
+import {protocall} from "../functions/prototype";
 
-/**
- * The iter class for iterating over a range.
- * @class
- */
-export class IterRange extends Iter<number> {
-  constructor(length: number | Iter<any>, start?: number, step?: number) {
+export interface IterRange extends Iter<number> {
+}
+
+export interface IterRangeConstructor extends WithPrototype<IterRange> {
+  new(length: number | Iter<any>, start?: number, step?: number): IterRange;
+}
+
+export const IterRange: IterRangeConstructor = funclass({
+  cls: (_, parent) => function (length, start, step) {
     if (length instanceof Iter) {
       start = length.startIndex;
       step = length.step;
       length = length.length();
     }
-    super({
-      length,
-    }, start, undefined, step);
+    call(parent, this, {length}, start, undefined, step);
+  },
+  prototype: <FunctionClassSimpleStatics<IterRange>>{
+    next() {
+      const $this = this;
+      protocall(Iter, "next", this);
+      const index = $this.index();
+      return index > $this.endIndex ? undefined! : index;
+    },
+    previous() {
+      const $this = this;
+      protocall(Iter, "previous", $this);
+      const index = $this.index();
+      return index < $this.startIndex ? undefined! : index;
+    },
+    at(index) {
+      const $this = this;
+      protocall(Iter, "at", $this, index);
+      return $this.index();
+    }
   }
-
-  at(index: number): number {
-    if (index < 0)
-      index += this.endIndex + 1;
-    const current = apply(coerceIn, index, [this.startIndex, this.endIndex]);
-    set(this, iterIndex, current);
-    return current !== index ? undefined! : current;
-  }
-
-  next(): number {
-    super.next();
-    return this.index() > this.endIndex ? undefined! : this.index();
-  }
-
-  previous(): number {
-    super.previous();
-    return this.index() < this.startIndex ? undefined! : this.index();
-  }
-}
+}, Iter);
 
 /**
  * Creates a new iter range from the given length.

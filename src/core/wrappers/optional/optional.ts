@@ -1,36 +1,21 @@
 import {Wrapper} from "../wrapper";
 import {Maybe} from "../../../types/core";
-import {readonlys} from "../../definer";
+import {readonlys2} from "../../definer";
 import {isDefined} from "../../objects/types";
 import {apply} from "../../functions/apply";
+import {WithPrototype} from "../../../types/core/objects";
+import {funclass} from "../../definer/classes/";
+import {call} from "../../functions/call";
+import {FunctionClassSimpleStatics} from "../../../types/core/definer";
+import {requireFunction} from "../../objects/validators";
 
-
-/**
- * @class
- * The optional class.
- * @template T
- */
-export class Optional<T> extends Wrapper<Maybe<T>> {
-  /**
-   * @constructor
-   * Create a new Optional object.
-   * @template T
-   * @param {Maybe<T>} value The nullable value to wrap.
-   */
-  constructor(value: Maybe<T>) {
-    super(value);
-    readonlys(this as Optional<T>, {
-      isPresent: isDefined(value),
-      isNotPresent: !isDefined(value)
-    })
-  }
-
+export interface Optional<T> extends Wrapper<Maybe<T>> {
   /**
    * True if the value is defined, false otherwise.
    * @see {isDefined}
    * @type boolean
    */
-  readonly isPresent!: boolean;
+  readonly isPresent: boolean;
 
   /**
    * False if the value is defined, true otherwise.
@@ -38,7 +23,7 @@ export class Optional<T> extends Wrapper<Maybe<T>> {
    * @see {isDefined}
    * @type boolean
    */
-  readonly isNotPresent!: boolean
+  readonly isNotPresent: boolean;
 
   /**
    * Gets the wrapped value {@link isPresent}.
@@ -46,21 +31,15 @@ export class Optional<T> extends Wrapper<Maybe<T>> {
    * @template T
    * @see {Optional.get}
    */
-  sget(builder: (this: this) => NonNullable<T>): NonNullable<T> {
-    return this.isPresent ? this.value as NonNullable<T> : apply(builder, this);
-  }
+  sget(builder: (this: this) => NonNullable<T>): NonNullable<T>;
 
   /**
    * Similar to {@link Optional.apply}, but only works if the value {@link isPresent}
-   * @param {(this: T) => void} fn The function to apply.
+   * @param {(this: NonNullable<T>) => void} fn The function to apply.
    */
-  sapply(fn: Maybe<(this: NonNullable<T>) => void>): this {
-    return this.isPresent ? this.apply(fn as any) : this;
-  }
+  sapply(fn: Maybe<(this: NonNullable<T>) => void>): this;
 
-  slet<R, O extends Optional<R> = Optional<R>>(fn: Maybe<(this: this, value: NonNullable<T>) => R>): O {
-    return new Optional<R>(this.isPresent ? this.let(fn as any) : undefined) as any
-  }
+  slet<R, O extends Optional<R> = Optional<R>>(fn: Maybe<(this: this, value: NonNullable<T>) => R>): O
 
   /**
    * Call the fn if the wrapped value {@link isPresent}.
@@ -70,12 +49,49 @@ export class Optional<T> extends Wrapper<Maybe<T>> {
    * @template T
    * @see {Optional.sapply}
    */
-  ifPresent(fn: Maybe<(this: this, value: NonNullable<T>) => void>): this {
-    if (this.isPresent)
-      apply(fn!, this, [this.value as NonNullable<T>]);
-    return this;
-  }
+  ifPresent(fn: Maybe<(this: this, value: NonNullable<T>) => void>): this;
 }
+
+export interface OptionalConstructor extends WithPrototype<Optional<any>> {
+  new<T>(value: Maybe<T>): Optional<T>;
+}
+
+/**
+ * @constructor
+ * Create a new Optional object.
+ * @template T
+ * @param {Maybe<T>} value The nullable value to wrap.
+ */
+export const Optional: OptionalConstructor = funclass({
+  construct(value) {
+    const isPresent = isDefined(value)
+    readonlys2(this, {
+      isPresent,
+      isNotPresent: !isPresent
+    });
+  },
+  prototype: <FunctionClassSimpleStatics<Optional<unknown>>>{
+    sget(builder) {
+      const $this = this;
+      return $this.isPresent ? $this.get() : apply(builder, $this);
+    },
+    sapply(fn) {
+      const $this = this;
+      return $this.isPresent ? $this.apply(fn as any) : $this;
+    },
+    slet(fn) {
+      const $this = this;
+      return new Optional($this.isPresent ? $this.let(fn as any) : undefined);
+    },
+    ifPresent(fn) {
+      requireFunction(fn, "fn");
+      const $this = this;
+      $this.isPresent && call(fn!, $this, $this.get());
+      return $this;
+    },
+  }
+}, Wrapper);
+
 
 /**
  * Wrap the parameter with {@link Optional}

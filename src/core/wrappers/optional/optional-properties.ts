@@ -1,44 +1,31 @@
 import {Optional} from "./optional";
-import {readonlys} from "../../definer";
+import {readonly2} from "../../definer";
 import {IllegalAccessError} from "../../exceptions";
 import {Keys, Maybe, MaybeKeyType} from "../../../types/core";
-import {KeyableObject, MaybeKeyObjectType} from "../../../types/core/objects";
+import {KeyableObject, MaybeKeyObjectType, WithPrototype} from "../../../types/core/objects";
 import {isDefined, isFunction, isObject} from "../../objects/types";
 import {keys} from "../../objects/handlers/properties";
 import {apply} from "../../functions/apply";
 import {forEach} from "../../shortcuts/array";
 import {concat} from "../../shortcuts/string";
+import {funclass} from "../../definer/classes/";
+import {call} from "../../functions/call";
+import {FunctionClassSimpleStatics} from "../../../types/core/definer";
 
 function checkObjectAccess(optional: OptionalProperties<any>) {
-  if (optional.isPresent && !optional.hasObject)
+  const present = optional.isPresent;
+  if (present && !optional.hasObject)
     throw new IllegalAccessError(concat("The method is only access for object-like values, current type is ", typeof optional.value));
-  return optional.isPresent;
+  return present;
 }
 
-
-/**
- * @class
- * The OptionalProperties class.
- * @template T
- */
-export class OptionalProperties<T> extends Optional<T> {
+export interface OptionalProperties<T> extends Optional<T> {
   /**
    * True if the value is object, false otherwise.
    * @see {isObject}
    * @type boolean
    */
-  readonly hasObject!: boolean;
-
-  constructor(value: Maybe<T>) {
-    super(value);
-    readonlys(this as OptionalProperties<T>, {
-      hasObject: isObject(this.value)
-    })
-  }
-
-  slet<R, O = OptionalProperties<R>>(fn: Maybe<(this: OptionalProperties<T>, value: NonNullable<T>) => R>): O {
-    return new OptionalProperties<R>(this.isPresent ? this.let(fn as any) : undefined) as any
-  }
+  readonly hasObject: boolean;
 
   /**
    * Checks if the wrapped value property is defined and returns it.
@@ -47,45 +34,70 @@ export class OptionalProperties<T> extends Optional<T> {
    * @param assign If true, assigns the value returned by the builder param to the wrapped value.
    * @see {getDefined}
    */
-  prop<P extends Keys<T> | PropertyKey>(key: P, builder?: (this: this) => MaybeKeyObjectType<T, P>, assign?: boolean): MaybeKeyType<T, P> {
-    let value: MaybeKeyType<T, P> = undefined!;
-    if (checkObjectAccess(this))
-      value = (<KeyableObject>this.value)[key];
-    if (assign && !isDefined(value) && isFunction(builder)) {
-      value = apply(builder!, this) as any;
-      (<KeyableObject>this.value)[key] = value;
-    }
-    return value
-  }
+  prop<P extends Keys<T> | PropertyKey>(key: P, builder?: (this: this) => MaybeKeyObjectType<T, P>, assign?: boolean): MaybeKeyType<T, P>;
 
   /**
    * Wraps the value returns by {@link prop} with the {@link OptionalProperties} class.
    * @param key The property key.
    */
-  sprop<P extends Keys<T> | PropertyKey>(key: P): OptionalProperties<MaybeKeyType<T, P>> {
-    return new OptionalProperties(this.prop(key))
-  }
+  sprop<P extends Keys<T> | PropertyKey>(key: P): OptionalProperties<MaybeKeyType<T, P>>
 
   /**
    * Iterates on each enumerable property and apply fn.
    * @param fn The fn callback.
    */
-  ikeys(fn: Maybe<(this: NonNullable<T>, key: Keys<T>) => void>): this {
-    if (checkObjectAccess(this) && isFunction(fn)) {
-      forEach(keys(this.value as T), function (key) {
-        apply(fn!, this, [key])
-      }, this.value!);
-    }
-    return this;
-  }
+  ikeys(fn: Maybe<(this: NonNullable<T>, key: Keys<T>) => void>): this;
 
   /**
    * Wrap the value with the {@link Optional} class.
    */
-  optional() {
-    return new Optional(this.value)
-  }
+  optional(): Optional<T>;
 }
+
+
+export interface OptionalPropertiesConstructor extends WithPrototype<OptionalProperties<any>> {
+  new<T>(value: Maybe<T>): OptionalProperties<T>;
+}
+
+
+export const OptionalProperties: OptionalPropertiesConstructor = funclass<OptionalPropertiesConstructor>({
+  construct(value) {
+    readonly2(this, "hasObject", isObject(value));
+  },
+  prototype: <FunctionClassSimpleStatics<OptionalProperties<unknown>>>{
+    slet(fn) {
+      const $this = this;
+      return new OptionalProperties($this.isPresent ? $this.let(fn as any) : undefined)
+    },
+    prop(key, builder, assign) {
+      const $this = this;
+      let value: unknown = undefined;
+
+      checkObjectAccess($this) && (value = ($this.value as KeyableObject)[key]);
+
+      if (assign && !isDefined(value) && isFunction(builder)) {
+        value = apply(builder!, this) as any;
+        (<KeyableObject>this.value)[key] = value;
+      }
+
+      return value;
+    },
+    sprop(key) {
+      return new OptionalProperties(this.prop(key));
+    },
+    ikeys(fn) {
+      const $this = this,
+        value = $this.value;
+      if (checkObjectAccess($this) && isFunction(fn)) {
+        forEach(keys(value), (key) => call(fn!, value, key))
+      }
+      return $this;
+    },
+    optional() {
+      return new Optional(this.value);
+    }
+  }
+}, Optional);
 
 /**
  * Wrap the parameter with {@link OptionalProperties}

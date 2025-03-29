@@ -1,7 +1,6 @@
 import {multiple} from "./shared";
 import {Keys} from "../../types/core";
 import {DefinePropertyDescriptor, DefinePropertyDescriptors} from "../../types/core/objects/definer";
-import {hasOwn} from "../polyfills/objects/es2022";
 import {defineProperty} from "../shortcuts/object";
 import {KeyableObject} from "../../types/core/objects";
 
@@ -14,7 +13,10 @@ import {KeyableObject} from "../../types/core/objects";
  * @see {Object.defineProperty}
  */
 export function prop<T, K extends Keys<T> | PropertyKey = PropertyKey>(target: T, key: K, descriptor: DefinePropertyDescriptor<T, K>) {
-  hasOwn(target, key) || defineProperty(target, key, descriptor);
+  try {
+    // safe define for existing non-configurable descriptor
+    defineProperty(target, key, descriptor)
+  } catch (e) {}
 }
 
 /**

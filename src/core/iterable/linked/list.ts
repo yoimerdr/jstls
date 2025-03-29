@@ -1,22 +1,29 @@
 import {Instanceable, Maybe, MaybeNumber} from "../../../types/core";
-import {writeables} from "../../definer";
+import {writeable} from "../../definer";
 import {getDefined} from "../../objects/validators";
 import {MaybeNode, Node} from "./node";
 import {apply} from "../../functions/apply";
 import {each} from "../each";
+import {uid} from "../../polyfills/symbol";
+import {WithPrototype} from "../../../types/core/objects";
+import {funclass} from "../../definer/classes/";
+import {descriptor2} from "../../definer/shared";
+import {get, set} from "../../objects/handlers/getset";
+import {FunctionClassSimpleStatics} from "../../../types/core/definer";
+import {isDefined} from "../../objects/types";
+import {returns} from "../../utils";
 
 
 export function linkedAdd<T, N extends Node<T>>(this: LinkedList<T>, constructor: Instanceable<N, [value: T]>, value: T, index?: number) {
-  const node = new constructor(value);
-  index = getDefined(index, function () {
-    return this.size;
-  }, this);
-  let target: MaybeNode<T> = this.__head__;
-  if (this.isEmpty()) {
-    this.__head__ = node;
-    this.__tail__ = this.__head__;
+  const node = new constructor(value),
+    $this = this;
+  index = getDefined(index, returns($this.size));
+  let target: MaybeNode<T> = get($this, metaHead);
+  if ($this.isEmpty()) {
+    set($this, metaHead, node);
+    set($this, metaTail, node);
   } else if (index >= this.size)
-    target = this.__tail__;
+    target = get($this, metaTail);
 
   return {
     target,
@@ -26,14 +33,16 @@ export function linkedAdd<T, N extends Node<T>>(this: LinkedList<T>, constructor
 }
 
 export function linkedPop<T>(this: LinkedList<T>, index?: number) {
-  index = getDefined(index, function () {
-    return this.size - 1;
-  }, this);
-  let target: MaybeNode<T> = this.__head__;
-  let value: Maybe<T> = null;
-  if (index === 0 && this.isNotEmpty()) {
-    value = this.__head__!.value();
-    this.__head__ = this.__head__!.next();
+
+  const $this = this;
+  index = (isDefined(index) ? index! : $this.size - 1) - 1;
+
+  let target: MaybeNode<T> = get($this, metaHead),
+    value: Maybe<T> = null;
+
+  if (index === -1 && this.isNotEmpty()) {
+    value = target!.value();
+    set($this, metaHead, target!.next());
   }
 
   return {
@@ -43,89 +52,126 @@ export function linkedPop<T>(this: LinkedList<T>, index?: number) {
   }
 }
 
-export function linkedAddNext(source: any) {
-  while (source.index > 1 && source.target!.hasNext()) {
+export function linkedAndNext(source: any) {
+  while (source.index > 0 && source.target!.hasNext()) {
     --source.index;
     source.target = source.target!.next();
   }
 }
 
 export function linkedAddedNode<T>(this: LinkedList<T>, source: any) {
-  if (source.target) {
-    source.target.next(source.node, true);
-    if (source.target === this.__tail__)
-      this.__tail__ = source.target.next() as Node<T>;
+  const target = source.target,
+    $this = this;
+  if (target) {
+    target.next(source.node, true);
+    target === get($this, metaTail) && set($this, metaTail, target.next());
   }
+  set($this, metaSize, $this.size + 1)
 }
 
 export function linkedRemovedNode<T>(this: LinkedList<T>, source: any) {
-  source.value = source.target.value();
-  if (source.target.next() === this.__tail__)
-    this.__tail__ = source.target as any;
-  source.target.next(source.target.next()!.next());
+  const target: Node<T> = source.target,
+    $this = this,
+    next = target.next();
+
+  source.value = (source.index > 0 ? next! : target).value();
+  next === get($this, metaTail) && set($this, metaTail, target)
+  next && target.next(next.next());
+  set($this, metaSize, $this.size - 1);
 }
 
-export class LinkedList<T = any> {
-  protected __head__!: MaybeNode<T>;
-  protected __tail__!: MaybeNode<T>;
-  protected __size__!: number;
+export interface LinkedList<T> {
+  get size(): number;
 
-  constructor(values?: ArrayLike<T>) {
-    writeables(this as LinkedList<T>, {
-      __head__: null,
-      __tail__: null,
-      __size__: 0,
-    });
-    if (values)
-      each(values, this.add, this);
-  }
+  isEmpty(): boolean;
 
-  get size(): number {
-    return this.__size__;
-  }
+  isNotEmpty(): boolean;
 
-  isEmpty(): boolean {
-    return this.__size__ === 0;
-  }
+  clear(): void;
 
-  isNotEmpty(): boolean {
-    return !this.isEmpty();
-  }
+  forEach<R>(callback: (value: T, index: number) => void, thisArg?: R): void;
 
-  clear(): void {
-    this.__head__ = null;
-    this.__tail__ = null;
-    this.__size__ = 0;
-  }
+  add(value: T, index?: MaybeNumber): this;
 
-  forEach<R>(callback: (value: T, index: number) => void, thisArg?: R): void {
-    let index = 0;
-    let target = this.__head__;
-    while (target) {
-      apply(callback, thisArg!, [target.value(), index]);
-      target = target.next();
-      ++index;
-    }
-  }
+  pop(index?: MaybeNumber): Maybe<T>;
 
-  add(value: T, index?: MaybeNumber): this {
-    const source = apply(linkedAdd, this, [Node, value, index!]);
-    apply(linkedAddNext, this, [source])
-    apply(linkedAddedNode, this, [source])
-    this.__size__++;
-    return this;
-  }
+  head(): MaybeNode<T>;
 
-  pop(index?: MaybeNumber): Maybe<T> {
-    if (this.isEmpty())
-      return null;
-    const source = apply(linkedPop, this, [index!]);
-    apply(linkedAddNext, this, [source])
-    if(!source.target)
-      return null;
-    apply(linkedRemovedNode, this, [source])
-    --this.__size__;
-    return source.value as T;
-  }
-
+  tail(): MaybeNode<T>;
 }
+
+export interface LinkedListConstructor extends WithPrototype<LinkedList<any>> {
+  new<T = any>(): LinkedList<T>;
+
+  new<T>(values: ArrayLike<T>): LinkedList<T>;
+}
+
+const metaHead = uid("mH"),
+  metaTail = uid("mT"),
+  metaSize = uid("mS");
+
+
+export const LinkedList: LinkedListConstructor = funclass<LinkedListConstructor>({
+  construct(values) {
+    const $this = this;
+    writeable($this, metaHead, null);
+    writeable($this, metaTail, null);
+    writeable($this, metaSize, 0);
+    values && each(values, $this.add, $this);
+  },
+  protodescriptor: {
+    size: descriptor2<LinkedList<any>>(function () {
+      return get(this, metaSize);
+    })
+  },
+  prototype: <FunctionClassSimpleStatics<LinkedList<unknown>>>{
+    isEmpty() {
+      return this.size === 0;
+    },
+    isNotEmpty() {
+      return !this.isEmpty();
+    },
+    add(value, index) {
+      const $this = this,
+        source = apply(linkedAdd, $this, [Node, value, index!]);
+
+      apply(linkedAndNext, $this, [source])
+      apply(linkedAddedNode, $this, [source])
+      return $this;
+    },
+    pop(index) {
+      const $this = this;
+      if ($this.isEmpty())
+        return null;
+      const source = apply(linkedPop, $this, [index!]);
+      apply(linkedAndNext, $this, [source])
+      if (!source.target)
+        return null;
+      apply(linkedRemovedNode, $this, [source])
+      return source.value;
+    },
+    forEach(callback, thisArg) {
+      let index = 0,
+        target = get(this, metaHead);
+
+      while (target) {
+        apply(callback, thisArg, [target.value(), index]);
+        target = target.next();
+        ++index;
+      }
+    },
+    clear() {
+      const $this = this;
+      set($this, metaHead, null);
+      set($this, metaTail, null);
+      set($this, metaSize, 0);
+    },
+    head() {
+      return get(this, metaHead)
+    },
+    tail() {
+      return get(this, metaTail)
+    },
+
+  }
+})

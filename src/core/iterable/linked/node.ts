@@ -1,8 +1,13 @@
 import {Maybe} from "../../../types/core";
-import {writeables} from "../../definer";
+import {writeable} from "../../definer";
 import {isNotEmpty} from "../../extensions/shared/iterables";
 import {isDefined} from "../../objects/types";
 import {apply} from "../../functions/apply";
+import {uid} from "../../polyfills/symbol";
+import {get, set} from "../../objects/handlers/getset";
+import {WithPrototype} from "../../../types/core/objects";
+import {funclass} from "../../definer/classes/";
+import {FunctionClassSimpleStatics} from "../../../types/core/definer";
 
 export type MaybeNode<T> = Maybe<Node<T>>;
 
@@ -11,50 +16,65 @@ export function isNode(value: any): boolean {
 }
 
 export function assignNextNode<T, >(this: Node<T>, args: IArguments,
-                                  isNode: (value: any) => boolean,
-                                  onPreserve?: (this: Node<T>, next: MaybeNode<T>) => void): MaybeNode<T> {
-  if(apply(isNotEmpty, args)) {
+                                    isNode: (value: any) => boolean,
+                                    onPreserve?: (this: Node<T>, next: MaybeNode<T>) => void): MaybeNode<T> {
+  const $this = this;
+  if (apply(isNotEmpty, args)) {
     let next: MaybeNode<T> = null;
-    if(isNode(args[0])) {
+    if (isNode(args[0])) {
       next = args[0];
 
-      if(args[1] && this.hasNext()) {
-        next!.__next__ = this.__next__;
-        if(onPreserve)
-          apply(onPreserve, this, [next]);
+      if (args[1] && this.hasNext()) {
+        set(next, metaNext, get($this, metaNext,));
+        onPreserve && apply(onPreserve, $this, [next]);
       }
     }
-    this.__next__ = next;
+    set($this, metaNext, next);
   }
-  return this.__next__;
+  return get($this, metaNext);
+}
+
+const metaValue = uid("mV"),
+  metaNext = uid("mN");
+
+export interface Node<T> {
+  value(): T;
+
+  value(value: T): T;
+
+  next(): MaybeNode<T>;
+
+  next(next: MaybeNode<T>, preserve?: boolean): MaybeNode<T>;
+
+  hasNext(): boolean;
+}
+
+export interface NodeConstructor extends WithPrototype<Node<any>> {
+  new<T>(value: T): Node<T>;
 }
 
 /**
  * Represents a node in a singly linked structure.
  */
-export class Node<T> {
-  protected __value__!: T;
-  protected __next__!: MaybeNode<T>;
-
-  constructor(value: T) {
-    writeables(this as Node<T>, {
-      __value__: value,
-      __next__: null,
-    })
+export const Node: NodeConstructor = funclass<NodeConstructor>({
+  construct(value) {
+    const $this = this;
+    writeable($this, metaValue, value);
+    writeable($this, metaNext, null);
+  },
+  prototype: <FunctionClassSimpleStatics<Node<unknown>>>{
+    value(value) {
+      const $this = this;
+      if (apply(isNotEmpty, arguments))
+        set($this, metaValue, value);
+      return get($this, metaValue);
+    },
+    next() {
+      return apply(assignNextNode, this, [arguments, isNode]);
+    },
+    hasNext() {
+      return isDefined(get(this, metaNext))
+    }
   }
-
-  value(value?: T): T {
-    if(apply(isNotEmpty, arguments))
-      this.__value__ = value!;
-    return this.__value__;
-  }
-
-  next(next?: MaybeNode<T>, preserve?: boolean): MaybeNode<T> {
-    return apply(assignNextNode, this, [arguments, isNode]) as MaybeNode<T>;
-  }
-
-  hasNext() {
-    return isDefined(this.__next__);
-  }
-}
+})
 

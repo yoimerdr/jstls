@@ -3,17 +3,19 @@ import {IllegalArgumentError} from "../exceptions";
 import {NumberExtensions} from "../../types/core/extensions/number";
 import {max, min} from "../shortcuts/math";
 import {concat} from "../shortcuts/string";
+import {getDefined} from "../objects/validators";
+import {returns} from "../utils";
 
 export function coerceAtLeast(this: Number, minimum: number): number;
 export function coerceAtLeast(minimum: number, $this: number): number;
 export function coerceAtLeast(this: Number, minimum: number, $this?: number): number {
-  return max((this || $this).valueOf(), minimum)
+  return max(getDefined(this, returns($this!)).valueOf(), minimum)
 }
 
 export function coerceAtMost(this: Number, maximum: number): number;
 export function coerceAtMost(maximum: number, $this: number): number;
 export function coerceAtMost(this: Number, maximum: number, $this?: number): number {
-  return min((this || $this).valueOf(), maximum)
+  return min(getDefined(this, returns($this!)).valueOf(), maximum)
 }
 
 export function coerceIn(this: Number, minimum: number, maximum: number): number;
@@ -21,20 +23,20 @@ export function coerceIn(minimum: number, maximum: number, $this: number): numbe
 export function coerceIn(this: Number, minimum: number, maximum: number, $this?: number): number {
   if (minimum > maximum)
     throw new IllegalArgumentError(concat("Cannot coerce value to an empty range: maximum '", maximum, "' is less than minimum '", minimum, "'"))
-  return min(max((this || $this).valueOf(), minimum), maximum)
+  return min(max(getDefined(this, returns($this!)).valueOf(), minimum), maximum)
 }
 
 export function isFromTo(this: Number, minimum: number, maximum: number): boolean;
 export function isFromTo(minimum: number, maximum: number, $this: number): boolean;
 export function isFromTo(this: Number, minimum: number, maximum: number, $this?: number): boolean {
-  const value = (this || $this).valueOf();
+  const value = getDefined(this, returns($this!)).valueOf();
   return value >= minimum && value <= maximum;
 }
 
 export function isFromUntil(this: Number, minimum: number, maximum: number): boolean;
 export function isFromUntil(minimum: number, maximum: number, $this: number): boolean;
 export function isFromUntil(this: Number, minimum: number, maximum: number, $this?: number): boolean {
-  const value = (this || $this).valueOf();
+  const value = getDefined(this, returns($this!)).valueOf();
   return value >= minimum && value < maximum;
 }
 

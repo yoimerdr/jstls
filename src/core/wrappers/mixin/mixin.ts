@@ -1,10 +1,10 @@
-import {Instanceable,} from "../../../types/core";
+import {Instanceable, JoinInstanceableTypes,} from "../../../types/core";
 import {MixinOptions} from "../../../types/core/wrappers/mixin";
 import {readonly} from "../../definer";
 import {uid} from "../../polyfills/symbol";
-import {propertyNames} from "../../objects/handlers/properties";
+import {commonPrototype, commonStatics, propertyNames} from "../../objects/handlers/properties";
 import {isDefined, isPlainObject} from "../../objects/types";
-import {KeyableObject} from "../../../types/core/objects";
+import {KeyableObject, WithPrototype} from "../../../types/core/objects";
 import {apply} from "../../functions/apply";
 import {isEmpty} from "../../extensions/shared/iterables";
 import {IllegalAccessError, RequiredArgumentError} from "../../exceptions";
@@ -12,9 +12,12 @@ import {hasOwn} from "../../polyfills/objects/es2022";
 import {is} from "../../polyfills/objects/es2015";
 import {get} from "../../objects/handlers/getset";
 import {forEach} from "../../shortcuts/array";
+import {includes} from "../../polyfills/indexable/es2016";
+import {call} from "../../functions/call";
+import {funclass} from "../../definer/classes";
 
 
-const mixinKey = uid("MixinClasses");
+const mixinKey = uid("mC");
 
 export function getMixinBases(instance: Object) {
   return get(instance.constructor, mixinKey);
@@ -48,6 +51,25 @@ export function mixin<T extends Instanceable[]>(options: T | MixinOptions<T>) {
   return function <R>(constructor: Instanceable<R>, context: ClassDecoratorContext) {
     mixinPrototype(constructor, (options as MixinOptions<T>).bases, (options as MixinOptions<T>).statics, (options as MixinOptions<T>).force)
   }
+}
+
+export interface Mixin<T> {}
+
+export interface MixinConstructor extends WithPrototype<Mixin<any>> {
+  new<T extends Instanceable[]>(...args: T[]): JoinInstanceableTypes<T>;
+  /**
+   * Mixin the properties names from bases prototypes to this prototype.
+   * @see {mixinPrototype}
+   *
+   * @param bases Other classes references (or objects with a `prototype` object)
+   * @param statics If true, it also mixes the static property names.  Default true.
+   * @param force If true, if any value already exists for any property name in target, it will be replaced.
+   * by the value of the last base with that property name.
+   * @see {mixer}
+   * @see {mixerSuper}
+   * @see {mixerInit}
+   */
+  mix<I extends Instanceable[], T extends typeof Mixin<I>>(this: T, bases: I, statics?: boolean, force?: boolean): void;
 }
 
 /**
@@ -102,26 +124,15 @@ export function mixin<T extends Instanceable[]>(options: T | MixinOptions<T>) {
  * @see {mixerSuper}
  * @see {mixerInit}
  */
-export class Mixin<T extends Instanceable[]> {
-
-  /**
-   * Mixin the properties names from bases prototypes to this prototype.
-   * @see {mixinPrototype}
-   *
-   * @param bases Other classes references (or objects with a `prototype` object)
-   * @param statics If true, it also mixes the static property names.  Default true.
-   * @param force If true, if any value already exists for any property name in target, it will be replaced.
-   * by the value of the last base with that property name.
-   * @see {mixer}
-   * @see {mixerSuper}
-   * @see {mixerInit}
-   */
-  static mix<I extends Instanceable[], T extends Mixin<I>>(this: T, bases: I, statics?: boolean, force?: boolean) {
-    if (is((this as KeyableObject).prototype.constructor, Mixin.prototype.constructor))
-      throw new IllegalAccessError("The static function mix must be called from the class that inherits from Mixin.")
-    mixinPrototype(this as any, bases, statics, force)
+export const Mixin: MixinConstructor = funclass({
+  statics: {
+    mix(bases, statics, force) {
+      if (is((this as KeyableObject).prototype.constructor, Mixin.prototype.constructor))
+        throw new IllegalAccessError("The static function mix must be called from the class that inherits from Mixin.")
+      mixinPrototype(this as any, bases, statics, force)
+    }
   }
-}
+});
 
 /**
  * Mixin the properties names from bases prototypes to the target prototype.
@@ -182,25 +193,35 @@ export function mixinPrototype<T extends Instanceable[]>(target: Instanceable, b
   if (hasOwn(target, mixinKey))
     return;
 
+  const prototype = target.prototype;
   forEach(bases, cons => {
+    const basePrototype = cons.prototype;
     // prototype methods
-    forEach(propertyNames(cons.prototype), name => {
-      if (name !== "constructor") {
-        if (!isDefined(target.prototype[name]) || force)
-          target.prototype[name] = cons.prototype[name];
+    forEach(propertyNames(basePrototype), name => {
+      if (!call(includes, commonPrototype, name)) {
+        if (!isDefined(prototype[name]) || force) {
+          try {
+            // safe assign for get/set functions
+            prototype[name] = basePrototype[name];
+          } catch (e) {
+          }
+        }
       }
     })
 
     if (!isDefined(statics) || statics) {
       // static methods
-      const keys = ['length', 'name', 'prototype'];
       forEach(propertyNames(cons), (name) => {
-        if (keys.indexOf(name as string) === -1 && (!isDefined(get(target, name)) || force))
-          (target as KeyableObject)[name] = (cons as KeyableObject)[name];
+        if (!call(includes, commonStatics, name) && (!isDefined(get(target, name)) || force)) {
+          try {
+            // safe assign for get/set functions
+            (target as KeyableObject)[name] = (cons as KeyableObject)[name];
+          } catch (e) {
+          }
+        }
       })
     }
   })
-
 
   readonly(target, mixinKey, bases);
 }
