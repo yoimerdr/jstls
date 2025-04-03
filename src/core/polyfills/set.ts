@@ -1,15 +1,20 @@
 import {Maybe, MaybeString} from "../../types/core";
-import {KeyableObject} from "../../types/core/objects";
-import {configurable, readonlys} from "../definer";
+import {KeyableObject, WithPrototype} from "../../types/core/objects";
+import {configurable, readonly} from "../definer";
 import {isDefined, isObject} from "../objects/types";
-import {deepAssign} from "../objects/factory";
-import {keys} from "../objects/handlers/properties";
-import {apply} from "../functions/apply";
+import {assign} from "../objects/factory";
 import {bind} from "../functions/bind";
 import {each} from "../iterable/each";
 import {len} from "../shortcuts/indexable";
-import {forEach} from "../shortcuts/array";
+import {clear, forEach} from "../shortcuts/array";
 import {concat} from "../shortcuts/string";
+import {uid} from "./symbol";
+import {get, set} from "../objects/handlers/getset";
+import {funclass} from "../definer/classes";
+import {slice} from "../iterable";
+import {FunctionClassSimpleStatics} from "../../types/core/definer";
+import {deletes, deletesAll} from "../objects/handlers/deletes";
+import {descriptor2} from "../definer/shared";
 
 type SetSource = Readonly<{
   key: MaybeString,
@@ -18,22 +23,24 @@ type SetSource = Readonly<{
   index: number
 }>;
 
-const setKeySymbol = '[[PolyfillSetKey]]';
+const setKey = uid("mK"),
+  setObjects = uid("mO"),
+  setPrimitives = uid("mP");
 
+function item2source<T>($this: Set<T>, item: T): SetSource {
+  let key = isObject(item) ? null : concat("", item as Object),
+    already = false,
+    setKeySymbol = get($this, setKey),
+    index: number;
 
-function setSource<T>(this: Set<T>, item: T): SetSource {
-  let key = isObject(item) ? null : concat(setKeySymbol, ":'", item as Object, "'");
-  let already: boolean = false;
-  let index: number;
   if (!key) {
     index = (item as KeyableObject)[setKeySymbol];
-    if (isDefined(index) && this.__objects__[index] !== item)
-      delete (item as KeyableObject)[setKeySymbol];
-    configurable(item as KeyableObject, setKeySymbol, this.size);
-  } else index = this.__primitives__[key];
+    const source = get($this, setObjects, index);
+    source && source !== item && deletes(item, setKeySymbol);
+    configurable(item as KeyableObject, setKeySymbol, $this.size);
+  } else index = get($this, setPrimitives, key);
 
-  if (isDefined(index))
-    already = this.__objects__[index] === item;
+  isDefined(index) && (already = get($this, setObjects, index) === item);
 
   return {
     key,
@@ -43,81 +50,98 @@ function setSource<T>(this: Set<T>, item: T): SetSource {
   }
 }
 
-export class Set<T = any> {
-  protected readonly __objects__!: T[];
-  protected readonly __primitives__!: KeyableObject<number>;
-
-  constructor(source?: Maybe<ArrayLike<T> | Set<T>>) {
-    const isSet = source instanceof Set;
-    readonlys(this as Set<T>, {
-      __objects__: isSet ? source.__objects__.slice() : [],
-      __primitives__: isSet ? deepAssign({}, source.__primitives__) : {}
-    });
-
-    if (!isSet && source)
-      each(source, this.add, this);
-  }
-
+export interface Set<T> {
   /**
    * Appends a new element with a specified value to the end of the Set.
    */
-  add(item: T): this {
-    const source = apply(setSource, this, [item]);
-    if (source.already)
-      return this;
-
-    if (!source.isObject)
-      this.__primitives__[source.key!] = this.size;
-    this.__objects__[this.size] = item;
-
-    return this;
-  }
-
-  clear(): void {
-    this.__objects__.length = 0;
-    forEach(keys(this.__primitives__), function (key) {
-      delete this[key]
-    }, this.__primitives__)
-  }
+  add(item: T): this;
 
   /**
    * Removes a specified value from the Set.
    * @returns Returns true if an element in the Set existed and has been removed, or false if the element does not exist.
    */
-  delete(value: T): boolean {
-    const source = apply(setSource, this, [value]);
-    if (source.already) {
-      if (!source.isObject)
-        delete this.__primitives__[source.key!];
-      this.__objects__.splice(source.index!, 1)
-      return true;
-    }
-    return false
-  };
+  delete(value: T): boolean;
 
   /**
    * Executes a provided function once per each value in the Set object, in insertion order.
    */
   forEach<R>(callbackfn: (this: R, value: T, value2: T, set: Set<T>) => void, thisArg?: R): void;
-  forEach<R>(callbackfn: (this: R | void, value: T, value2: T, set: Set<T>) => void, thisArg?: R): void {
-    callbackfn = bind(callbackfn, thisArg);
-    forEach(this.__objects__, function (value) {
-      callbackfn(value, value, this);
-    }, this);
-  }
 
   /**
    * @returns a boolean indicating whether an element with the specified value exists in the Set or not.
    */
-  has(value: T): boolean {
-    const source = apply(setSource, this, [value]);
-    return source.already;
-  }
+  has(value: T): boolean;
 
   /**
    * @returns the number of (unique) elements in Set.
    */
-  get size(): number {
-    return len(this.__objects__);
-  }
+  readonly size: number;
+
+  clear(): void;
 }
+
+export interface SetConstructor extends WithPrototype<Set<any>> {
+  new<T>(source?: Maybe<ArrayLike<T> | Set<T>>): Set<T>;
+}
+
+export const Set: SetConstructor = funclass({
+  construct(source) {
+    const $this = this,
+      isSet = source instanceof Set;
+
+    readonly($this, setObjects, isSet ? slice(get(source, setObjects)) : []);
+    readonly($this, setPrimitives, isSet ? assign({}, get(source, setPrimitives)) : {});
+    readonly($this, setKey, uid("mS"))
+
+    !isSet && source && each(source, $this.add, $this);
+  },
+  prototype: <FunctionClassSimpleStatics<Set<any>>>{
+    add(item) {
+      const $this = this,
+        source = item2source($this, item);
+
+      if (!source.already) {
+        const size = $this.size;
+        if (!source.isObject)
+          set($this, setPrimitives, source.key, size);
+        set($this, setObjects, size, item);
+      }
+      return $this;
+    },
+    forEach(fn, thisArg) {
+      fn = bind(fn, thisArg);
+      const $this = this;
+      forEach(get($this, setObjects), (value) => fn(value, value, $this));
+    },
+    has(value) {
+      const $this = this,
+        source = item2source($this, value);
+
+      return source.already;
+    },
+    delete(value) {
+      const $this = this,
+        source = item2source($this, value);
+
+      if (source.already) {
+        source.isObject && deletes($this, setPrimitives, source.key!);
+        get($this, setObjects,).splice(source.index!, 1);
+
+        return true;
+      }
+
+      return false;
+    },
+    clear() {
+      const $this = this,
+        primitives = get($this, setPrimitives);
+      clear(get($this, setObjects));
+      deletesAll(primitives);
+    }
+  },
+  protodescriptor: {
+    size: descriptor2(function () {
+      return len(this[setObjects])
+    })
+  }
+})
