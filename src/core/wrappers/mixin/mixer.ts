@@ -85,7 +85,7 @@ export interface MixerConstructor extends WithPrototype<Mixer<any>> {
 }
 
 export const Mixer: MixerConstructor = funclass({
-  construct(target) {
+  construct: function (target) {
     readonly2(this, "target", target);
   },
   prototype: <FunctionClassSimpleStatics<Mixer<any>>>{

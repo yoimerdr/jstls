@@ -22,7 +22,7 @@ import {funclass} from "../definer/classes";
 import {descriptor2} from "../definer/shared";
 import {PropertyDescriptors} from "../../types/core/objects/definer";
 import {mapped, simple} from "../definer/getters/builders";
-import {nullable} from "./index";
+import {nullable} from "./types";
 
 /**
  * Path separator
@@ -115,7 +115,7 @@ export interface PathConstructor extends WithPrototype<Path> {
  * Simple path class implementation for handling file paths
  */
 export const Path: PathConstructor = funclass({
-  construct(path) {
+  construct: function (path) {
     const parts = path instanceof Path ? path.parts : normalize(path)
       .split(sep);
 

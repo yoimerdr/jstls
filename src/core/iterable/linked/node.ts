@@ -57,7 +57,7 @@ export interface NodeConstructor extends WithPrototype<Node<any>> {
  * Represents a node in a singly linked structure.
  */
 export const Node: NodeConstructor = funclass<NodeConstructor>({
-  construct(value) {
+  construct: function (value) {
     const $this = this;
     writeable($this, metaValue, value);
     writeable($this, metaNext, nullable);

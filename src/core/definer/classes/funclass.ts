@@ -8,7 +8,7 @@ import {
 import {call} from "../../functions/call";
 import {reduce} from "../../iterable";
 import {IndeterminatePrototype, KeyableObject, PrototypeType, WithPrototype} from "../../../types/core/objects";
-import {keys, methodProperties, propertyNames} from "../../objects/handlers/properties";
+import {keys, methodProperties} from "../../objects/handlers/properties";
 import {props} from "../props";
 import {prototype} from "../../extender/prototype";
 import {includes} from "../../polyfills/indexable/es2016";
@@ -147,7 +147,6 @@ export function funclass<I extends Instanceable, P extends WithPrototype>(builde
   statidescriptor && props(init, statidescriptor);
   statics && props(init, sourceToDescriptor(statics));
 
-  console.log(builder, init, init!.prototype || (builder as KeyableObject).construct.prototype);
   const funPrototype = init.prototype;
   if (!call(includes, acceptedTypes, typeof funPrototype))
     throw TypeError("The function prototype must be an object.");

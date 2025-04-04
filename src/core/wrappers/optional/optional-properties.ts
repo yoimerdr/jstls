@@ -62,7 +62,7 @@ export interface OptionalPropertiesConstructor extends WithPrototype<OptionalPro
 
 
 export const OptionalProperties: OptionalPropertiesConstructor = funclass<OptionalPropertiesConstructor>({
-  construct(value) {
+  construct: function (value) {
     readonly2(this, "hasObject", isObject(value));
   },
   prototype: <FunctionClassSimpleStatics<OptionalProperties<unknown>>>{

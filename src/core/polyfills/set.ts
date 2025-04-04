@@ -87,7 +87,7 @@ export interface SetConstructor extends WithPrototype<Set<any>> {
 }
 
 export const Set: SetConstructor = funclass({
-  construct(source) {
+  construct: function (source) {
     const $this = this,
       isSet = source instanceof Set;
 

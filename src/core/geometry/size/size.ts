@@ -240,7 +240,7 @@ export interface SizeConstructor extends WithPrototype<Size> {
  * @class
  */
 export const Size: SizeConstructor = funclass({
-  construct(width, height) {
+  construct: function (width, height) {
     if (width instanceof Size) {
       height = width.getHeight();
       width = width.getWidth();

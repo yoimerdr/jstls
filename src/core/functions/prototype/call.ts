@@ -5,8 +5,8 @@ import {
   InstanceMethodParameters,
   InstanceMethodReturn
 } from "../../../types/core";
-import {ArrayLike} from "../../../types/core/array.ts";
-import {apply} from "../apply.ts";
+import {ArrayLike} from "../../../types/core/array";
+import {apply} from "../apply";
 import {slice} from "../../iterable";
 
 export function protocall<T extends ArrayConstructor, P extends InstanceMethodKeys<T>>(cls: T, key: P | PropertyKey, instance: ArrayLike, ...args: InstanceMethodParameters<T, P>): InstanceMethodReturn<T, P>;

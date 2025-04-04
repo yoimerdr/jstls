@@ -1,4 +1,4 @@
-import {protoapply} from "./apply.ts";
+import {protoapply} from "./apply";
 import {Instanceable, InstanceableParameters, InstanceableType, SafeReturnType} from "../../../types/core";
 import {slice} from "../../iterable";
 

@@ -85,7 +85,7 @@ function wapply(this: Wrapper<any>, fn: any) {
  * @template T
  */
 export const Wrapper: WrapperConstructor = funclass({
-  construct(value) {
+  construct: function (value) {
     readonly2(this, "value", value);
   },
   prototype: <FunctionClassSimpleStatics<Wrapper<unknown>>>{

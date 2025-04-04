@@ -64,7 +64,7 @@ export interface OptionalConstructor extends WithPrototype<Optional<any>> {
  * @param {Maybe<T>} value The nullable value to wrap.
  */
 export const Optional: OptionalConstructor = funclass({
-  construct(value) {
+  construct: function (value) {
     const isPresent = isDefined(value)
     readonlys2(this, {
       isPresent,

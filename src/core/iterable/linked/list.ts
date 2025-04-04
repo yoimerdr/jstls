@@ -110,7 +110,7 @@ const metaHead = uid("mH"),
 
 
 export const LinkedList: LinkedListConstructor = funclass<LinkedListConstructor>({
-  construct(values) {
+  construct: function (values) {
     const $this = this;
     writeable($this, metaHead, nullable);
     writeable($this, metaTail, nullable);

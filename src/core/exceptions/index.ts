@@ -1,42 +1,50 @@
-export class IllegalAccessError extends Error {
-  name = "IllegalAccessError";
+import {funclass} from "../definer/classes";
+import {FunctionClassConstructor} from "../../types/core/definer";
+import {WithPrototype} from "../../types/core/objects";
+
+
+interface ErrorConstructor<T extends Error> extends WithPrototype<T> {
+  new(message?: string): T;
+
+  (message?: string): T;
 }
 
-// export interface IllegalAccessError extends Error {
-// }
-//
-// export const IllegalAccessError = funclass<FunctionClassConstructor<IllegalAccessError>>({
-//   construct() {
-//     this.name = "IllegalAccessError";
-//   }
-// }, Error)
-
-
-export class IllegalArgumentError extends Error {
-  name = "IllegalArgumentError";
+export interface IllegalAccessError extends Error {
 }
 
-// export interface IllegalArgumentError extends Error {
-// }
-//
-// export const IllegalArgumentError = funclass<FunctionClassConstructor<IllegalArgumentError>>({
-//   construct() {
-//     this.name = "IllegalArgumentError";
-//   }
-// }, Error)
-
-export class RequiredArgumentError extends Error {
-  name = "RequiredArgumentError";
+export interface IllegalAccessErrorConstructor extends ErrorConstructor<IllegalAccessError> {
 }
 
-// export interface RequiredArgumentError extends Error {
-// }
-//
-// export const RequiredArgumentError = funclass<FunctionClassConstructor<RequiredArgumentError>>({
-//   construct() {
-//     this.name = "RequiredArgumentError";
-//   }
-// }, Error)
+export const IllegalAccessError: IllegalAccessErrorConstructor = funclass({
+  construct: function () {
+    this.name = "IllegalAccessError";
+  }
+}, Error)
+
+
+export interface IllegalArgumentError extends Error {
+}
+
+export interface IllegalArgumentErrorConstructor extends ErrorConstructor<IllegalArgumentError> {
+}
+
+export const IllegalArgumentError: IllegalArgumentErrorConstructor = funclass({
+  construct: function () {
+    this.name = "IllegalArgumentError";
+  }
+}, Error)
+
+export interface RequiredArgumentError extends Error {
+}
+
+export interface RequiredArgumentErrorConstructor extends ErrorConstructor<IllegalArgumentError> {
+}
+
+export const RequiredArgumentError: RequiredArgumentErrorConstructor = funclass<FunctionClassConstructor<RequiredArgumentError>>({
+  construct: function () {
+    this.name = "RequiredArgumentError";
+  }
+}, Error)
 
 
 

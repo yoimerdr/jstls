@@ -95,7 +95,7 @@ export interface PromiseConstructor {
 }
 
 export const Promise: PromiseConstructor = funclass<PromiseConstructor>({
-  construct(executor) {
+  construct: function (executor) {
     requireFunction(executor);
     const $this = this,
       rej = bind(reject, $this);

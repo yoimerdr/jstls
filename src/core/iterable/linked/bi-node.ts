@@ -57,7 +57,7 @@ const metaPrev = uid('mP');
  * Represents a node in a doubly linked structure.
  */
 export const BiNode: BiNodeConstructor = funclass<BiNodeConstructor>({
-  construct() {
+  construct: function () {
     writeable(this, metaPrev, nullable);
   },
   prototype: <FunctionClassSimpleStatics<BiNode<unknown>>>{

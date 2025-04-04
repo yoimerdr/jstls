@@ -254,7 +254,7 @@ export interface IterConstructor extends WithPrototype<Iter<any>> {
  * @class
  */
 export const Iter: IterConstructor = funclass({
-  construct(source, start, end, step) {
+  construct: function (source, start, end, step) {
     if (source instanceof Iter) {
       start = source.startIndex;
       end = source.endIndex;

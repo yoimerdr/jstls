@@ -108,7 +108,7 @@ export interface SingletonConstructor<T extends Singleton<T> = any> extends With
  * console.log(a === b) // true
  */
 export const Singleton: SingletonConstructor = funclass({
-  construct(init) {
+  construct: function (init) {
     const $this = this;
     if (is($this.constructor, Singleton))
       throw new IllegalAccessError('[Singleton] The Singleton class not allowed to be instantiated. Is only allowed to be extended.');
