@@ -4,6 +4,7 @@ import {hasOwn} from "../../polyfills/objects/es2022";
 import {isArray} from "../../shortcuts/array";
 import {isFunction, isObject, isString} from "../types";
 import {self} from "../../utils";
+import {indefinite} from "../../utils/types";
 import {reduce, slice} from "../../iterable";
 import {len} from "../../shortcuts/indexable";
 import {apply} from "../../functions/apply";
@@ -42,7 +43,7 @@ export function get<T, K extends Keys<T>>(object: T & KeyableObject, key: K | Pr
 export function get<T, K extends Keys<T>>(object: T & KeyableObject, key: K | PropertyKey, ...keys: PropertyKey[]): Maybe<T[K]> {
   let args = arguments, i = 1;
   if (len(args) <= 2)
-    return object ? object[key] : undefined;
+    return object ? object[key] : indefinite;
 
   for (; i < len(args); i++) {
     key = args[i];
@@ -89,12 +90,12 @@ export function set<T, K extends Keys<T>>(object: T & KeyableObject, key: K | Pr
 export function set<T, K extends Keys<T>>(object: T & KeyableObject, key: K | PropertyKey, key2: PropertyKey, ...keysOrValue: PropertyKey[]): any {
   const args = arguments, lt = len(args), value = args[lt - 1];
   if (lt > 3) {
-    object = apply(get, undefined, <any>slice(args, 0, lt - 2))
+    object = apply(get, indefinite, slice(args, 0, lt - 2))
     key = args[lt - 2];
   }
 
   if (!object)
-    return undefined;
+    return indefinite;
 
   object[key] = value;
   return object[key];

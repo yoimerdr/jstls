@@ -3,9 +3,10 @@ import {descriptor, multiple} from "./shared";
 import {Keys} from "../../types/core";
 import {DefinePropertyValues} from "../../types/core/objects/definer";
 import {MaybeKeyObjectType} from "../../types/core/objects";
+import {indefinite} from "../utils/types";
 
 function _value<T, K extends Keys<T> | PropertyKey>(target: T, key: K, value: MaybeKeyObjectType<T, K>, writable?: boolean, numerable?: boolean) {
-  prop(target, key, descriptor(value, writable, undefined, numerable))
+  prop(target, key, descriptor(value, writable, indefinite, numerable))
 }
 
 /**
@@ -62,7 +63,7 @@ export function readonlys<T>(target: T, values: DefinePropertyValues<T>) {
  * @see {prop}
  */
 export function readonly2<T, K extends Keys<T> | PropertyKey = PropertyKey>(target: T, key: K, value: MaybeKeyObjectType<T, K>) {
-  _value(target, key, value, undefined, true);
+  _value(target, key, value, indefinite, true);
 }
 
 /**
@@ -111,7 +112,7 @@ export function writeables<T>(target: T, values: DefinePropertyValues<T>) {
 
 
 export function configurable<T, K extends Keys<T> | PropertyKey = PropertyKey>(target: T, key: K, value: MaybeKeyObjectType<T, K>) {
-  prop(target, key, descriptor(value, undefined, true))
+  prop(target, key, descriptor(value, indefinite, true))
 }
 
 export function configurables<T>(target: T, values: DefinePropertyValues<T>) {

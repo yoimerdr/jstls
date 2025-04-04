@@ -11,6 +11,7 @@ import {SingletonInit} from "../../types/core/wrappers/singleton";
 import {get} from "../objects/handlers/getset";
 import {funclass} from "../definer/classes";
 import {returns} from "../utils";
+import {nullable} from "../utils/types";
 import {WithPrototype} from "../../types/core/objects";
 import {concat} from "../shortcuts/indexable";
 
@@ -108,15 +109,16 @@ export interface SingletonConstructor<T extends Singleton<T> = any> extends With
  */
 export const Singleton: SingletonConstructor = funclass({
   construct(init) {
-    if (is(this.constructor, Singleton))
+    const $this = this;
+    if (is($this.constructor, Singleton))
       throw new IllegalAccessError('[Singleton] The Singleton class not allowed to be instantiated. Is only allowed to be extended.');
-    return checkSingleton(this, init)
+    return checkSingleton($this, init)
   },
   statics: {
     getInstance() {
       const $this = this;
       if (!get($this, singletonSymbol))
-        readonly($this, singletonSymbol, new (apply($this.bind, $this, concat([<any>null], slice(arguments))))());
+        readonly($this, singletonSymbol, new (apply($this.bind, $this, concat([<any>nullable], slice(arguments))))());
       return get($this, singletonSymbol);
     },
     hasInstance() {

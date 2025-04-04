@@ -1,4 +1,4 @@
-import {Maybe, FunctionType, EmptyFunctionType} from "../../types/core";
+import {EmptyFunctionType, FunctionType, Maybe} from "../../types/core";
 import {readonly2} from "../definer";
 import {apply} from "../functions/apply";
 import {isFunction} from "../objects/types";
@@ -40,6 +40,8 @@ export interface Wrapper<T> {
    * @template T
    */
   apply(fn: Maybe<EmptyFunctionType<T>>): this;
+
+  vapply<R>(fn: EmptyFunctionType<T, R>): R;
 
   /**
    * Apply the fn parameter to this wrapper.
@@ -94,6 +96,10 @@ export const Wrapper: WrapperConstructor = funclass({
       const $this = this;
       isFunction(fn) && apply(fn!, $this.get())
       return $this;
+    },
+    vapply(fn) {
+      requireFunction(fn, "fn");
+      return apply(fn, this.get());
     },
     wapply,
     applyWrapper: wapply,

@@ -4,47 +4,47 @@ import {writeable} from "../definer";
 import {isFunction} from "../objects/types";
 import {uid} from "./symbol";
 import {hasOwn} from "./objects/es2022";
-import {apply} from "../functions/apply";
 import {bind} from "../functions/bind";
 import {get, set} from "../objects/handlers/getset";
-import {len} from "../shortcuts/indexable";
-import {concat} from "../shortcuts/indexable";
+import {concat, len} from "../shortcuts/indexable";
 import {funclass} from "../definer/classes/";
 import {forEach} from "../shortcuts/array";
 import {FunctionClassSimpleStatics} from "../../types/core/definer";
+import {nullable} from "../utils/types";
 
 const promiseState = uid("mS"),
   promiseResult = uid("mR"),
   promiseCalls = uid("mC");
 
-function resolveOrReject(this: Promise<any>, state: PromiseState, value: any, index: number) {
-  if (get(this, promiseState) !== "pending")
+function resolveOrReject($this: Promise<any>, state: PromiseState, value: any, index: number) {
+
+  if (get($this, promiseState) !== "pending")
     return;
   if (value && isFunction(value.then)) {
-    const rej = bind(reject, this);
-    const res = bind(resolve, this);
-    if (value === this)
+    const rej = bind(reject, $this);
+    const res = bind(resolve, $this);
+    if (value === $this)
       rej(new TypeError("Chaining cycle detected for promise."))
     else value.then(res, rej)
     return;
   }
-  set(this, promiseState, state);
-  set(this, promiseResult, value);
+  set($this, promiseState, state);
+  set($this, promiseResult, value);
 
-  if (!hasOwn(this, promiseCalls))
+  if (!hasOwn($this, promiseCalls))
     return;
-  const calls: Function[] = get(this, promiseCalls);
+  const calls: Function[] = get($this, promiseCalls);
   if (len(calls) === 1)
     calls[0](value)
   else calls[index](value)
 }
 
 function resolve(this: Promise<any>, value: any) {
-  apply(resolveOrReject, this, ["fulfilled", value, 0])
+  resolveOrReject(this, "fulfilled", value, 0)
 }
 
 function reject(this: Promise<any>, reason: any) {
-  apply(resolveOrReject, this, ["rejected", reason, 1])
+  resolveOrReject(this, "rejected", reason, 1)
 }
 
 function resolverPromise(resolve: Function, reject: Function, resolver: any) {
@@ -97,10 +97,12 @@ export interface PromiseConstructor {
 export const Promise: PromiseConstructor = funclass<PromiseConstructor>({
   construct(executor) {
     requireFunction(executor);
-    writeable(this, promiseState, 'pending');
-    const rej = bind(reject, this);
+    const $this = this,
+      rej = bind(reject, $this);
+
+    writeable($this, promiseState, 'pending');
     try {
-      executor(bind(resolve, this), rej)
+      executor(bind(resolve, $this), rej)
     } catch (e) {
       rej(e)
     }
@@ -127,8 +129,7 @@ export const Promise: PromiseConstructor = funclass<PromiseConstructor>({
             }, reject);
         })
 
-        if (count === 0)
-          resolve(results);
+        count === 0 && resolve(results);
       })
     }
   },
@@ -138,7 +139,7 @@ export const Promise: PromiseConstructor = funclass<PromiseConstructor>({
       return new Promise((resolve, reject) => {
         switch (get($this, promiseState) as PromiseState) {
           case "pending":
-            set(this, promiseCalls, [finallyPromise($this, resolve, reject, onFinally)]);
+            set($this, promiseCalls, [finallyPromise($this, resolve, reject, onFinally)]);
             break;
           case "fulfilled":
           case "rejected":
@@ -148,17 +149,18 @@ export const Promise: PromiseConstructor = funclass<PromiseConstructor>({
       })
     },
     catch(onrejected) {
-      return this.then(null, onrejected)
+      return this.then(nullable, onrejected)
     },
     then(onfulfilled, onrejected) {
+      const $this = this;
       return new Promise((resolve, reject) => {
         const res = resolverPromise(resolve, reject, onfulfilled),
           rej = resolverPromise(reject, reject, onrejected),
-          result = get(this, promiseResult);
+          result = get($this, promiseResult);
 
-        switch (get(this, promiseState) as PromiseState) {
+        switch (get($this, promiseState) as PromiseState) {
           case "pending":
-            set(this, promiseCalls, [res, rej]);
+            set($this, promiseCalls, [res, rej]);
             break;
           case "fulfilled":
             res(result)

@@ -11,6 +11,7 @@ import {concat} from "../../shortcuts/string";
 import {funclass} from "../../definer/classes/";
 import {call} from "../../functions/call";
 import {FunctionClassSimpleStatics} from "../../../types/core/definer";
+import {indefinite} from "../../utils/types";
 
 function checkObjectAccess(optional: OptionalProperties<any>) {
   const present = optional.isPresent;
@@ -67,17 +68,17 @@ export const OptionalProperties: OptionalPropertiesConstructor = funclass<Option
   prototype: <FunctionClassSimpleStatics<OptionalProperties<unknown>>>{
     slet(fn) {
       const $this = this;
-      return new OptionalProperties($this.isPresent ? $this.let(fn as any) : undefined)
+      return new OptionalProperties($this.isPresent ? $this.let(fn as any) : indefinite)
     },
     prop(key, builder, assign) {
       const $this = this;
-      let value: unknown = undefined;
+      let value: unknown = indefinite;
 
       checkObjectAccess($this) && (value = ($this.value as KeyableObject)[key]);
 
       if (assign && !isDefined(value) && isFunction(builder)) {
         value = apply(builder!, this) as any;
-        (<KeyableObject>this.value)[key] = value;
+        (<KeyableObject>$this.value)[key] = value;
       }
 
       return value;

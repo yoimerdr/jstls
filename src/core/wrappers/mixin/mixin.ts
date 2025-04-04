@@ -5,7 +5,6 @@ import {uid} from "../../polyfills/symbol";
 import {commonPrototype, commonStatics, propertyNames} from "../../objects/handlers/properties";
 import {isDefined, isPlainObject} from "../../objects/types";
 import {KeyableObject, WithPrototype} from "../../../types/core/objects";
-import {apply} from "../../functions/apply";
 import {isEmpty} from "../../extensions/shared/iterables";
 import {IllegalAccessError, RequiredArgumentError} from "../../exceptions";
 import {hasOwn} from "../../polyfills/objects/es2022";
@@ -127,9 +126,10 @@ export interface MixinConstructor extends WithPrototype<Mixin<any>> {
 export const Mixin: MixinConstructor = funclass({
   statics: {
     mix(bases, statics, force) {
-      if (is((this as KeyableObject).prototype.constructor, Mixin.prototype.constructor))
+      const $this = this;
+      if (is($this.prototype.constructor, Mixin.prototype.constructor))
         throw new IllegalAccessError("The static function mix must be called from the class that inherits from Mixin.")
-      mixinPrototype(this as any, bases, statics, force)
+      mixinPrototype($this, bases, statics, force)
     }
   }
 });
@@ -188,7 +188,7 @@ export const Mixin: MixinConstructor = funclass({
  * @see {mixerInit}
  */
 export function mixinPrototype<T extends Instanceable[]>(target: Instanceable, bases: T, statics?: boolean, force?: boolean) {
-  if (apply(isEmpty, bases))
+  if (isEmpty(bases))
     throw new RequiredArgumentError("The bases mixin constructors cannot be empty")
   if (hasOwn(target, mixinKey))
     return;

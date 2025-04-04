@@ -1,13 +1,12 @@
 import {linkedAdd, linkedAddedNode, linkedAndNext, LinkedList, linkedPop, linkedRemovedNode} from "./list";
 import {BiNode, MaybeBiNode} from "./bi-node";
-import {apply} from "../../functions/apply";
 import {round} from "../../shortcuts/math";
 import {WithPrototype} from "../../../types/core/objects";
 import {funclass} from "../../definer/classes/";
 import {FunctionClassSimpleStatics} from "../../../types/core/definer";
+import {nullable} from "../../utils/types";
 
-function linkedAddPrev<T>(this: BiLinkedList<T>, source: any) {
-  const $this = this;
+function linkedAddPrev<T>($this: BiLinkedList<T>, source: any) {
   source.index = $this.size - source.index + 1;
   source.target = $this.tail();
   const target = source.target;
@@ -17,13 +16,12 @@ function linkedAddPrev<T>(this: BiLinkedList<T>, source: any) {
   }
 }
 
-function linkedNode<T>(this: BiLinkedList<T>, source: any) {
-  const $this = this;
+function linkedNode<T>($this: BiLinkedList<T>, source: any) {
   if (source.target !== $this.tail()) {
     const mid = round($this.size / 2);
     if (source.index > mid)
-      apply(linkedAddPrev, $this, [source])
-    else apply(linkedAndNext, $this, [source]);
+      linkedAddPrev($this, source)
+    else linkedAndNext(source);
   }
 }
 
@@ -43,11 +41,11 @@ export const BiLinkedList: BiLinkedListConstructor = funclass<BiLinkedListConstr
   prototype: <FunctionClassSimpleStatics<BiLinkedList<unknown>>>{
     add(value, index) {
       const $this = this,
-        source = apply(linkedAdd, $this, [BiNode, value, index!]),
+        source = linkedAdd($this, BiNode, value, index!),
         target = source.target as MaybeBiNode<unknown>;
 
-      apply(linkedNode, $this, [source])
-      apply(linkedAddedNode, $this, [source]);
+      linkedNode($this, source)
+      linkedAddedNode($this, source);
 
       if (target && target.next() === $this.tail())
         $this.tail()!.prev(target);
@@ -55,16 +53,16 @@ export const BiLinkedList: BiLinkedListConstructor = funclass<BiLinkedListConstr
     },
     pop(index) {
       if (this.isEmpty())
-        return null;
+        return nullable;
       const $this = this,
-        source = apply(linkedPop, $this, [index!]),
+        source = linkedPop($this, index!),
         target = source.target as MaybeBiNode<any>;
 
-      apply(linkedNode, $this, [source]);
+      linkedNode($this, source);
       if (!target)
-        return null;
+        return nullable;
 
-      apply(linkedRemovedNode, $this, [source]);
+      linkedRemovedNode($this, source);
 
       target.hasNext() && target.next()!.prev(target)
       return source.value;

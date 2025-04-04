@@ -10,13 +10,14 @@ import {ArrayLike} from "../../types/core/array";
 import {is} from "../polyfills/objects/es2015";
 import {returns} from "../utils";
 import {Maybe} from "../../types/core";
+import {valueOf} from "../shortcuts/object";
 
 
 export function counts<T, R = any, I extends ArrayLike<T> = ArrayLike<T>>(this: I, value: T, compare?: CountsCompareFn<T, I, R>, thisArg?: R): number;
 export function counts<T, R = any, I extends ArrayLike<T> = ArrayLike<T>>(value: T, compare: Maybe<CountsCompareFn<T, I, R>>, thisArg: Maybe<R>, $this: I): number;
 export function counts<T, R = any, I extends ArrayLike<T> = ArrayLike<T>>(this: I, value: any, compare?: Maybe<CountsCompareFn<T, I, R>>, thisArg?: Maybe<R>, $this?: I): number {
   requireDefined(value);
-  value = value.valueOf();
+  value = valueOf(value);
   compare = getIf(compare, isFunction, returns(is))
   return reduce<T, number, I>((this || $this), (total, it, i, arr) => total + +apply(compare!, thisArg!, [value, it, i, arr]), 0);
 }

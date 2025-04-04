@@ -2,6 +2,7 @@ import {MaybeBoolean} from "../../types/core";
 import {apply} from "../functions/apply";
 import {slice} from "../iterable";
 import {getDefined} from "../objects/validators";
+import {nullable} from "./types";
 
 
 /**
@@ -50,7 +51,7 @@ export function returns<T>(value: T) {
  */
 export function nreturns<T extends (...args: any[]) => boolean>(fn: T) {
   return function () {
-    return !apply(fn, null!, slice(arguments) as any)
+    return !apply(fn, nullable!, slice(arguments) as any)
   }
 }
 
@@ -60,3 +61,4 @@ export function nreturns<T extends (...args: any[]) => boolean>(fn: T) {
  */
 export function noact(...args: any) {
 }
+

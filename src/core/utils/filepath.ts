@@ -13,7 +13,7 @@ import {reach} from "../iterable/each";
 import {filter} from "../iterable/filter";
 import {uid} from "../polyfills/symbol";
 import {WithPrototype} from "../../types/core/objects";
-import {get, set} from "../objects/handlers/getset";
+import {set} from "../objects/handlers/getset";
 import {string} from "../objects/handlers";
 import {create} from "../shortcuts/object";
 import {concat, len} from "../shortcuts/indexable";
@@ -21,6 +21,8 @@ import {forEach} from "../shortcuts/array";
 import {funclass} from "../definer/classes";
 import {descriptor2} from "../definer/shared";
 import {PropertyDescriptors} from "../../types/core/objects/definer";
+import {mapped, simple} from "../definer/getters/builders";
+import {nullable} from "./index";
 
 /**
  * Path separator
@@ -43,7 +45,7 @@ function fromNormalizedParts(parts: string[], path?: Maybe<Path>): Path {
   path = root;
   reach(parts, (value, index) => {
     writeable(path, pathName, value);
-    writeable(path, pathParent, index === 0 ? null : create(Path.prototype));
+    writeable(path, pathParent, index === 0 ? nullable : create(Path.prototype));
     path = path!.parent
   })
 
@@ -132,24 +134,20 @@ export const Path: PathConstructor = funclass({
       return fromNormalizedParts(parts);
     },
     join() {
-      return apply(pathOf, null, concat(this.parts, slice(arguments)));
+      return apply(pathOf, nullable, concat(this.parts, slice(arguments)));
     },
     toString() {
       return this.path!;
     }
   },
   protodescriptor: <Partial<PropertyDescriptors<Path>>>{
-    name: descriptor2<Path>(function () {
-      return get(this, pathName);
-    }, function (name: string) {
+    name: descriptor2<Path>(simple(pathName), function (name: string) {
       name = string(name);
       if (isEmpty(name) || name === "." /*others path name validations*/)
         throw new IllegalArgumentError("[Path] Invalid path name.")
       set(this, pathName, name);
     }),
-    parent: descriptor2<Path>(function () {
-      return get(this, pathParent);
-    }, function (parent) {
+    parent: descriptor2<Path>(simple(pathParent), function (parent) {
       if (!parent || !(parent instanceof Path))
         throw new IllegalArgumentError("[Path] Invalid parent path");
 
@@ -162,9 +160,7 @@ export const Path: PathConstructor = funclass({
       return this.parts
         .join(sep);
     }),
-    suffix: descriptor2<Path>(function () {
-      return pathSuffix(this,)
-    }),
+    suffix: descriptor2<Path>(mapped(nullable, pathSuffix)),
     parts: descriptor2<Path>(function () {
       const $this = this,
         parts = [$this.name];
@@ -233,7 +229,7 @@ export function join(): string {
 export function pathOf(path: Object, ...paths: Object[]): Path;
 export function pathOf(): Path {
   return fromNormalizedParts(
-    apply(join, null, slice(arguments))
+    apply(join, nullable, slice(arguments))
       .split(sep)
   )
 }

@@ -6,14 +6,16 @@ import {bind} from "../../functions/bind";
 import {apply} from "../../functions/apply";
 import {len} from "../../shortcuts/indexable";
 import {concat} from "../../shortcuts/string";
+import {indefinite} from "../../utils/types";
 
 export function findLastIndex<V, T = any, A extends ArrayLike<V> = ArrayLike<V>>(this: A, predicate: ArrayLikeEach<V, T, A, boolean>, thisArg?: T): number;
 export function findLastIndex<V, T>(this: V[], predicate: ArrayEach<V, T | void, boolean>, thisArg?: T): number {
   predicate = bind(predicate, thisArg);
-  let index = len(this);
+  const $this = this;
+  let index = len($this);
   while (index > 0) {
     --index;
-    if (index in this && predicate(this[index], index, this))
+    if (index in $this && predicate($this[index], index, $this))
       return index;
   }
   return -1;
@@ -22,8 +24,9 @@ export function findLastIndex<V, T>(this: V[], predicate: ArrayEach<V, T | void,
 export function findLast<V, T = any, A extends ArrayLike<V> = ArrayLike<V>>(this: A, predicate: ArrayLikeEach<V, T, A, boolean>, thisArg?: T): Maybe<V>;
 export function findLast<V, T>(this: ArrayLike<V>, predicate: ArrayLikeEach<V, T | void, ArrayLike<V>, boolean>, thisArg?: T): Maybe<V> {
   predicate = bind(predicate, thisArg);
-  const index = apply(findLastIndex, this, [<any>predicate, thisArg]);
-  return index !== -1 ? this[index] : undefined;
+  const $this = this,
+    index = apply(findLastIndex, $this, [predicate, thisArg]);
+  return index !== -1 ? $this[index] : indefinite;
 }
 
 export function toReversed<T>(this: ArrayLike<T>): T[] {
@@ -35,7 +38,7 @@ export function toSpliced<T>(this: ArrayLike<T>, start: number, deleteCount?: nu
 export function toSpliced<T>(this: ArrayLike<T>, start: number, deleteCount?: number, ...items: T[]): T[];
 export function toSpliced<T>(this: ArrayLike<T>, start: number, deleteCount?: number): T[] {
   const copy = slice(this);
-  apply(copy.splice, copy, <any>[start, deleteCount!].concat(slice(arguments, 2)));
+  apply(copy.splice, copy, concat([start, deleteCount!], slice(arguments, 2)));
   return copy;
 }
 
@@ -46,12 +49,11 @@ export function toSorted<T>(this: ArrayLike<T>, comparefn?: (a: T, b: T) => numb
 
 export function withItem<T>(this: ArrayLike<T>, index: number, value: T): T[] {
   let i = index >> 0;
-  if (i < 0)
-    i = len(this) + index;
-  if (!apply(isFromUntil, i, [0, len(this)]))
+  const $this = this;
+  i < 0 && (i = len($this) + index);
+  if (!isFromUntil(0, len($this), i,))
     throw new RangeError(concat("Invalid index: ", index))
-  const copy = slice(this);
-  if (i in copy)
-    copy[i] = value;
+  const copy = slice($this);
+  (i in copy) && (copy[i] = value);
   return copy;
 }

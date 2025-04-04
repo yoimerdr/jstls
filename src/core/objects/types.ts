@@ -1,5 +1,6 @@
 import {Typeof} from "../../types/core";
 import {isArray} from "../shortcuts/array";
+import {indefinite, nullable} from "../utils/types";
 
 /**
  * Checks if the value is of the specified type or types.
@@ -19,7 +20,7 @@ export function typeIs<T>(value: T, type: Typeof | Typeof[]): boolean {
  * @returns True if the value is defined, false otherwise.
  */
 export function isDefined(value: any) {
-  return value !== undefined && value !== null
+  return value !== indefinite && value !== nullable
 }
 
 

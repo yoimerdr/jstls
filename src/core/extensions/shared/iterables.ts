@@ -3,6 +3,7 @@ import {IllegalAccessError} from "../../exceptions";
 import {Maybe} from "../../../types/core";
 import {ArrayLike, ArrayLikeType} from "../../../types/core/array";
 import {len} from "../../shortcuts/indexable";
+import {nullable} from "../../utils/types";
 
 export function isEmpty<T extends WithLength>(this: T): boolean;
 export function isEmpty<T extends WithLength>($this: T): boolean;
@@ -29,7 +30,7 @@ export function firstOrNull<T, I extends ArrayLike<T> = ArrayLike<T>>(this: I,):
 export function firstOrNull<T, I extends ArrayLike<T> = ArrayLike<T>>($this: I): Maybe<ArrayLikeType<I>>;
 export function firstOrNull<T, I extends ArrayLike<T> = ArrayLike<T>>(this: I, $this?: I): Maybe<T> {
   $this = this || $this;
-  return isEmpty($this) ? null : $this[0];
+  return isEmpty($this) ? nullable : $this[0];
 }
 
 export function last<T, I extends ArrayLike<T> = ArrayLike<T>>(this: I): T;
@@ -45,5 +46,5 @@ export function lastOrNull<T, I extends ArrayLike<T> = ArrayLike<T>>(this: I): M
 export function lastOrNull<T, I extends ArrayLike<T> = ArrayLike<T>>($this: I): Maybe<ArrayLikeType<I>>;
 export function lastOrNull<T, I extends ArrayLike<T> = ArrayLike<T>>(this: I, $this?: I): Maybe<T> {
   $this = this || $this;
-  return isEmpty($this) ? null : $this[len($this) - 1];
+  return isEmpty($this) ? nullable : $this[len($this) - 1];
 }

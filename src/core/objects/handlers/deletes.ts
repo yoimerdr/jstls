@@ -6,6 +6,7 @@ import {slice} from "../../iterable";
 import {get} from "./getset";
 import {forEach} from "../../shortcuts/array";
 import {propertyNames} from "./properties";
+import {indefinite} from "../../utils/types";
 
 /**
  * Deletes the given `key` property in the target `object`, if this is defined.
@@ -50,12 +51,12 @@ export function deletes<T>(object: T, key: PropertyKey, key2: PropertyKey, ...ke
 export function deletes(object: KeyableObject, key: PropertyKey): any {
   const args = arguments, lt = len(args);
   if (lt > 2) {
-    object = apply(get, undefined, slice(args, 0, lt - 1))
+    object = apply(get, indefinite, slice(args, 0, lt - 1))
     key = args[lt - 1];
   }
 
   if (!object)
-    return undefined;
+    return indefinite;
 
   const value = object[key];
   delete object[key];

@@ -4,6 +4,7 @@ import {multiple} from "../definer/shared";
 import {requiredWithType, requireFunction} from "../objects/validators";
 import {slice} from "../iterable";
 import {apply} from "../functions/apply";
+import {concat} from "../shortcuts/indexable";
 
 /**
  * Extends a method to add additional functionality.
@@ -56,9 +57,9 @@ export function method<T extends Object, K extends MethodKeys<T>>(target: T, key
     const {replace, modifyParameters, beforeCall, afterCall} = builder;
     target[key] = function (this: T): SafeReturnType<T[K]> {
       let args: SafeParameters<T[K]> = slice(arguments) as any,
-       $this = this;
+        $this = this;
       if (replace)
-        return apply(replace, $this, [met].concat(args));
+        return apply(replace, $this, concat([met], args));
 
       modifyParameters && (args = apply(modifyParameters, $this, args))
       beforeCall && apply(beforeCall, $this, args)
@@ -67,7 +68,7 @@ export function method<T extends Object, K extends MethodKeys<T>>(target: T, key
       if (!afterCall)
         return res
 
-      return apply(afterCall, $this, [res].concat(args))
+      return apply(afterCall, $this, concat([res], args))
     } as T[K]
   }
 }

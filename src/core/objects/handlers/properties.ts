@@ -4,6 +4,7 @@ import {isFunction} from "../types";
 import {includes} from "../../polyfills/indexable/es2016";
 import {filter} from "../../iterable/filter";
 import {nreturns} from "../../utils";
+import {nullable} from "../../utils/types";
 import {PropertyDescriptor, PropertyDescriptors} from "../../../types/core/objects/definer";
 import {reduce} from "../../iterable";
 
@@ -54,7 +55,7 @@ export const commonPrototype = ["constructor"];
 
 function filterFromObject<T>(type: 'keys' | 'names', condition: (value: any) => boolean, object: T, mode: 'statics' | 'prototype'): Keys<T>[] {
   const common = mode === 'statics' ? commonStatics :
-    (mode === 'prototype' ? commonPrototype : null);
+    (mode === 'prototype' ? commonPrototype : nullable);
   const desc = descriptors(object, type);
   return filter(keys(desc), key => {
     return !common || !call(includes, common, key) && condition(desc[key].value);

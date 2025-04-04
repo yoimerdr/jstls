@@ -2,12 +2,12 @@ import {isString} from "../objects/types";
 import {readonly} from "../definer";
 import {KeyableObject} from "../../types/core/objects";
 import {keys} from "../objects/handlers/properties";
-import {apply} from "../functions/apply";
 import {PromiseConstructor} from "../../types/core/polyfills";
 import {extend} from "../extensions/array";
 import {setTo} from "../objects/handlers/getset";
 import {forEach} from "../shortcuts/array";
 import {reduce} from "../iterable";
+import {nullable} from "../utils/types";
 
 declare const Promise: PromiseConstructor;
 
@@ -20,19 +20,18 @@ export function fetch(input: RequestInfo | URL, init?: RequestInit) {
       options = {
         url: isPlainUrl ? input : "",
         method: "GET",
-        headers: {},
-        body: <ReadableStream<Uint8Array> | null | BodyInit>null
+        headers: <Record<string, any>>{},
+        body: <ReadableStream<Uint8Array> | null | BodyInit>nullable
       }
 
     const assignKeys: any[] = ["url", "method", "headers"]
-    isPlainUrl || setTo(input as Request, apply(extend<any>, assignKeys, [["url"]]), options)
+    isPlainUrl || setTo(input as Request, extend(["url"], assignKeys,), options)
 
     // map init object
     init && setTo(init, assignKeys, options)
 
-    function createResponse(this: XMLHttpRequest): Response {
-      const init = <ResponseInit>{},
-      $this = this;
+    function createResponse($this: XMLHttpRequest): Response {
+      const init = <ResponseInit>{};
       setTo($this, ["status", "statusText"], init);
       init.headers = reduce($this.getAllResponseHeaders().split("\r\n"), (headers, current) => {
         const [name, value] = current.split(': ');
@@ -42,20 +41,19 @@ export function fetch(input: RequestInfo | URL, init?: RequestInit) {
 
       const response = new Response($this.response, init);
       readonly(response, 'url', $this.responseURL)
-      return response
+      return response;
     }
 
     xhr.onload = function () {
-      resolve(apply(createResponse, this))
+      resolve(createResponse(this))
     }
 
     xhr.onerror = function () {
-      reject(apply(createResponse, this))
+      reject(createResponse(this))
     }
 
-    forEach(keys(options.headers), function (key) {
-      this.setRequestHeader(key as string, options.headers[key])
-    }, xhr)
+    const {headers} = options;
+    forEach(keys(headers), (key) => xhr.setRequestHeader(key, headers[key]));
 
     xhr.open(options.method, options.url as string, true)
     xhr.send(options.body as XMLHttpRequestBodyInit)

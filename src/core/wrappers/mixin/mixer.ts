@@ -9,7 +9,7 @@ import {
   Split
 } from "../../../types/core";
 import {IllegalAccessError, IllegalArgumentError} from "../../exceptions";
-import {protoapply} from "../../functions/prototype";
+import {protoapply} from "../../functions/prototype/apply";
 import {slice} from "../../iterable";
 import {apply} from "../../functions/apply";
 import {readonly2} from "../../definer";
@@ -18,6 +18,7 @@ import {funclass} from "../../definer/classes";
 import {WithPrototype} from "../../../types/core/objects";
 import {FunctionClassSimpleStatics} from "../../../types/core/definer";
 import {concat} from "../../shortcuts/indexable";
+import {nullable} from "../../utils/types";
 
 function checkMixin(instance: Object) {
   const bases: any[] = getMixinBases(instance);
@@ -89,10 +90,10 @@ export const Mixer: MixerConstructor = funclass({
   },
   prototype: <FunctionClassSimpleStatics<Mixer<any>>>{
     super(cls, key, ...args) {
-      return apply(mixerSuper, null, concat([this.target, cls, key,], slice(arguments, 2)))
+      return apply(mixerSuper, nullable, concat([this.target, cls, key,], slice(arguments, 2)))
     },
     init(cls, ...args) {
-      return apply(mixerInit, null, concat([this.target, cls], slice(arguments, 2)))
+      return apply(mixerInit, nullable, concat([this.target, cls], slice(arguments, 2)))
     }
   }
 })

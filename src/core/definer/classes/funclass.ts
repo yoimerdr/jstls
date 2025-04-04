@@ -8,13 +8,15 @@ import {
 import {call} from "../../functions/call";
 import {reduce} from "../../iterable";
 import {IndeterminatePrototype, KeyableObject, PrototypeType, WithPrototype} from "../../../types/core/objects";
-import {keys, methodProperties} from "../../objects/handlers/properties";
+import {keys, methodProperties, propertyNames} from "../../objects/handlers/properties";
 import {props} from "../props";
 import {prototype} from "../../extender/prototype";
 import {includes} from "../../polyfills/indexable/es2016";
 import {descriptor} from "../shared";
 import {isDefined, isFunction, isPlainObject} from "../../objects/types";
 import {createSuper, parentFirst} from "./supers";
+import {indefinite} from "../../utils/types";
+import {self} from "../getters/builders";
 
 export function sourceToDescriptor(source: KeyableObject): KeyableObject<PropertyDescriptor> {
   return reduce(keys(source), (current, key) => {
@@ -99,7 +101,7 @@ export function funclass<I extends Instanceable, P extends WithPrototype>(builde
     if (!isFunction(builder))
       throw TypeError("The builder must be a function.");
     // build the super handlers
-    let sProperties: FunctionClassSuper<PrototypeType<P>>, sStatics: FunctionClassSuper<P> = sProperties = undefined!;
+    let sProperties: FunctionClassSuper<PrototypeType<P>>, sStatics: FunctionClassSuper<P> = sProperties = indefinite!;
 
     if (parent && !withoutSupers) {
       if (!call(includes, acceptedTypes, typeof parent))
@@ -136,8 +138,7 @@ export function funclass<I extends Instanceable, P extends WithPrototype>(builde
   if (isDefined(cls) && !isFunction(cls))
     throw TypeError("The modified constructor must be a function.");
 
-  init = cls || init || (() => {
-  });
+  init = cls || init || self();
 
   // assign parent methods/prototype first
   parent && prototype(init, parent);
@@ -146,6 +147,7 @@ export function funclass<I extends Instanceable, P extends WithPrototype>(builde
   statidescriptor && props(init, statidescriptor);
   statics && props(init, sourceToDescriptor(statics));
 
+  console.log(builder, init, init!.prototype || (builder as KeyableObject).construct.prototype);
   const funPrototype = init.prototype;
   if (!call(includes, acceptedTypes, typeof funPrototype))
     throw TypeError("The function prototype must be an object.");

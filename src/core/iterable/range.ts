@@ -3,7 +3,8 @@ import {WithPrototype} from "../../types/core/objects";
 import {funclass} from "../definer/classes";
 import {call} from "../functions/call";
 import {FunctionClassSimpleStatics} from "../../types/core/definer";
-import {protocall} from "../functions/prototype";
+import {protocall} from "../functions/prototype/call";
+import {indefinite} from "../utils/types";
 
 export interface IterRange extends Iter<number> {
 }
@@ -19,20 +20,20 @@ export const IterRange: IterRangeConstructor = funclass({
       step = length.step;
       length = length.length();
     }
-    call(parent, this, {length}, start, undefined, step);
+    call(parent, this, {length}, start, indefinite, step);
   },
   prototype: <FunctionClassSimpleStatics<IterRange>>{
     next() {
       const $this = this;
-      protocall(Iter, "next", this);
+      protocall(Iter, "next", $this);
       const index = $this.index();
-      return index > $this.endIndex ? undefined! : index;
+      return index > $this.endIndex ? indefinite! : index;
     },
     previous() {
       const $this = this;
       protocall(Iter, "previous", $this);
       const index = $this.index();
-      return index < $this.startIndex ? undefined! : index;
+      return index < $this.startIndex ? indefinite! : index;
     },
     at(index) {
       const $this = this;

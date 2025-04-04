@@ -8,6 +8,7 @@ import {funclass} from "../../definer/classes/";
 import {call} from "../../functions/call";
 import {FunctionClassSimpleStatics} from "../../../types/core/definer";
 import {requireFunction} from "../../objects/validators";
+import {indefinite} from "../../utils/types";
 
 export interface Optional<T> extends Wrapper<Maybe<T>> {
   /**
@@ -81,7 +82,7 @@ export const Optional: OptionalConstructor = funclass({
     },
     slet(fn) {
       const $this = this;
-      return new Optional($this.isPresent ? $this.let(fn as any) : undefined);
+      return new Optional($this.isPresent ? $this.let(fn as any) : indefinite);
     },
     ifPresent(fn) {
       requireFunction(fn, "fn");

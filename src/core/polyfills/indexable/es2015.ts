@@ -6,13 +6,16 @@ import {bind} from "../../functions/bind";
 import {apply} from "../../functions/apply";
 import {max, min} from "../../shortcuts/math";
 import {len} from "../../shortcuts/indexable";
+import {deletes} from "../../objects/handlers/deletes";
+import {indefinite} from "../../utils/types";
 
 export function findIndex<V, T = any, A extends ArrayLike<V> = ArrayLike<V>>(this: A, predicate: ArrayLikeEach<V, T, A, boolean>, thisArg?: T): number;
 export function findIndex<V, T>(this: V[], predicate: ArrayEach<V, T | void, boolean>, thisArg?: T): number {
   requireFunction(predicate, "predicate");
-  predicate = bind(predicate, thisArg)
-  for (let i = 0; i < len(this); i++) {
-    if (i in this && predicate(this[i], i, this))
+  predicate = bind(predicate, thisArg);
+  const $this = this;
+  for (let i = 0; i < len($this); i++) {
+    if (i in $this && predicate($this[i], i, $this))
       return i;
   }
   return -1;
@@ -20,25 +23,27 @@ export function findIndex<V, T>(this: V[], predicate: ArrayEach<V, T | void, boo
 
 export function find<V, T = any, A extends ArrayLike<V> = ArrayLike<V>>(this: A, predicate: ArrayLikeEach<V, T, A, boolean>, thisArg?: T): Maybe<V>;
 export function find<V, T>(this: V[], predicate: ArrayEach<V, T, boolean>, thisArg?: T): Maybe<V> {
-  const index = apply(findIndex, this, [<any>predicate, thisArg]);
-  return index === -1 ? undefined : this[index];
+  const $this = this,
+    index = apply(findIndex, $this, [predicate, thisArg]);
+  return index === -1 ? indefinite : $this[index];
 }
 
 
 export function fill<T, A extends ArrayLike<T> = ArrayLike<T>>(this: A, value: T, start?: number, end?: number): A {
-  const size = len(this)
+  const $this = this,
+    size = len($this)
   if (!size)
-    return this;
+    return $this;
   start = start! >> 0;
   start = start < 0 ? max(size + start, 0) : min(start, size);
 
   end = isDefined(end) ? end! >> 0 : size;
   end = end < 0 ? max(size + end, 0) : min(end, size)
   while (start < end) {
-    this[start] = value;
+    $this[start] = value;
     start++;
   }
-  return this;
+  return $this;
 }
 
 function copyWithinCheckIndex(index: number, length: number): number {
@@ -47,16 +52,17 @@ function copyWithinCheckIndex(index: number, length: number): number {
 }
 
 export function copyWithin<T, A extends ArrayLike<T> = ArrayLike<T>>(this: A, target: number, start: number, end?: number): A {
-  const size = len(this);
+  const $this = this,
+    size = len($this);
   if (!size)
-    return this;
+    return $this;
   target = copyWithinCheckIndex(target, size);
   start = copyWithinCheckIndex(start, size);
   end = isDefined(end) ? end! : size;
   end = copyWithinCheckIndex(end, size);
 
-  let count = min(end - start, size - target);
-  let direction = 1;
+  let count = min(end - start, size - target),
+    direction = 1;
   if (start < target && target < (start + count)) {
     direction = -1;
     start += count - 1;
@@ -64,14 +70,14 @@ export function copyWithin<T, A extends ArrayLike<T> = ArrayLike<T>>(this: A, ta
   }
 
   while (count > 0) {
-    if (start in this)
-      this[target] = this[start]
-    else delete this[target]
+    if (start in $this)
+      $this[target] = $this[start]
+    else deletes($this, target)
     start += direction;
     target += direction;
     count--;
   }
-  return this;
+  return $this;
 
 }
 

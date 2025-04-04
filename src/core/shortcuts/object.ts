@@ -78,3 +78,7 @@ export const defineProperties: DefinePropertiesShortcut = Object.definePropertie
 
 export const freeze: FreezeShortcut = Object.freeze;
 
+export function valueOf<T extends { valueOf(): any },>(object: T): ReturnType<T["valueOf"]> {
+  return object.valueOf();
+}
+

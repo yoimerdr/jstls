@@ -8,6 +8,7 @@ import {get, set} from "../../objects/handlers/getset";
 import {WithPrototype} from "../../../types/core/objects";
 import {funclass} from "../../definer/classes/";
 import {FunctionClassSimpleStatics} from "../../../types/core/definer";
+import {nullable} from "../../utils/types";
 
 export type MaybeNode<T> = Maybe<Node<T>>;
 
@@ -15,16 +16,15 @@ export function isNode(value: any): boolean {
   return value instanceof Node;
 }
 
-export function assignNextNode<T, >(this: Node<T>, args: IArguments,
+export function assignNextNode<T, >($this: Node<T>, args: IArguments,
                                     isNode: (value: any) => boolean,
                                     onPreserve?: (this: Node<T>, next: MaybeNode<T>) => void): MaybeNode<T> {
-  const $this = this;
-  if (apply(isNotEmpty, args)) {
-    let next: MaybeNode<T> = null;
+  if (isNotEmpty(args)) {
+    let next: MaybeNode<T> = nullable;
     if (isNode(args[0])) {
       next = args[0];
 
-      if (args[1] && this.hasNext()) {
+      if (args[1] && $this.hasNext()) {
         set(next, metaNext, get($this, metaNext,));
         onPreserve && apply(onPreserve, $this, [next]);
       }
@@ -60,17 +60,16 @@ export const Node: NodeConstructor = funclass<NodeConstructor>({
   construct(value) {
     const $this = this;
     writeable($this, metaValue, value);
-    writeable($this, metaNext, null);
+    writeable($this, metaNext, nullable);
   },
   prototype: <FunctionClassSimpleStatics<Node<unknown>>>{
     value(value) {
       const $this = this;
-      if (apply(isNotEmpty, arguments))
-        set($this, metaValue, value);
+      isNotEmpty(arguments) && set($this, metaValue, value);
       return get($this, metaValue);
     },
     next() {
-      return apply(assignNextNode, this, [arguments, isNode]);
+      return assignNextNode(this, arguments, isNode);
     },
     hasNext() {
       return isDefined(get(this, metaNext))

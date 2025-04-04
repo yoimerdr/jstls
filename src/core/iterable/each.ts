@@ -3,7 +3,7 @@ import {Foreachable, ForeachableEach, IterableLike, IterableLikeEach} from "../.
 import {KeyableObject} from "../../types/core/objects";
 import {isFunction} from "../objects/types";
 import {bind} from "../functions/bind";
-import {protoapply} from "../functions/prototype";
+import {protoapply} from "../functions/prototype/apply";
 import {len} from "../shortcuts/indexable";
 import {forEach} from "../shortcuts/array";
 

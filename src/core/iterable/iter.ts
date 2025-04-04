@@ -14,8 +14,9 @@ import {len} from "../shortcuts/indexable";
 import {concat} from "../shortcuts/string";
 import {funclass} from "../definer/classes";
 import {FunctionClassSimpleStatics} from "../../types/core/definer";
+import {indefinite} from "../utils/types";
 
-export function iterEachOrFindIndex<T, R>(this: Iter<T>,
+export function iterEachOrFindIndex<T, R>($this: Iter<T>,
                                           restartFn: (this: Iter<T>) => any,
                                           whileFn: (this: Iter<T>) => boolean,
                                           eachFn: IterEach<T, R> | IterEachNext<T, R>,
@@ -23,24 +24,25 @@ export function iterEachOrFindIndex<T, R>(this: Iter<T>,
                                           thisArg?: R,
                                           includeAdvance?: boolean,
                                           matchFn?: IterMatchCondition<T>): number {
-  const startIndex = this.index();
-  apply(restartFn, this);
-  while (apply(whileFn, this)) {
-    const index = this.index();
-    const current = this.current();
-    const advance = apply(advanceFn, this);
+  const startIndex = $this.index();
+
+  apply(restartFn, $this);
+  while (apply(whileFn, $this)) {
+    const index = $this.index(),
+      current = $this.current(),
+      advance = apply(advanceFn, $this);
     if (matchFn && matchFn(current, index))
       return index;
     else if (eachFn)
-      apply(<any>eachFn, thisArg, includeAdvance ? [current, advance, index] : [current, index])
+      apply(eachFn, thisArg, includeAdvance ? [current, advance, index] : [current, index])
   }
 
-  if (startIndex !== this.index())
-    this.at(startIndex);
+  if (startIndex !== $this.index())
+    $this.at(startIndex);
   return -1;
 }
 
-export function iterMap<T, R, A, I extends Iter<A>>(this: Iter<T>,
+export function iterMap<T, R, A, I extends Iter<A>>($this: Iter<T>,
                                                     constructor: Instanceable<I, [value: ArrayLike<any>]>,
                                                     iterate: ((this: Iter<T>, fn: IterEach<T, R>, thisArg?: R) => void),
                                                     fn?: IterMap<T, A, R>,
@@ -48,7 +50,7 @@ export function iterMap<T, R, A, I extends Iter<A>>(this: Iter<T>,
                                                     condition?: IterMatchCondition<T>,): I {
   const indexable = <ArrayLike<A>>{};
   let index = 0;
-  apply(iterate, this, [
+  apply(iterate, $this, [
     function (this: R, item) {
       if (!condition || condition(item, index)) {
         indexable[index] = fn ? apply(fn, this, [item, index]) : item as any;
@@ -62,10 +64,10 @@ export function iterMap<T, R, A, I extends Iter<A>>(this: Iter<T>,
 }
 
 
-export function iterRepresentation(this: Iter<any>, name: string): string {
+export function iterRepresentation($this: Iter<any>, name: string): string {
   return concat(
-    "[", this.length(), "] ",
-    name, " { start: ", this.startIndex, ", end: ", this.endIndex, ", current: ", this.index()
+    "[", $this.length(), "] ",
+    name, " { start: ", $this.startIndex, ", end: ", $this.endIndex, ", current: ", $this.index()
   )
 }
 
@@ -259,11 +261,12 @@ export const Iter: IterConstructor = funclass({
       step = source.step;
       source = source.source;
     } else if (len(source) > 0) {
-      step = apply(coerceAtLeast, step || 0, [1]);
-      if (step! > len(source))
+      step = coerceAtLeast(1, step || 0);
+      const size = len(source);
+      if (step! > size)
         throw new IllegalAccessError("The step cannot be greater than the source length");
-      start = apply(coerceAtMost, start || 0, [len(source)]);
-      end = apply(coerceIn, end || len(source) - 1, [start, len(source)]);
+      start = coerceAtMost(size, start || 0,);
+      end = coerceIn(start, size, end || size - 1,);
     } else {
       start = end = 0;
       step = 1;
@@ -289,22 +292,22 @@ export const Iter: IterConstructor = funclass({
     },
     current() {
       const $this = this;
-      return $this.isOutBounds() ? undefined! : $this.at($this.index());
+      return $this.isOutBounds() ? indefinite! : $this.at($this.index());
     },
     at(index) {
       const $this = this;
       if (index < 0)
         index += $this.endIndex + 1;
-      const target = apply(coerceIn, index, [$this.startIndex, $this.endIndex]);
+      const target = coerceIn($this.startIndex, $this.endIndex, index,);
       if (target !== index)
-        return undefined!;
+        return indefinite!;
 
       set($this, iterIndex, target);
       return $this.source[target];
     },
     previous() {
       const $this = this;
-      set($this, iterIndex, apply(coerceAtLeast, $this.index() - $this.step, [$this.startIndex - $this.step]));
+      set($this, iterIndex, coerceAtLeast($this.startIndex - $this.step, $this.index() - $this.step,));
       return $this.source[$this.index()];
     },
     hasPrevious() {
@@ -313,7 +316,7 @@ export const Iter: IterConstructor = funclass({
     },
     next() {
       const $this = this;
-      set($this, iterIndex, apply(coerceAtMost, $this.index() + $this.step, [$this.endIndex + $this.step]));
+      set($this, iterIndex, coerceAtMost($this.endIndex + $this.step, $this.index() + $this.step,));
       return $this.source[$this.index()];
     },
     hasNext() {
@@ -330,13 +333,13 @@ export const Iter: IterConstructor = funclass({
     },
     isOutBounds() {
       const $this = this;
-      return $this.isEmpty() || !apply(isFromTo, $this.index(), [$this.startIndex, $this.endIndex]);
+      return $this.isEmpty() || !isFromTo($this.startIndex, $this.endIndex, $this.index(),);
     },
     isInBounds() {
       return !this.isOutBounds();
     },
     isEmpty() {
-      return apply(isEmpty, this.source);
+      return isEmpty(this.source);
     },
     isNotEmpty() {
       return !this.isEmpty();
@@ -348,30 +351,30 @@ export const Iter: IterConstructor = funclass({
     },
     each(fn, thisArg) {
       const $this = this;
-      apply(iterEachOrFindIndex, $this, [$this.start, $this.isInBounds, fn, $this.next, thisArg]);
+      iterEachOrFindIndex($this, $this.start, $this.isInBounds, fn, $this.next, thisArg);
       return this;
     },
     reach(fn, thisArg) {
       const $this = this;
-      apply(iterEachOrFindIndex, $this, [$this.end, $this.isInBounds, fn, $this.previous, thisArg]);
+      iterEachOrFindIndex($this, $this.end, $this.isInBounds, fn, $this.previous, thisArg);
       return $this;
     },
     map(fn, thisArg) {
       const $this = this;
-      return apply(iterMap, $this, [Iter, $this.each, fn, thisArg]);
+      return iterMap($this, Iter, $this.each, fn, thisArg);
     },
     rmap(fn, thisArg) {
       const $this = this;
-      return apply(iterMap, $this, [Iter, $this.reach, fn, thisArg]);
+      return iterMap($this, Iter, $this.reach, fn, thisArg);
     },
     eachnxt(fn, thisArg) {
       const $this = this;
-      apply(iterEachOrFindIndex, $this, [$this.start, $this.hasNext, fn, $this.next, thisArg, true]);
+      iterEachOrFindIndex($this, $this.start, $this.hasNext, fn, $this.next, thisArg, true);
       return $this;
     },
     eachprv(fn, thisArg) {
       const $this = this;
-      apply(iterEachOrFindIndex, $this, [$this.end, $this.hasPrevious, fn, $this.previous, thisArg, true]);
+      iterEachOrFindIndex($this, $this.end, $this.hasPrevious, fn, $this.previous, thisArg, true);
       return $this;
     },
     toArray() {
@@ -380,7 +383,7 @@ export const Iter: IterConstructor = funclass({
       return result;
     },
     toString() {
-      return apply(iterRepresentation, this, ['Iter'])
+      return iterRepresentation(this, 'Iter')
     }
   }
 })

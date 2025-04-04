@@ -3,6 +3,7 @@ import {get, set, setTo} from "../objects/handlers/getset";
 import {isFunction} from "../objects/types";
 import {concat} from "../shortcuts/string";
 import {propertyNames} from "../objects/handlers/properties";
+import {nullable} from "../utils/types";
 
 export function statics<T extends WithPrototype>(target: T, base: WithPrototype): T {
   (
@@ -18,7 +19,7 @@ export function statics<T extends WithPrototype>(target: T, base: WithPrototype)
 
 export function prototype<T extends WithPrototype>(target: T, base: WithPrototype): T;
 export function prototype(target: CallableFunction, base: WithPrototype): WithPrototype {
-  if (!isFunction(base) && base !== null)
+  if (!isFunction(base) && base !== nullable)
     throw new TypeError(concat("Class extends value ", base, " is not a constructor or null"));
 
   statics(target, base);
@@ -29,7 +30,7 @@ export function prototype(target: CallableFunction, base: WithPrototype): WithPr
 
   try {
     // safe assign for readonly prototypes
-    (target as KeyableObject).prototype = base === null ? Object.create(base) : (__.prototype = base.prototype, new (__ as any)());
+    (target as KeyableObject).prototype = base === nullable ? Object.create(base) : (__.prototype = base.prototype, new (__ as any)());
   } catch (e) {
     const proto = base && base.prototype;
     base && setTo(proto, propertyNames(proto), target.prototype)

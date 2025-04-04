@@ -11,10 +11,12 @@ import {concat} from "../shortcuts/string";
 import {uid} from "./symbol";
 import {get, set} from "../objects/handlers/getset";
 import {funclass} from "../definer/classes";
-import {slice} from "../iterable";
 import {FunctionClassSimpleStatics} from "../../types/core/definer";
 import {deletes, deletesAll} from "../objects/handlers/deletes";
 import {descriptor2} from "../definer/shared";
+import {mapped} from "../definer/getters/builders";
+import {nullable} from "../utils/types";
+import {slice} from "../iterable";
 
 type SetSource = Readonly<{
   key: MaybeString,
@@ -28,7 +30,7 @@ const setKey = uid("mK"),
   setPrimitives = uid("mP");
 
 function item2source<T>($this: Set<T>, item: T): SetSource {
-  let key = isObject(item) ? null : concat("", item as Object),
+  let key = isObject(item) ? nullable : concat("", item as Object),
     already = false,
     setKeySymbol = get($this, setKey),
     index: number;
@@ -102,8 +104,7 @@ export const Set: SetConstructor = funclass({
 
       if (!source.already) {
         const size = $this.size;
-        if (!source.isObject)
-          set($this, setPrimitives, source.key, size);
+        source.isObject || set($this, setPrimitives, source.key, size)
         set($this, setObjects, size, item);
       }
       return $this;
@@ -140,8 +141,6 @@ export const Set: SetConstructor = funclass({
     }
   },
   protodescriptor: {
-    size: descriptor2(function () {
-      return len(this[setObjects])
-    })
+    size: descriptor2(mapped(setObjects, len))
   }
 })

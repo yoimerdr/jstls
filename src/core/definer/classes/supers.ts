@@ -1,14 +1,12 @@
 import {Instanceable, InstanceableParameters, InstanceableType, Maybe, MethodKeys} from "../../../types/core";
 import {reduce, slice} from "../../iterable";
 import {apply} from "../../functions/apply";
-import {
-  FunctionClassConstructorFunction,
-  FunctionClassSuper
-} from "../../../types/core/definer";
+import {FunctionClassConstructorFunction, FunctionClassSuper} from "../../../types/core/definer";
 import {len} from "../../shortcuts/indexable";
 import {call} from "../../functions/call";
 import {get} from "../../objects/handlers/getset";
 import {IndeterminatePrototype, WithPrototype} from "../../../types/core/objects";
+import {indefinite} from "../../utils/types";
 
 
 /**
@@ -19,7 +17,7 @@ import {IndeterminatePrototype, WithPrototype} from "../../../types/core/objects
  */
 export function createSuper<T>(names: MethodKeys<T>[], parent: T): Maybe<FunctionClassSuper<T>> {
   if (len(names) === 0)
-    return undefined!;
+    return indefinite!;
 
   return reduce(names, (supers, key) => {
     supers[key] = function () {
@@ -39,7 +37,7 @@ export function parentFirst(constructor: FunctionClassConstructorFunction<Instan
       $this = (parent && apply(parent as any, this, args)) || this;
     constructor && apply(constructor, $this, args);
     return $this;
-  } : undefined!;
+  } : indefinite!;
 }
 
 export function constructorFirst(constructor: FunctionClassConstructorFunction<Instanceable, WithPrototype>, parent: WithPrototype): FunctionClassConstructorFunction<Instanceable, WithPrototype>;
@@ -50,5 +48,5 @@ export function constructorFirst(constructor: FunctionClassConstructorFunction<I
       $this = (constructor && apply(constructor, this, args)) || this;
     parent && apply(parent as any, $this, args);
     return $this;
-  } : undefined!;
+  } : indefinite!;
 }

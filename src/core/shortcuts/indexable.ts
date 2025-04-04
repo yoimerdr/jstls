@@ -4,6 +4,7 @@ import {Maybe, MaybeNumber} from "../../types/core";
 import {Concat, IndexableType} from "../../types/core/objects";
 import {apply} from "../functions/apply";
 import {slice} from "../iterable";
+import {nullable} from "../utils/types";
 
 /**
  * Return the length of the array like object.
@@ -27,7 +28,7 @@ export function len(iterable: ArrayLike): number;
 export function len(iterable: Maybe<ArrayLike>): MaybeNumber;
 
 export function len(iterable: Maybe<ArrayLike>): MaybeNumber {
-  return isDefined(iterable) ? iterable!.length : null;
+  return isDefined(iterable) ? iterable!.length : nullable;
 }
 
 export function concat(source: string, ...others: Object[]): string;

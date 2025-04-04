@@ -4,6 +4,7 @@ import {string} from "../../objects/handlers";
 import {create} from "../../shortcuts/object";
 import {random} from "../../shortcuts/math";
 import {concat} from "../../shortcuts/string";
+import {indefinite} from "../../utils/types";
 
 let id = 0;
 const postfix = random();
@@ -17,7 +18,7 @@ export type SymbolLike = {
 } & Object
 
 export function Symbol(description: any ): SymbolLike {
-  if (new.target !== undefined)
+  if (new.target !== indefinite)
     throw new TypeError("Symbol is not a constructor");
   else if(description instanceof Symbol)
     throw new TypeError("Cannot convert symbol to a string.");

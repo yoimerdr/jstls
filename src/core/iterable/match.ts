@@ -1,11 +1,11 @@
 import {Iter, iterEachOrFindIndex, iterMap} from "./iter";
 import {IterMap, IterMatchCondition} from "../../types/core/iterable";
 import {Maybe} from "../../types/core";
-import {apply} from "../functions/apply";
 import {WithPrototype} from "../../types/core/objects";
 import {ArrayLike} from "../../types/core/array";
 import {funclass} from "../definer/classes";
 import {FunctionClassSimpleStatics} from "../../types/core/definer";
+import {indefinite} from "../utils/types";
 
 export interface IterMatch<T> extends Iter<T> {
   /**
@@ -72,10 +72,10 @@ export const IterMatch: IterMatchConstructor = funclass({
     },
     firstIndex(condition) {
       const $this = this
-      return apply(iterEachOrFindIndex, $this, [
-        $this.start, $this.isInBounds, undefined!,
-        $this.next, undefined, false, condition
-      ]);
+      return iterEachOrFindIndex($this,
+        $this.start, $this.isInBounds, indefinite!,
+        $this.next, indefinite, false, condition
+      );
     },
     last(condition) {
       const $this = this
@@ -83,38 +83,38 @@ export const IterMatch: IterMatchConstructor = funclass({
     },
     lastIndex(condition) {
       const $this = this
-      return apply(iterEachOrFindIndex, $this, [
-        $this.end, $this.isInBounds, undefined!,
-        $this.previous, undefined, false, condition
-      ]);
+      return iterEachOrFindIndex($this,
+        $this.end, $this.isInBounds, indefinite!,
+        $this.previous, indefinite, false, condition
+      );
     },
     where(condition) {
       const $this = this
-      return apply(iterMap, $this, [
-        IterMatch, $this.each, undefined,
-        undefined, condition
-      ]);
+      return iterMap($this,
+        IterMatch, $this.each, indefinite,
+        indefinite, condition
+      );
     },
     rwhere(condition) {
       const $this = this
-      return apply(iterMap, $this, [
-        IterMatch, $this.reach, undefined,
-        undefined, condition
-      ]);
+      return iterMap($this,
+        IterMatch, $this.reach, indefinite,
+        indefinite, condition
+      );
     },
     map(fn, thisArg) {
       const $this = this
-      return apply(iterMap, $this, [
+      return iterMap($this,
         IterMatch, $this.each,
         fn, thisArg
-      ]);
+      );
     },
     rmap(fn, thisArg) {
       const $this = this
-      return apply(iterMap, $this, [
+      return iterMap($this,
         IterMatch, $this.reach,
         fn, thisArg
-      ]);
+      );
     }
   }
 })
