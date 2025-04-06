@@ -1,11 +1,12 @@
 import {ArrayLike} from "../../types/core/array";
 import {isNumber} from "../../core/objects/types";
 import {Paginator} from "./paginator";
-import {PagePaginationOptions, PaginationOptions} from "../../types/components/pagination/shared";
 import {Instanceable} from "../../types/core";
 import {requireObject} from "../../core/objects/validators";
 import {PagePagination} from "./page";
 import {wasFirstLoad, Pagination} from "./simple";
+import {PaginationOptions} from "../../types/components/pagination/simple";
+import {PagePaginationOptions} from "../../types/components/pagination/page";
 
 
 /**

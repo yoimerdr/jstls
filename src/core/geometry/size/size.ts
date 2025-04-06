@@ -3,7 +3,6 @@ import {IllegalArgumentError} from "../../exceptions";
 import {toFloat} from "../../extensions/string";
 import {writeable} from "../../definer";
 import {isDefined, isNumber} from "../../objects/types";
-import {requiredWithType} from "../../objects/validators/require";
 import {uid} from "../../polyfills/symbol";
 import {KeyableObject, WithPrototype} from "../../../types/core/objects";
 import {string} from "../../objects/handlers";
@@ -13,6 +12,7 @@ import {funclass} from "../../definer/classes/funclass";
 import {FunctionClassSimpleStatics} from "../../../types/core/definer";
 import {indefinite, nullable} from "../../utils/types";
 import {FunctionType, Maybe} from "../../../types/core";
+import {requiredWithType} from "../../objects/validators";
 
 export type SizeArgument = Size | string | number;
 

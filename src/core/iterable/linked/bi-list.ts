@@ -2,7 +2,7 @@ import {linkedAdd, linkedAddedNode, linkedAndNext, LinkedList, linkedPop, linked
 import {BiNode, MaybeBiNode} from "./bi-node";
 import {round} from "../../shortcuts/math";
 import {WithPrototype} from "../../../types/core/objects";
-import {funclass} from "../../definer/classes//funclass";
+import {funclass} from "../../definer/classes/funclass";
 import {FunctionClassSimpleStatics} from "../../../types/core/definer";
 import {nullable} from "../../utils/types";
 
