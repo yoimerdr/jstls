@@ -2,7 +2,7 @@ import {string} from "../../objects/handlers";
 import {repeat} from "./es2015";
 import {apply} from "../../functions/apply";
 import {len} from "../../shortcuts/indexable";
-import {returns} from "../../utils";
+import {returns} from "../../utils/fn";
 
 function padString(this: string, length: number, fill?: string, start?: boolean): string {
   fill = string(fill, returns(" "));

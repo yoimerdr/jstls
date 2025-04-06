@@ -4,7 +4,7 @@ import {NumberExtensions} from "../../types/core/extensions/number";
 import {max, min} from "../shortcuts/math";
 import {concat} from "../shortcuts/string";
 import {getDefined} from "../objects/validators";
-import {returns} from "../utils";
+import {returns} from "../utils/fn";
 import {valueOf} from "../shortcuts/object";
 
 export function coerceAtLeast(this: Number, minimum: number): number;

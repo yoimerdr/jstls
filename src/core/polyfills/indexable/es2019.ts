@@ -5,7 +5,7 @@ import {ArrayLike} from "../../../types/core/array";
 import {concat, len} from "../../shortcuts/indexable";
 import {isArray} from "../../shortcuts/array";
 import {getDefined} from "../../objects/validators";
-import {returns} from "../../utils";
+import {returns} from "../../utils/fn";
 
 export function flat<T>(this: ArrayLike<T>, depth?: number): T[] {
   depth = getDefined(depth, returns(1));

@@ -12,7 +12,7 @@ import {get, set} from "../objects/handlers/getset";
 import {freeze} from "../shortcuts/object";
 import {len} from "../shortcuts/indexable";
 import {concat} from "../shortcuts/string";
-import {funclass} from "../definer/classes";
+import {funclass} from "../definer/classes/funclass";
 import {FunctionClassSimpleStatics} from "../../types/core/definer";
 import {indefinite} from "../utils/types";
 

@@ -6,12 +6,12 @@ import {apply} from "../../functions/apply";
 import {each} from "../each";
 import {uid} from "../../polyfills/symbol";
 import {WithPrototype} from "../../../types/core/objects";
-import {funclass} from "../../definer/classes/";
+import {funclass} from "../../definer/classes/funclass";
 import {descriptor2} from "../../definer/shared";
 import {get, set} from "../../objects/handlers/getset";
 import {FunctionClassSimpleStatics} from "../../../types/core/definer";
 import {isDefined} from "../../objects/types";
-import {returns} from "../../utils";
+import {returns} from "../../utils/fn";
 import {nullable} from "../../utils/types";
 import {simple} from "../../definer/getters/builders";
 

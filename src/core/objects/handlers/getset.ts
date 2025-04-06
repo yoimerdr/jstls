@@ -3,12 +3,12 @@ import {KeyableObject, SetToDescriptor} from "../../../types/core/objects";
 import {hasOwn} from "../../polyfills/objects/es2022";
 import {isArray} from "../../shortcuts/array";
 import {isFunction, isObject, isString} from "../types";
-import {self} from "../../utils";
+import {self} from "../../utils/fn";
 import {indefinite} from "../../utils/types";
 import {reduce, slice} from "../../iterable";
 import {len} from "../../shortcuts/indexable";
 import {apply} from "../../functions/apply";
-import {keys} from "./properties";
+import {keys} from "../../shortcuts/object";
 
 /**
  * Returns the value of the `key` property in the target `object`, if this is defined.

@@ -13,7 +13,7 @@ import {get} from "../../objects/handlers/getset";
 import {forEach} from "../../shortcuts/array";
 import {includes} from "../../polyfills/indexable/es2016";
 import {call} from "../../functions/call";
-import {funclass} from "../../definer/classes";
+import {funclass} from "../../definer/classes/funclass";
 
 
 const mixinKey = uid("mC");

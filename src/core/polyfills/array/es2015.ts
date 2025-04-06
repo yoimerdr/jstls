@@ -1,7 +1,7 @@
 import {IterableLike} from "../../../types/core/iterable";
 import {isDefined} from "../../objects/types";
 import {requireFunction} from "../../objects/validators";
-import {self} from "../../utils";
+import {self} from "../../utils/fn";
 import {bind} from "../../functions/bind";
 import {each} from "../../iterable/each";
 

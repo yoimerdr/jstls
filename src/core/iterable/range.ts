@@ -1,6 +1,6 @@
 import {Iter} from "./iter";
 import {WithPrototype} from "../../types/core/objects";
-import {funclass} from "../definer/classes";
+import {funclass} from "../definer/classes/funclass";
 import {call} from "../functions/call";
 import {FunctionClassSimpleStatics} from "../../types/core/definer";
 import {protocall} from "../functions/prototype/call";

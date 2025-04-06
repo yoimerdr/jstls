@@ -3,7 +3,7 @@ import {IterMap, IterMatchCondition} from "../../types/core/iterable";
 import {Maybe} from "../../types/core";
 import {WithPrototype} from "../../types/core/objects";
 import {ArrayLike} from "../../types/core/array";
-import {funclass} from "../definer/classes";
+import {funclass} from "../definer/classes/funclass";
 import {FunctionClassSimpleStatics} from "../../types/core/definer";
 import {indefinite} from "../utils/types";
 

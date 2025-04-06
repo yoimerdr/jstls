@@ -1,5 +1,5 @@
 import {Keys} from "../../types/core";
-import {keys} from "../objects/handlers/properties";
+import {keys} from "../shortcuts/object";
 import {forEach} from "../shortcuts/array";
 import {PropertyDescriptor} from "../../types/core/objects/definer";
 

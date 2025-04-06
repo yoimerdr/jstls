@@ -8,7 +8,7 @@ import {apply} from "../functions/apply";
 import {reduce} from "../iterable";
 import {ArrayLike} from "../../types/core/array";
 import {is} from "../polyfills/objects/es2015";
-import {returns} from "../utils";
+import {returns} from "../utils/fn";
 import {Maybe} from "../../types/core";
 import {valueOf} from "../shortcuts/object";
 

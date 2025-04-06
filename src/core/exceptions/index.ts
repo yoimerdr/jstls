@@ -1,4 +1,4 @@
-import {funclass} from "../definer/classes";
+import {funclass} from "../definer/classes/funclass";
 import {FunctionClassConstructor} from "../../types/core/definer";
 import {WithPrototype} from "../../types/core/objects";
 

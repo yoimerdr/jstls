@@ -1,34 +1,39 @@
 import {coerceAtLeast} from "../../extensions/number";
 import {IllegalArgumentError} from "../../exceptions";
 import {toFloat} from "../../extensions/string";
-import {MaybeSizeArgument, SizeArgument} from "../../../types/core/size";
 import {writeable} from "../../definer";
 import {isDefined, isNumber} from "../../objects/types";
-import {requiredWithType} from "../../objects/validators";
+import {requiredWithType} from "../../objects/validators/require";
 import {uid} from "../../polyfills/symbol";
 import {KeyableObject, WithPrototype} from "../../../types/core/objects";
 import {string} from "../../objects/handlers";
 import {len} from "../../shortcuts/indexable";
 import {concat} from "../../shortcuts/string";
-import {funclass} from "../../definer/classes";
+import {funclass} from "../../definer/classes/funclass";
 import {FunctionClassSimpleStatics} from "../../../types/core/definer";
 import {indefinite, nullable} from "../../utils/types";
+import {FunctionType, Maybe} from "../../../types/core";
+
+export type SizeArgument = Size | string | number;
+
+export type MaybeSizeArgument = Maybe<SizeArgument>;
 
 export function isSize(value: any): boolean {
   return value instanceof Size;
 }
 
-function parseSize<R extends Size>(constructor: SizeConstructor,
+export function parseSize<R extends Size>(constructor: SizeConstructor,
+                                   isSize: FunctionType<void, [size: R], boolean>,
                                    format: number | string,
                                    ratio?: MaybeSizeArgument,
                                    defaultRatio?: boolean,): R {
   let aspectRatio: number = 1;
   if (!isDefined(ratio))
-    aspectRatio = parseSize(constructor, format, 1, true).ratio()
+    aspectRatio = parseSize(constructor, isSize, format, 1, true).ratio()
   else if (isNumber(ratio))
     aspectRatio = ratio as number;
-  else if (!isSize(ratio))
-    aspectRatio = parseSize(constructor, ratio as any, 1, true).ratio();
+  else if (!isSize(ratio as R))
+    aspectRatio = parseSize(constructor, isSize, ratio as any, 1, true).ratio();
 
   const match = string(format)
     .split(":");
@@ -98,7 +103,7 @@ function withSize<R extends Size>(constructor: SizeConstructor,
                                   ratio?: MaybeSizeArgument): R {
   height = (isSize(height)) ? (<Size>height).getHeight() : height;
   width = (isSize(height)) ? (<Size>width).getWidth() : width;
-  return parseSize(constructor, concat(string(width), ":", string(height)), ratio)
+  return parseSize(constructor, isSize, concat(string(width), ":", string(height)), ratio)
 }
 
 export function equalsSize($this: Size, size: SizeArgument,): boolean {
@@ -254,7 +259,7 @@ export const Size: SizeConstructor = funclass({
   },
   statics: {
     parse(format, ratio) {
-      return parseSize(this, format, ratio);
+      return parseSize(this, isSize, format, ratio);
     },
     withHeight(height, ratio) {
       return withSize(this, nullable, height, ratio);

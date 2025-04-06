@@ -1,8 +1,8 @@
-import {SizeArgument} from "../../../types/core/size";
+import {SizeArgument} from "./size";
 import {isSize, Size, sizeToString,} from "./size";
 import {round} from "../../shortcuts/math";
 import {WithPrototype} from "../../../types/core/objects";
-import {funclass} from "../../definer/classes";
+import {funclass} from "../../definer/classes/funclass";
 import {FunctionClassSimpleStatics} from "../../../types/core/definer";
 import {protocall} from "../../functions/prototype/call";
 import {isDefined} from "../../objects/types";

@@ -4,7 +4,7 @@ import {readonlys2} from "../../definer";
 import {isDefined} from "../../objects/types";
 import {apply} from "../../functions/apply";
 import {WithPrototype} from "../../../types/core/objects";
-import {funclass} from "../../definer/classes/";
+import {funclass} from "../../definer/classes/funclass";
 import {call} from "../../functions/call";
 import {FunctionClassSimpleStatics} from "../../../types/core/definer";
 import {requireFunction} from "../../objects/validators";

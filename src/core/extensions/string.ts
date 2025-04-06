@@ -3,7 +3,7 @@ import {StringExtensions} from "../../types/core/extensions/string";
 import {MaybeNumber} from "../../types/core";
 import {isEmpty, isNotEmpty} from "./shared/iterables";
 import {getDefined} from "../objects/validators";
-import {returns} from "../utils";
+import {returns} from "../utils/fn";
 import {nullable} from "../utils/types";
 
 

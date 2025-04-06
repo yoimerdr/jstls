@@ -1,7 +1,3 @@
-/**
- * Core module for handling file paths and path manipulation.
- */
-
 import {Maybe} from "../../types/core";
 import {isEmpty, isNotEmpty} from "../extensions/shared/iterables";
 import {isDefined} from "../objects/types";
@@ -18,7 +14,7 @@ import {string} from "../objects/handlers";
 import {create} from "../shortcuts/object";
 import {concat, len} from "../shortcuts/indexable";
 import {forEach} from "../shortcuts/array";
-import {funclass} from "../definer/classes";
+import {funclass} from "../definer/classes/funclass";
 import {descriptor2} from "../definer/shared";
 import {PropertyDescriptors} from "../../types/core/objects/definer";
 import {mapped, simple} from "../definer/getters/builders";

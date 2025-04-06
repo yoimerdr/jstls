@@ -1,11 +1,11 @@
-import {PaginationActLabel} from "../../types/components/pagination";
+import {PaginationActLabel} from "../../types/components/pagination/shared";
 import {requireDefined} from "../../core/objects/validators";
 import {IllegalArgumentError} from "../../core/exceptions";
-import {Pagination} from "./simple-pagination";
 import {concat} from "../../core/shortcuts/string";
 import {attribute, create, onEvent} from "../shared";
 import {apply} from "../../core/functions/apply";
 import {nullable} from "../../core/utils/types";
+import {Pagination} from "../../types/components/pagination/simple";
 
 /**
  * Creates an action element for pagination

@@ -3,7 +3,7 @@ import {readonly2} from "../definer";
 import {apply} from "../functions/apply";
 import {isFunction} from "../objects/types";
 import {requireFunction} from "../objects/validators";
-import {funclass} from "../definer/classes";
+import {funclass} from "../definer/classes/funclass";
 import {WithPrototype} from "../../types/core/objects";
 import {FunctionClassSimpleStatics} from "../../types/core/definer";
 

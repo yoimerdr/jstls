@@ -1,17 +1,14 @@
-import {PagePaginationConfig} from "../../types/components/pagination";
 import {
   afterPageChange,
   goto,
   Pagination,
   paginationConfig,
-  PaginationConstructor,
   wasFirstLoad
-} from "./simple-pagination";
-import {KeyableObject, WithPrototype} from "../../types/core/objects";
-import {Paginator} from "./paginator";
+} from "./simple";
+import {KeyableObject} from "../../types/core/objects";
 import {assign, deepAssign} from "../../core/objects/factory";
 import {actEl, pageEl} from "./page-elements";
-import {funclass} from "../../core/definer/classes";
+import {funclass} from "../../core/definer/classes/funclass";
 import {descriptor2} from "../../core/definer/shared";
 import {call} from "../../core/functions/call";
 import {toInt} from "../../core/extensions/string";
@@ -19,26 +16,9 @@ import {attribute, selector} from "../shared";
 import {FunctionClassSimpleStatics} from "../../types/core/definer";
 import {singleton} from "../../core/wrappers/singleton";
 import {nullable} from "../../core/utils/types";
+import {PagePagination, PagePaginationConfig, PagePaginationConstructor} from "../../types/components/pagination/page";
+import {PaginationConstructor} from "../../types/components/pagination/simple";
 
-/**
- * A handler for creates a page pagination component.
- */
-export interface PagePagination<T, C extends PagePaginationConfig<T> = PagePaginationConfig<T>> extends Pagination<T, C> {
-  /**
-   * Current page number from URL parameter.
-   */
-  readonly parameter: number;
-
-  /**
-   * Generates URL for a given page number
-   * @param page Page number or string
-   */
-  url(page: number | string): string;
-}
-
-export interface PagePaginationConstructor extends WithPrototype<PagePagination<any>> {
-  new<T, C extends PagePaginationConfig<T> = PagePaginationConfig<T>>(config: C, paginator: Paginator): PagePagination<T, C>;
-}
 
 /**
  * Creates default pagination configuration by merging provided config with defaults
@@ -57,7 +37,7 @@ export function pagePaginationConfig<C extends PagePaginationConfig>(config: C):
   return $config;
 }
 
-export const PagePagination = funclass<PagePaginationConstructor, PaginationConstructor>({
+const PagePagination: PagePaginationConstructor = funclass<PagePaginationConstructor, PaginationConstructor>({
   prototype: <FunctionClassSimpleStatics<PagePagination<any>>>{
     url(page) {
       const $this = this,
@@ -104,3 +84,5 @@ export const PagePagination = funclass<PagePaginationConstructor, PaginationCons
     }
   }
 }, Pagination);
+
+export {PagePagination}

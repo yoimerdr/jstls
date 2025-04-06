@@ -4,7 +4,6 @@ import {apply} from "../../functions/apply";
 import {FunctionClassConstructorFunction, FunctionClassSuper} from "../../../types/core/definer";
 import {len} from "../../shortcuts/indexable";
 import {call} from "../../functions/call";
-import {get} from "../../objects/handlers/getset";
 import {IndeterminatePrototype, WithPrototype} from "../../../types/core/objects";
 import {indefinite} from "../../utils/types";
 
@@ -22,7 +21,7 @@ export function createSuper<T>(names: MethodKeys<T>[], parent: T): Maybe<Functio
   return reduce(names, (supers, key) => {
     supers[key] = function () {
       const args = arguments;
-      return call(get(parent, key,) as any, args[0], slice(args, 1));
+      return call(parent[key] as any, args[0], slice(args, 1));
     };
 
     return supers;

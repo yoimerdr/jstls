@@ -6,7 +6,7 @@ import {assignNextNode, Node} from "./node";
 import {apply} from "../../functions/apply";
 import {WithPrototype} from "../../../types/core/objects";
 import {uid} from "../../polyfills/symbol";
-import {funclass} from "../../definer/classes/";
+import {funclass} from "../../definer/classes//funclass";
 import {FunctionClassSimpleStatics} from "../../../types/core/definer";
 import {get, set} from "../../objects/handlers/getset";
 import {nullable} from "../../utils/types";

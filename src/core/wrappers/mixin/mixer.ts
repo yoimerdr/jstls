@@ -14,7 +14,7 @@ import {slice} from "../../iterable";
 import {apply} from "../../functions/apply";
 import {readonly2} from "../../definer";
 import {getMixinBases} from "./mixin";
-import {funclass} from "../../definer/classes";
+import {funclass} from "../../definer/classes/funclass";
 import {WithPrototype} from "../../../types/core/objects";
 import {FunctionClassSimpleStatics} from "../../../types/core/definer";
 import {concat} from "../../shortcuts/indexable";

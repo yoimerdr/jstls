@@ -5,7 +5,8 @@
   "scripts": {
     "build": "tsc -b",
     "clean": "tsc -b --clean",
-    "main": "npx ts-node src/index.ts"
+    "main": "npx ts-node src/index.ts",
+    "checks": "npx madge --circular src --extensions ts"
   },
   "keywords": [],
   "author": "",

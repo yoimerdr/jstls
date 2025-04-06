@@ -1,3 +1,6 @@
+import {Keys} from "../../types/core";
+import {PropertyDescriptor} from "../../types/core/objects/definer";
+
 interface CreateShortcut {
   /**
    * Creates an object that has the specified prototype or that has null prototype.
@@ -70,6 +73,39 @@ interface FreezeShortcut {
    */<T>(o: T): Readonly<T>;
 }
 
+interface KeysShortcut {
+  <T>(object: T): Keys<T>[];
+}
+
+interface DescriptorShortcut {
+  <T, K extends Keys<T>>(object: T, key: K): PropertyDescriptor<T, K>;
+
+  <T>(object: T, key: PropertyKey): PropertyDescriptor<T> | undefined;
+
+  (object: any, key: PropertyKey): PropertyDescriptor | undefined;
+}
+
+/**
+ * Returns the names of the enumerable properties and methods of an object.
+ *
+ * This is a short for {@link Object.keys}.
+ * @param object The target object.
+ * @see {Object.keys}
+ */
+export const keys: KeysShortcut = Object.keys;
+
+/**
+ * Returns the names of the all (including non-enumerable) properties and methods of an object.
+ *
+ * This is a short for {@link Object.getOwnPropertyNames}.
+ *
+ * @param object The target object.
+ * @see {Object.getOwnPropertyNames}
+ */
+export const propertyNames: KeysShortcut = Object.getOwnPropertyNames;
+
+export const descriptor: DescriptorShortcut = Object.getOwnPropertyDescriptor as any;
+
 export const create: CreateShortcut = Object.create;
 
 export const defineProperty: DefinePropertyShortcut = Object.defineProperty;
@@ -78,7 +114,7 @@ export const defineProperties: DefinePropertiesShortcut = Object.definePropertie
 
 export const freeze: FreezeShortcut = Object.freeze;
 
-export function valueOf<T extends { valueOf(): any },>(object: T): ReturnType<T["valueOf"]> {
+export function valueOf<T extends { valueOf(): any }, >(object: T): ReturnType<T["valueOf"]> {
   return object.valueOf();
 }
 

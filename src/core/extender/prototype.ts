@@ -2,7 +2,7 @@ import {KeyableObject, WithPrototype} from "../../types/core/objects";
 import {get, set, setTo} from "../objects/handlers/getset";
 import {isFunction} from "../objects/types";
 import {concat} from "../shortcuts/string";
-import {propertyNames} from "../objects/handlers/properties";
+import {propertyNames} from "../shortcuts/object";
 import {nullable} from "../utils/types";
 
 export function statics<T extends WithPrototype>(target: T, base: WithPrototype): T {

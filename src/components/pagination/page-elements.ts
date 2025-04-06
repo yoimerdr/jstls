@@ -1,9 +1,9 @@
-import {PaginationActLabel} from "../../types/components/pagination";
+import {PaginationActLabel} from "../../types/components/pagination/shared";
 import {call} from "../../core/functions/call";
-import {PagePagination} from "./page-pagination";
 import {createActElement, createPageElement} from "./simple-elements";
 import {onEvent} from "../shared";
 import {indefinite, nullable} from "../../core/utils/types";
+import {PagePagination} from "../../types/components/pagination/page";
 
 /**
  * Creates a clickable action (next, first, previous, last) element for page pagination.

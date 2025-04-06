@@ -10,7 +10,7 @@ import {clear, forEach} from "../shortcuts/array";
 import {concat} from "../shortcuts/string";
 import {uid} from "./symbol";
 import {get, set} from "../objects/handlers/getset";
-import {funclass} from "../definer/classes";
+import {funclass} from "../definer/classes/funclass";
 import {FunctionClassSimpleStatics} from "../../types/core/definer";
 import {deletes, deletesAll} from "../objects/handlers/deletes";
 import {descriptor2} from "../definer/shared";

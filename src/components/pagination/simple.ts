@@ -1,22 +1,20 @@
-import {RequiredAll, WithPrototype} from "../../types/core/objects";
+import {RequiredAll} from "../../types/core/objects";
 import {
   PaginationActivePages,
   PaginationActLabel,
-  PaginationConfig,
   PaginationResponsive
-} from "../../types/components/pagination";
-import {Paginator} from "./paginator";
-import {funclass} from "../../core/definer/classes";
+} from "../../types/components/pagination/shared";
+import {funclass} from "../../core/definer/classes/funclass";
 import {isDefined, isFunction, isObject, isString} from "../../core/objects/types";
 import {IllegalArgumentError} from "../../core/exceptions";
 import {get, set} from "../../core/objects/handlers/getset";
 import {uid} from "../../core/polyfills/symbol";
 import {configurable, readonlys, writeable} from "../../core/definer";
-import {Entry, Maybe, MaybeNumber} from "../../types/core";
+import {Maybe, MaybeNumber} from "../../types/core";
 import {eachprv} from "../../core/iterable/each";
 import {last} from "../../core/extensions/shared/iterables";
 import {entries} from "../../core/polyfills/objects/es2017";
-import {noact} from "../../core/utils";
+import {noact} from "../../core/utils/fn";
 import {indefinite, nullable} from "../../core/utils/types";
 import {assign, deepAssign} from "../../core/objects/factory";
 import {bind} from "../../core/functions/bind";
@@ -31,65 +29,7 @@ import {FunctionClassSimpleStatics} from "../../types/core/definer";
 import {apply} from "../../core/functions/apply";
 import {toInt} from "../../core/extensions/string";
 import {deletes} from "../../core/objects/handlers/deletes";
-
-/**
- * A handler for creates a pagination component.
- */
-export interface Pagination<T, C extends PaginationConfig<T> = PaginationConfig<T>> {
-  /**
-   * The paginator instance
-   * */
-  readonly paginator: Paginator;
-  /**
-   * The container element
-   * */
-  readonly container: HTMLElement;
-  /**
-   * The pagination configuration
-   * */
-  readonly cfg: C;
-
-  /**
-   * Get responsive breakpoints and their configurations
-   * */
-  get responsives(): Entry<PaginationResponsive, number>[];
-
-  /**
-   * Navigate to first page
-   * */
-  toFirst(): boolean;
-
-  /**
-   * Navigate to last page
-   * */
-  toLast(): boolean;
-
-  /**
-   * Navigate to next page
-   * */
-  next(): boolean;
-
-  /**
-   * Navigate to previous page
-   * */
-  previous(): boolean;
-
-  /**
-   * Navigate to specific page
-   * @param page The page to go
-   * */
-  goto(page: number | string): boolean;
-
-  /**
-   * Render pagination UI
-   * @param target The mode to render the component.
-   * */
-  paginate(target?: 'full' | 'pages'): void;
-}
-
-export interface PaginationConstructor extends WithPrototype<Pagination<any>> {
-  new<T, C extends PaginationConfig<T> = PaginationConfig<T>>(config: C, paginator: Paginator): Pagination<T, C>;
-}
+import {PaginationConfig, PaginationConstructor, Pagination} from "../../types/components/pagination/simple";
 
 /**
  * Creates default pagination configuration by merging provided config with defaults
@@ -304,7 +244,7 @@ export function remove(target: HTMLElement | string) {
   deletes(target, metaPagination);
 }
 
-export const Pagination: PaginationConstructor = funclass({
+const Pagination: PaginationConstructor = funclass({
   construct: function (config, paginator) {
     const $this = this;
 
@@ -462,3 +402,5 @@ export const Pagination: PaginationConstructor = funclass({
     })
   }
 })
+
+export {Pagination}
