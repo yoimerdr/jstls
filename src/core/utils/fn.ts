@@ -1,6 +1,7 @@
 import {apply} from "../functions/apply";
 import {slice} from "../iterable";
 import {nullable} from "./types";
+import {concat, len} from "../shortcuts/indexable";
 
 
 /**
@@ -36,3 +37,36 @@ export function nreturns<T extends (...args: any[]) => boolean>(fn: T) {
 export function noact(...args: any) {
 }
 
+/**
+ * Reduces a text to a maximum length by joining words until the limit is reached.
+ *
+ * @example
+ * reduceText("lorem ipsum dolor sit amet, consectetur adipiscing elit", 40) // "lorem ipsum dolor sit amet, consectetur"
+ *
+ * @example
+ * reduceText("lorem ipsum dolor sit amet, consectetur adipiscing elit", 40, /\W/, "-") // lorem-ipsum-dolor-sit-amet-consectetur
+ *
+ * @param text The input text string to reduce
+ * @param length The maximum length
+ * @param separator The word's separator
+ * @param joiner The string to join the words.
+ *
+ * @returns The reduced text
+ */
+export function reduceText(text: string, length: number, separator?: string | RegExp, joiner?: string) {
+  let result = "";
+  joiner = joiner || " ";
+  separator = separator || " "
+  const source = text.split(separator)
+  for (let i = 0; i < len(source); i++) {
+    let value = source[i];
+    if (!value)
+      continue;
+    value = concat(result, joiner, value);
+    if (value.length > length)
+      break;
+    result = value;
+  }
+
+  return result.slice(1);
+}

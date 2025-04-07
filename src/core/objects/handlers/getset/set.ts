@@ -1,59 +1,16 @@
-import {Keys, Maybe} from "../../../types/core";
-import {KeyableObject, SetToDescriptor} from "../../../types/core/objects";
-import {hasOwn} from "../../polyfills/objects/es2022";
-import {isArray} from "../../shortcuts/array";
-import {isFunction, isObject, isString} from "../types";
-import {self} from "../../utils/fn";
-import {indefinite} from "../../utils/types";
-import {reduce, slice} from "../../iterable";
-import {len} from "../../shortcuts/indexable";
-import {apply} from "../../functions/apply";
-import {keys} from "../../shortcuts/object";
-
-/**
- * Returns the value of the `key` property in the target `object`, if this is defined.
- * @example
- * const value = get(object, 'key') // object[key]
- * @param object The target object.
- * @param key The property name.
- * @return The property value, or undefined if is not present or object not is an object.
- */
-export function get<T, K extends Keys<T>>(object: T, key: K): T[K];
-
-/**
- * Returns the value of the `key` property in the target `object`, if this is defined.
- * @example
- * const value = get(object, 'key') // object['key'];
- * @param object The target object.
- * @param key The target object property name.
- * @return The property value, or undefined if is not present or object not is an object.
- */
-export function get<T>(object: T, key: PropertyKey): any;
-/**
- * Returns the value of the `key` property in the target `object`, if this is defined.
- * @example
- * const value = get(object, 'key', 'key2') // object['key']['key2'];
- * @param object The target object.
- * @param key The target object property name.
- * @param key2 The name of the property of the first get result.
- * @param keys The name of the properties of the previous result.
- * @return The last property value, or undefined if is not present or some object not is an object.
- */
-export function get<T, K extends Keys<T>>(object: T & KeyableObject, key: K | PropertyKey, key2: PropertyKey, ...keys: PropertyKey[]): any;
-export function get<T, K extends Keys<T>>(object: T & KeyableObject, key: K | PropertyKey, ...keys: PropertyKey[]): Maybe<T[K]> {
-  let args = arguments, i = 1;
-  if (len(args) <= 2)
-    return object ? object[key] : indefinite;
-
-  for (; i < len(args); i++) {
-    key = args[i];
-    if (object)
-      object = object[key];
-    else return object as T[K];
-  }
-
-  return object as T[K];
-}
+import {Keys} from "../../../../types/core";
+import {KeyableObject, SetToDescriptor} from "../../../../types/core/objects";
+import {hasOwn} from "../../../polyfills/objects/es2022";
+import {isArray} from "../../../shortcuts/array";
+import {isDefined, isFunction, isObject, isString} from "../../types";
+import {self} from "../../../utils/fn";
+import {indefinite} from "../../../utils/types";
+import {reduce, slice} from "../../../iterable";
+import {len} from "../../../shortcuts/indexable";
+import {apply} from "../../../functions/apply";
+import {keys} from "../../../shortcuts/object";
+import {get} from "./get";
+import {SetTransformDescriptor} from "../../../../types/core/objects/getset";
 
 /**
  * Sets the given value as the `key` property in the target `object`, if this is defined.
@@ -62,7 +19,6 @@ export function get<T, K extends Keys<T>>(object: T & KeyableObject, key: K | Pr
  * @param object The target object.
  * @param key The property name.
  * @param value The property value.
- * @return The new assigned value
  */
 export function set<T, K extends Keys<T>>(object: T, key: K, value: T[K]): T[K];
 
@@ -73,7 +29,6 @@ export function set<T, K extends Keys<T>>(object: T, key: K, value: T[K]): T[K];
  * @param object The target object.
  * @param key The property name.
  * @param value The property value.
- * @return The new assigned value
  */
 export function set<T, K extends Keys<T>, R = any>(object: T, key: PropertyKey, value: R): R;
 /**
@@ -84,7 +39,6 @@ export function set<T, K extends Keys<T>, R = any>(object: T, key: PropertyKey, 
  * @param key The property name.
  * @param key2 The name of the property of the first get result.
  * @param keysOrValue The new value or other keys.
- * @return The new assigned value
  */
 export function set<T, K extends Keys<T>>(object: T & KeyableObject, key: K | PropertyKey, key2: any, ...keysOrValue: any[]): any;
 export function set<T, K extends Keys<T>>(object: T & KeyableObject, key: K | PropertyKey, key2: PropertyKey, ...keysOrValue: PropertyKey[]): any {
@@ -110,7 +64,6 @@ export function set<T, K extends Keys<T>>(object: T & KeyableObject, key: K | Pr
  * @param object The source object.
  * @param key The property name.
  * @param target The target object.
- * @return True if the property value has been assigned, false otherwise.
  */
 export function setTo<T, K extends Keys<T>>(object: T, key: K | K[], target: T): T;
 
@@ -123,12 +76,28 @@ export function setTo<T, K extends Keys<T>>(object: T, key: K | K[], target: T):
  * @param object The source object.
  * @param key The property name.
  * @param target The target object.
- * @return True if the property value has been assigned, false otherwise.
  */
 export function setTo<T, K extends Keys<T>>(object: T, key: PropertyKey | PropertyKey[], target: T): T;
-
-export function setTo<T, R = KeyableObject>(object: T, key: SetToDescriptor<T>, target: Partial<R>): R;
-
+/**
+ * Sets the value of the descriptor properties in the source `object` to the `target` object.
+ * @example
+ * setTo(object, { name: toFloat }, target) // target['name'] = toFloat(source['name'])
+ *
+ * @param object The source object.
+ * @param descriptor The keys descriptors
+ * @param target The target object.
+ */
+export function setTo<T, R = KeyableObject>(object: T, descriptor: SetToDescriptor<T>, target: Partial<R>): R;
+/**
+ * Sets the value of the `key` property in the source `object` to the `target` object.
+ * @example
+ * setTo(object, 'key', target) // target['key'] = object['key'];
+ * @example
+ * setTo(object, ['key', 'name'], target) // target['key'] = object['key']; target['name'] = object['name'];
+ * @param object The source object.
+ * @param key The property name.
+ * @param target The target object.
+ */
 export function setTo(object: KeyableObject, key: PropertyKey | PropertyKey[], target: KeyableObject): KeyableObject;
 export function setTo<T, K extends Keys<T>>(object: T & KeyableObject, key: K | PropertyKey | (K | PropertyKey)[], target: T & KeyableObject): KeyableObject {
   let props: KeyableObject = {};
@@ -148,4 +117,39 @@ export function setTo<T, K extends Keys<T>>(object: T & KeyableObject, key: K | 
     hasOwn(object, name) && ((target as KeyableObject)[name] = props[name](object[name]));
     return target;
   }, target);
+}
+
+/**
+ * Sets the value of the descriptor properties in the source `object` to the `target` object.
+ * @example Simple set
+ * setTransform({name: 1}, {name: 'n'}, {}) // { n: 1 }
+ * @example Set with transform
+ * setTransform({name: 1}, {name: {key: 'n', value: String}}, {}) // { n: '1' }
+ * @example Set with reverse
+ * setTransform({n: 1}, {name: {key: 'n', value: String}}, {}, true) // { name: '1' }
+ * @param source The source object.
+ * @param descriptor The keys descriptors.
+ * @param target The target object.
+ * @param reverse Whether to exchange the property keys.
+ */
+export function setTransform<T>(source: T, descriptor: SetTransformDescriptor<T>, target: Partial<T>, reverse?: boolean): T;
+export function setTransform<T>(source: T, descriptor: SetTransformDescriptor<T>, target: T & KeyableObject, reverse?: boolean): T {
+  return reduce(keys(descriptor), (target, prop) => {
+    let mapper = self,
+      value = get(descriptor, prop) as any;
+
+    if (isObject(value)) {
+      mapper = value.value || self;
+      value = value.key;
+    }
+
+    if (reverse) {
+      const aux = value;
+      value = prop;
+      prop = aux;
+    }
+
+    isDefined(value) && hasOwn(source, prop) && set(target, value, mapper(get(source, prop)));
+    return target
+  }, target)
 }
