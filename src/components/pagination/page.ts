@@ -1,11 +1,11 @@
 import {
   afterPageChange,
   goto,
-  Pagination,
-  paginationConfig,
+  Pagination, PaginationCommon,
+  paginationConfig, PaginationConstructor, PaginationOptions,
   wasFirstLoad
 } from "./simple";
-import {KeyableObject} from "../../types/core/objects";
+import {KeyableObject, WithPrototype} from "../../types/core/objects";
 import {assign, deepAssign} from "../../core/objects/factory";
 import {actEl, pageEl} from "./page-elements";
 import {funclass} from "../../core/definer/classes/funclass";
@@ -16,8 +16,77 @@ import {attribute, selector} from "../shared";
 import {FunctionClassSimpleStatics} from "../../types/core/definer";
 import {singleton} from "../../core/wrappers/singleton";
 import {nullable} from "../../core/utils/types";
-import {PagePagination, PagePaginationConfig, PagePaginationConstructor} from "../../types/components/pagination/page";
-import {PaginationConstructor} from "../../types/components/pagination/simple";
+import {PaginationActLabel} from "../../types/components/pagination";
+import {Paginator} from "./paginator";
+import {PagePaginationOnElements} from "../../types/components/pagination/shared";
+
+/**
+ * A handler for creates a page pagination component.
+ */
+export interface PagePagination<T, C extends PagePaginationConfig<T> = PagePaginationConfig<T>> extends Pagination<T, C>, PagePaginationOnElements<T, C> {
+  /**
+   * Current page number from URL parameter.
+   */
+  readonly parameter: number;
+}
+
+export interface PagePaginationConstructor extends WithPrototype<PagePagination<any>> {
+  new<T, C extends PagePaginationConfig<T> = PagePaginationConfig<T>>(config: C, paginator: Paginator): PagePagination<T, C>;
+}
+
+/**
+ * Configuration for page-based pagination
+ */
+export type PagePaginationConfig<T = any> = PaginationCommon<T> & {
+  /**
+   * Element creation functions
+   * */
+  elements: PagePaginationElements<T>;
+  /**
+   * URL parameter name
+   * */
+  parameter?: string;
+  /**
+   * Whether to reload on page change
+   * */
+  reload?: boolean;
+  /**
+   * Callback when page changes
+   * */
+  onPageChange?(this: PagePagination<T>, page: number, items: T[]): void | Promise<T>;
+}
+
+/**
+ * Element creation functions for page pagination
+ */
+export type PagePaginationElements<T = any> = {
+  /**
+   * Creates action button element
+   * */
+  act(this: PagePagination<T>, label: PaginationActLabel): HTMLElement;
+  /**
+   * Creates page number element
+   * */
+  page(this: PagePagination<T>, page: number | string): HTMLElement;
+  /**
+   * Creates ellipsis element
+   * */
+  ellipsis(this: PagePagination<T>, text: string): HTMLElement;
+}
+
+/**
+ * Options for page-based pagination
+ */
+export type PagePaginationOptions<T = any> = PaginationOptions<T> & {
+  /**
+   * URL parameter name
+   * */
+  parameter?: string;
+  /**
+   * Whether to reload on page change
+   * */
+  reload?: boolean;
+}
 
 
 /**
@@ -29,7 +98,7 @@ export function pagePaginationConfig<C extends PagePaginationConfig>(config: C):
     reload: false,
   }, paginationConfig(config));
 
-  $config.elements = assign({
+  $config.elements = assign<KeyableObject>({
     act: actEl,
     page: pageEl,
   }, config.elements)
@@ -37,7 +106,7 @@ export function pagePaginationConfig<C extends PagePaginationConfig>(config: C):
   return $config;
 }
 
-const PagePagination: PagePaginationConstructor = funclass<PagePaginationConstructor, PaginationConstructor>({
+export const PagePagination: PagePaginationConstructor = funclass<PagePaginationConstructor, PaginationConstructor>({
   prototype: <FunctionClassSimpleStatics<PagePagination<any>>>{
     url(page) {
       const $this = this,
@@ -85,4 +154,3 @@ const PagePagination: PagePaginationConstructor = funclass<PagePaginationConstru
   }
 }, Pagination);
 
-export {PagePagination}

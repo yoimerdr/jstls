@@ -1,16 +1,16 @@
-import {RequiredAll} from "../../types/core/objects";
+import {KeyableObject, RequiredAll, WithPrototype} from "../../types/core/objects";
 import {
   PaginationActivePages,
-  PaginationActLabel,
+  PaginationActLabel, PaginationLabels,
   PaginationResponsive
-} from "../../types/components/pagination/shared";
+} from "../../types/components/pagination";
 import {funclass} from "../../core/definer/classes/funclass";
 import {isDefined, isFunction, isObject, isString} from "../../core/objects/types";
 import {IllegalArgumentError} from "../../core/exceptions";
 import {get, set} from "../../core/objects/handlers/getset";
 import {uid} from "../../core/polyfills/symbol";
 import {configurable, readonlys, writeable} from "../../core/definer";
-import {Maybe, MaybeNumber} from "../../types/core";
+import {Entry, Maybe, MaybeNumber} from "../../types/core";
 import {eachprv} from "../../core/iterable/each";
 import {last} from "../../core/extensions/shared/iterables";
 import {entries} from "../../core/polyfills/objects/es2017";
@@ -29,14 +29,126 @@ import {FunctionClassSimpleStatics} from "../../types/core/definer";
 import {apply} from "../../core/functions/apply";
 import {toInt} from "../../core/extensions/string";
 import {deletes} from "../../core/objects/handlers/deletes";
-import {PaginationConfig, PaginationConstructor, Pagination} from "../../types/components/pagination/simple";
+import {Paginator} from "./paginator";
+import {PaginationOnElements} from "../../types/components/pagination/shared";
+
+/**
+ * A handler for creates a pagination component.
+ */
+export interface Pagination<T, C extends PaginationConfig<T> = PaginationConfig<T>> extends PaginationOnElements<T, C> {
+
+  /**
+   * The container element
+   * */
+  readonly container: HTMLElement;
+
+  /**
+   * Get responsive breakpoints and their configurations
+   * */
+  get responsives(): Entry<PaginationResponsive, number>[];
+
+  /**
+   * Render pagination UI
+   * @param target The mode to render the component.
+   * */
+  paginate(target?: 'full' | 'pages'): void;
+}
+
+export interface PaginationConstructor extends WithPrototype<Pagination<any>> {
+  new<T, C extends PaginationConfig<T> = PaginationConfig<T>>(config: C, paginator: Paginator): Pagination<T, C>;
+}
+
+
+/**
+ * Common pagination configuration options
+ */
+export type PaginationCommon<T = any> = {
+  /**
+   * Optional source array to paginate.
+   * */
+  source?: T[];
+  /**
+   * Container element or selector
+   * */
+  container: string | HTMLElement;
+  /**
+   * Label configurations
+   * */
+  labels?: PaginationLabels;
+  /**
+   * Text to show for ellipsis
+   * */
+  ellipsisText?: string;
+  /**
+   * The page name
+   * */
+  name?: string;
+  /**
+   * Whether to scroll on page change
+   * */
+  scroll?: boolean;
+  /**
+   * Callback when page changes
+   * */
+  onPageChange?(this: Pagination<T>, page: number, items: T[]): void | Promise<T>;
+  /**
+   * Responsive configurations
+   * */
+  responsive?: Record<number | string, PaginationResponsive>;
+} & PaginationResponsive;
+
+/**
+ * Element creation functions for pagination
+ */
+export type PaginationElements<T = any> = {
+  /**
+   * Creates action button element
+   * */
+  act(this: Pagination<T>, label: PaginationActLabel): HTMLElement;
+  /**
+   * Creates page number element
+   * */
+  page(this: Pagination<T>, page: number | string): HTMLElement;
+  /**
+   * Creates ellipsis element
+   * */
+  ellipsis(this: Pagination<T>, text: string): HTMLElement;
+}
+
+/**
+ * Configuration for simple pagination
+ */
+export type PaginationConfig<T = any> = PaginationCommon<T> & {
+  /**
+   * Element creation functions
+   * */
+  elements: PaginationElements<T>;
+}
+
+/**
+ * Options for simple pagination
+ */
+export type PaginationOptions<T = any> = PaginationCommon<T> & {
+  /**
+   * Total number of items
+   * */
+  total?: number;
+  /**
+   * Number of items per page
+   * */
+  perPage: number;
+  /**
+   * Custom paginator instance
+   * */
+  paginator?: Paginator
+};
 
 /**
  * Creates default pagination configuration by merging provided config with defaults
  */
 export function paginationConfig<C extends PaginationConfig>(config: C): C {
   requireObject(config, "options");
-  return deepAssign(<C>{
+  return deepAssign<KeyableObject>({
     pinedPages: 1,
     pages: 3,
     labels: {
@@ -244,7 +356,7 @@ export function remove(target: HTMLElement | string) {
   deletes(target, metaPagination);
 }
 
-const Pagination: PaginationConstructor = funclass({
+export const Pagination: PaginationConstructor = funclass({
   construct: function (config, paginator) {
     const $this = this;
 
@@ -402,5 +514,3 @@ const Pagination: PaginationConstructor = funclass({
     })
   }
 })
-
-export {Pagination}

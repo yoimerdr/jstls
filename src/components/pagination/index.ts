@@ -3,10 +3,8 @@ import {isNumber} from "../../core/objects/types";
 import {Paginator} from "./paginator";
 import {Instanceable} from "../../types/core";
 import {requireObject} from "../../core/objects/validators";
-import {PagePagination} from "./page";
-import {wasFirstLoad, Pagination} from "./simple";
-import {PaginationOptions} from "../../types/components/pagination/simple";
-import {PagePaginationOptions} from "../../types/components/pagination/page";
+import {PagePagination, PagePaginationOptions} from "./page";
+import {wasFirstLoad, Pagination, PaginationOptions} from "./simple";
 
 
 /**
@@ -20,7 +18,7 @@ export function paginator(total: number | ArrayLike, perPage?: number, page?: nu
   return new Paginator(total, perPage, page);
 }
 
-function create<T, P extends Pagination>(options: PaginationOptions<T>, cls: Instanceable<P>): P {
+function create<T, P extends Pagination<T>>(options: PaginationOptions<T>, cls: Instanceable<P>): P {
   requireObject(options, "options");
   let {paginator: pgr, source, total, perPage} = options;
   if (!(pgr instanceof Paginator))
@@ -34,7 +32,7 @@ function create<T, P extends Pagination>(options: PaginationOptions<T>, cls: Ins
  * Creates a simple pagination.
  * @param options Pagination options
  */
-export function pagination<T = never>(options: PaginationOptions<T>): Pagination {
+export function pagination<T = never>(options: PaginationOptions<T>): Pagination<T> {
   return create(options, Pagination);
 }
 
@@ -42,7 +40,7 @@ export function pagination<T = never>(options: PaginationOptions<T>): Pagination
  * Creates a page pagination.
  * @param options Page pagination options
  */
-export function pagination2<T = never>(options: PagePaginationOptions<T>): PagePagination {
+export function pagination2<T = never>(options: PagePaginationOptions<T>): PagePagination<T> {
   return create(options, PagePagination);
 }
 

@@ -1,16 +1,16 @@
-import {PaginationActLabel} from "../../types/components/pagination/shared";
+import {PaginationActLabel} from "../../types/components/pagination";
 import {call} from "../../core/functions/call";
 import {createActElement, createPageElement} from "./simple-elements";
 import {onEvent} from "../shared";
 import {indefinite, nullable} from "../../core/utils/types";
-import {PagePagination} from "../../types/components/pagination/page";
+import {PagePaginationOnElements} from "../../types/components/pagination/shared";
 
 /**
  * Creates a clickable action (next, first, previous, last) element for page pagination.
  * @param label The label type for the action
  * @returns The created HTML element with click handler
  */
-export function actEl<T = any>(this: PagePagination<T>, label: PaginationActLabel): HTMLElement {
+export function actEl<T = any>(this: PagePaginationOnElements<T>, label: PaginationActLabel): HTMLElement {
   const $this = this,
     el = createActElement($this, "a", label),
     paginator = $this.paginator;
@@ -48,7 +48,7 @@ export function actEl<T = any>(this: PagePagination<T>, label: PaginationActLabe
  * @param page The page number or string to display
  * @returns The created HTML element with click handler
  */
-export function pageEl<T = any>(this: PagePagination<T>, page: number | string): HTMLElement {
+export function pageEl<T = any>(this: PagePaginationOnElements<T>, page: number | string): HTMLElement {
   const $this = this,
     el = createPageElement($this, "a", page);
 

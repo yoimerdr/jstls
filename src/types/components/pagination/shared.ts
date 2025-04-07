@@ -1,88 +1,48 @@
-/**
- * Properties for active pages display
- */
-export interface PaginationActivePages {
+import {Paginator} from "../../../components/pagination/paginator";
+import {KeyableObject} from "../../core/objects";
+
+export interface PaginationOnElements<T, C extends KeyableObject = KeyableObject> {
   /**
-   * Container element
+   * The pagination configuration
    * */
-  container: HTMLElement;
+  readonly cfg: C;
+
   /**
-   * Total number of pages
+   * Navigate to first page
    * */
-  pages: number;
+  toFirst(): boolean;
+
   /**
-   * Number of pages to pin at start/end
+   * Navigate to last page
    * */
-  pinedPages: number;
+  toLast(): boolean;
+
   /**
-   * Whether to show ellipsis
+   * Navigate to next page
    * */
-  showEllipsis?: boolean;
+  next(): boolean;
+
+  /**
+   * Navigate to previous page
+   * */
+  previous(): boolean;
+
+  /**
+   * Navigate to specific page
+   * @param page The page to go
+   * */
+  goto(page: number | string): boolean;
+
+  /**
+   * The paginator instance
+   * */
+  readonly paginator: Paginator;
 }
 
-/**
- * Responsive configuration options
- */
-export interface PaginationResponsive {
+export interface PagePaginationOnElements<T, C extends KeyableObject = KeyableObject> extends PaginationOnElements<T, C> {
   /**
-   * Whether to show first page button
-   * */
-  showFirst?: boolean;
-  /**
-   * Whether to show last page button
-   * */
-  showLast?: boolean;
-  /**
-   * Whether to show ellipsis
-   * */
-  showEllipsis?: boolean;
-  /**
-   * Number of pages to display
-   * */
-  pages?: number;
-  /**
-   * Number of pages to pin
-   * */
-  pinedPages?: number;
+   * Generates URL for a given page number
+   * @param page Page number or string
+   */
+  url(page: number | string): string;
 }
-
-/** Types of pagination action labels */
-export type PaginationActLabel = "first" | "last" | "previous" | "next"
-
-/**
- * Configuration for a pagination label
- */
-export interface PaginationLabel {
-  /**
-   * Label name
-   * */
-  name?: string;
-  /**
-   * Label display text. It can include html code.
-   * */
-  text?: string;
-}
-
-/**
- * Configuration for all pagination labels
- */
-export interface PaginationLabels {
-  /**
-   * Next page label
-   * */
-  next?: PaginationLabel;
-  /**
-   * Previous page label
-   * */
-  previous?: PaginationLabel;
-  /**
-   * First page label
-   * */
-  first?: PaginationLabel;
-  /**
-   * Last page label
-   * */
-  last?: PaginationLabel;
-}
-
-

@@ -1,11 +1,11 @@
-import {PaginationActLabel} from "../../types/components/pagination/shared";
+import {PaginationActLabel} from "../../types/components/pagination";
 import {requireDefined} from "../../core/objects/validators";
 import {IllegalArgumentError} from "../../core/exceptions";
 import {concat} from "../../core/shortcuts/string";
 import {attribute, create, onEvent} from "../shared";
 import {apply} from "../../core/functions/apply";
 import {nullable} from "../../core/utils/types";
-import {Pagination} from "../../types/components/pagination/simple";
+import {PaginationOnElements} from "../../types/components/pagination/shared";
 
 /**
  * Creates an action element for pagination
@@ -14,7 +14,7 @@ import {Pagination} from "../../types/components/pagination/simple";
  * @param label The label type for the action
  * @returns The created HTML element
  */
-export function createActElement<K extends keyof HTMLElementTagNameMap, T = any>($this: Pagination<T>, tag: K, label: PaginationActLabel): HTMLElementTagNameMap[K] {
+export function createActElement<K extends keyof HTMLElementTagNameMap, T = any>($this: PaginationOnElements<T>, tag: K, label: PaginationActLabel): HTMLElementTagNameMap[K] {
   const el = create(tag),
     value = requireDefined($this.cfg.labels![label]);
 
@@ -31,7 +31,7 @@ export function createActElement<K extends keyof HTMLElementTagNameMap, T = any>
  * @param label The label type for the action
  * @returns The created HTML element with click handler
  */
-export function actEl<T = any>(this: Pagination<T>, label: PaginationActLabel): HTMLElement {
+export function actEl<T = any>(this: PaginationOnElements<T>, label: PaginationActLabel): HTMLElement {
   const $this = this,
     el = createActElement($this, 'button', label);
 
@@ -59,7 +59,7 @@ export function actEl<T = any>(this: Pagination<T>, label: PaginationActLabel): 
  * @throws {IllegalArgumentError} If page is falsy
  * @returns The created HTML element
  */
-export function createPageElement<K extends keyof HTMLElementTagNameMap, T = any>($this: Pagination<T>, tag: K, page: string | number): HTMLElementTagNameMap[K] {
+export function createPageElement<K extends keyof HTMLElementTagNameMap, T = any>($this: PaginationOnElements<T>, tag: K, page: string | number): HTMLElementTagNameMap[K] {
   if (!page)
     throw new IllegalArgumentError(concat("The page ", page, " is not allowed."));
 
@@ -83,7 +83,7 @@ export function createPageElement<K extends keyof HTMLElementTagNameMap, T = any
  * @param page The page number or string to display
  * @returns The created HTML element with click handler
  */
-export function pageEl<T = any>(this: Pagination<T>, page: number | string): HTMLElement {
+export function pageEl<T = any>(this: PaginationOnElements<T>, page: number | string): HTMLElement {
   const $this = this,
     el = createPageElement($this, "button", page);
   onEvent(el, "click", () => $this.goto(page));
@@ -95,7 +95,7 @@ export function pageEl<T = any>(this: Pagination<T>, page: number | string): HTM
  * @param text The text to display in the ellipsis
  * @returns The created HTML element
  */
-export function ellipsisEl<T = any>(this: Pagination<T>, text: string): HTMLElement {
+export function ellipsisEl<T = any>(this: PaginationOnElements<T>, text: string): HTMLElement {
   const el = create("button");
   el.className = "pagination-page pagination-ellipsis pagination-disabled";
   el.innerHTML = text;
