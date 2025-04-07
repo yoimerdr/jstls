@@ -8,7 +8,7 @@ import {keys} from "../../shortcuts/object";
 import {apply} from "../../functions/apply";
 import {forEach} from "../../shortcuts/array";
 import {concat} from "../../shortcuts/string";
-import {funclass} from "../../definer/classes/funclass";
+import {funclass2} from "../../definer/classes/funclass";
 import {call} from "../../functions/call";
 import {FunctionClassSimpleStatics} from "../../../types/core/definer";
 import {indefinite} from "../../utils/types";
@@ -61,7 +61,7 @@ export interface OptionalPropertiesConstructor extends WithPrototype<OptionalPro
 }
 
 
-export const OptionalProperties: OptionalPropertiesConstructor = funclass<OptionalPropertiesConstructor>({
+export const OptionalProperties: OptionalPropertiesConstructor = funclass2({
   construct: function (value) {
     readonly2(this, "hasObject", isObject(value));
   },

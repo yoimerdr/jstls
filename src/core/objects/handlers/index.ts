@@ -1,6 +1,7 @@
 import {Maybe} from "../../../types/core";
 import {isDefined, isFunction} from "../types";
 import {apply} from "../../functions/apply";
+import {returns} from "../../utils/fn";
 
 /**
  * Calls a function with a given value and optional this context.
@@ -50,6 +51,6 @@ export function string<T>(value: Maybe<T>, ): string;
 export function string<T>(value: Maybe<T>, nullableString?: () => string): string {
   if (isDefined(value))
     return value!.toString();
-  nullableString = isFunction(nullableString) ? nullableString! : () => "";
+  nullableString = isFunction(nullableString) ? nullableString! : returns("");
   return nullableString();
 }

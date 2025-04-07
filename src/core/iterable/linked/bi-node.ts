@@ -6,10 +6,11 @@ import {assignNextNode, Node} from "./node";
 import {apply} from "../../functions/apply";
 import {WithPrototype} from "../../../types/core/objects";
 import {uid} from "../../polyfills/symbol";
-import {funclass} from "../../definer/classes/funclass";
+import {funclass2} from "../../definer/classes/funclass";
 import {FunctionClassSimpleStatics} from "../../../types/core/definer";
 import {get, set} from "../../objects/handlers/getset";
 import {nullable} from "../../utils/types";
+import {mapped} from "../../definer/getters/builders";
 
 export type MaybeBiNode<T> = Maybe<BiNode<T>>;
 
@@ -56,7 +57,7 @@ const metaPrev = uid('mP');
 /**
  * Represents a node in a doubly linked structure.
  */
-export const BiNode: BiNodeConstructor = funclass<BiNodeConstructor>({
+export const BiNode: BiNodeConstructor = funclass2<BiNodeConstructor>({
   construct: function () {
     writeable(this, metaPrev, nullable);
   },
@@ -75,8 +76,6 @@ export const BiNode: BiNodeConstructor = funclass<BiNodeConstructor>({
         prev.next($this)
       });
     },
-    hasPrev: function () {
-      return isDefined(get(this, metaPrev));
-    }
+    hasPrev: mapped(metaPrev, isDefined)
   }
 }, Node)

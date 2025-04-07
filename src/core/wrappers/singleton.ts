@@ -9,7 +9,7 @@ import {apply} from "../functions/apply";
 import {hasOwn} from "../polyfills/objects/es2022";
 import {SingletonInit} from "../../types/core/wrappers/singleton";
 import {get} from "../objects/handlers/getset";
-import {funclass} from "../definer/classes/funclass";
+import {funclass2} from "../definer/classes/funclass";
 import {returns} from "../utils/fn";
 import {nullable} from "../utils/types";
 import {WithPrototype} from "../../types/core/objects";
@@ -67,7 +67,7 @@ export function singleton<T extends Instanceable>(target: T, context: any) {
   if (isFunction(context))
     return checkSingleton(target, context);
 
-  return funclass({
+  return funclass2({
     cls: returns<FunctionType<any>>(function () {
       return checkSingleton(this, function ($this) {
         apply(target as Instanceable, $this, slice(arguments))
@@ -107,7 +107,7 @@ export interface SingletonConstructor<T extends Singleton<T> = any> extends With
  *
  * console.log(a === b) // true
  */
-export const Singleton: SingletonConstructor = funclass({
+export const Singleton: SingletonConstructor = funclass2({
   construct: function (init) {
     const $this = this;
     if (is($this.constructor, Singleton))

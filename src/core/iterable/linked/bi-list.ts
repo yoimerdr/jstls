@@ -2,7 +2,7 @@ import {linkedAdd, linkedAddedNode, linkedAndNext, LinkedList, linkedPop, linked
 import {BiNode, MaybeBiNode} from "./bi-node";
 import {round} from "../../shortcuts/math";
 import {WithPrototype} from "../../../types/core/objects";
-import {funclass} from "../../definer/classes/funclass";
+import {funclass2} from "../../definer/classes/funclass";
 import {FunctionClassSimpleStatics} from "../../../types/core/definer";
 import {nullable} from "../../utils/types";
 
@@ -37,7 +37,7 @@ export interface BiLinkedListConstructor extends WithPrototype<BiLinkedList<any>
   new<T>(values: ArrayLike<T>): BiLinkedList<T>;
 }
 
-export const BiLinkedList: BiLinkedListConstructor = funclass<BiLinkedListConstructor>({
+export const BiLinkedList: BiLinkedListConstructor = funclass2({
   prototype: <FunctionClassSimpleStatics<BiLinkedList<unknown>>>{
     add(value, index) {
       const $this = this,

@@ -4,7 +4,7 @@ import {readonlys2} from "../../definer";
 import {isDefined} from "../../objects/types";
 import {apply} from "../../functions/apply";
 import {WithPrototype} from "../../../types/core/objects";
-import {funclass} from "../../definer/classes/funclass";
+import {funclass2} from "../../definer/classes/funclass";
 import {call} from "../../functions/call";
 import {FunctionClassSimpleStatics} from "../../../types/core/definer";
 import {requireFunction} from "../../objects/validators";
@@ -63,7 +63,7 @@ export interface OptionalConstructor extends WithPrototype<Optional<any>> {
  * @template T
  * @param {Maybe<T>} value The nullable value to wrap.
  */
-export const Optional: OptionalConstructor = funclass({
+export const Optional: OptionalConstructor = funclass2({
   construct: function (value) {
     const isPresent = isDefined(value)
     readonlys2(this, {

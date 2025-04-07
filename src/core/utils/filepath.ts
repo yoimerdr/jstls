@@ -14,7 +14,7 @@ import {string} from "../objects/handlers";
 import {create} from "../shortcuts/object";
 import {concat, len} from "../shortcuts/indexable";
 import {forEach} from "../shortcuts/array";
-import {funclass} from "../definer/classes/funclass";
+import {funclass2} from "../definer/classes/funclass";
 import {descriptor2} from "../definer/shared";
 import {PropertyDescriptors} from "../../types/core/objects/definer";
 import {mapped, simple} from "../definer/getters/builders";
@@ -110,7 +110,7 @@ export interface PathConstructor extends WithPrototype<Path> {
 /**
  * Simple path class implementation for handling file paths
  */
-export const Path: PathConstructor = funclass({
+export const Path: PathConstructor = funclass2({
   construct: function (path) {
     const parts = path instanceof Path ? path.parts : normalize(path)
       .split(sep);

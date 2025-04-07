@@ -13,7 +13,7 @@ import {get} from "../../objects/handlers/getset";
 import {forEach} from "../../shortcuts/array";
 import {includes} from "../../polyfills/indexable/es2016";
 import {call} from "../../functions/call";
-import {funclass} from "../../definer/classes/funclass";
+import {funclass2} from "../../definer/classes/funclass";
 
 
 const mixinKey = uid("mC");
@@ -123,7 +123,7 @@ export interface MixinConstructor extends WithPrototype<Mixin<any>> {
  * @see {mixerSuper}
  * @see {mixerInit}
  */
-export const Mixin: MixinConstructor = funclass({
+export const Mixin: MixinConstructor = funclass2({
   statics: {
     mix(bases, statics, force) {
       const $this = this;

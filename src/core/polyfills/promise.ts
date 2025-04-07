@@ -7,7 +7,7 @@ import {hasOwn} from "./objects/es2022";
 import {bind} from "../functions/bind";
 import {get, set} from "../objects/handlers/getset";
 import {concat, len} from "../shortcuts/indexable";
-import {funclass} from "../definer/classes/funclass";
+import {funclass2} from "../definer/classes/funclass";
 import {forEach} from "../shortcuts/array";
 import {FunctionClassSimpleStatics} from "../../types/core/definer";
 import {nullable} from "../utils/types";
@@ -94,7 +94,7 @@ export interface PromiseConstructor {
   new<T>(executor: PromiseExecutor<T>): Promise<T>;
 }
 
-export const Promise: PromiseConstructor = funclass<PromiseConstructor>({
+export const Promise: PromiseConstructor = funclass2({
   construct: function (executor) {
     requireFunction(executor);
     const $this = this,

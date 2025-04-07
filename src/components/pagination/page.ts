@@ -8,7 +8,7 @@ import {
 import {KeyableObject, WithPrototype} from "../../types/core/objects";
 import {assign, deepAssign} from "../../core/objects/factory";
 import {actEl, pageEl} from "./page-elements";
-import {funclass} from "../../core/definer/classes/funclass";
+import {funclass2} from "../../core/definer/classes/funclass";
 import {descriptor2} from "../../core/definer/shared";
 import {call} from "../../core/functions/call";
 import {toInt} from "../../core/extensions/string";
@@ -106,7 +106,7 @@ export function pagePaginationConfig<C extends PagePaginationConfig>(config: C):
   return $config;
 }
 
-export const PagePagination: PagePaginationConstructor = funclass<PagePaginationConstructor, PaginationConstructor>({
+export const PagePagination: PagePaginationConstructor = funclass2<PagePaginationConstructor, PaginationConstructor>({
   prototype: <FunctionClassSimpleStatics<PagePagination<any>>>{
     url(page) {
       const $this = this,

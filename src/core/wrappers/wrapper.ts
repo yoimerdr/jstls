@@ -3,7 +3,7 @@ import {readonly2} from "../definer";
 import {apply} from "../functions/apply";
 import {isFunction} from "../objects/types";
 import {requireFunction} from "../objects/validators";
-import {funclass} from "../definer/classes/funclass";
+import {funclass2} from "../definer/classes/funclass";
 import {WithPrototype} from "../../types/core/objects";
 import {FunctionClassSimpleStatics} from "../../types/core/definer";
 
@@ -84,7 +84,7 @@ function wapply(this: Wrapper<any>, fn: any) {
  * Wrap a value for use utils conversions.
  * @template T
  */
-export const Wrapper: WrapperConstructor = funclass({
+export const Wrapper: WrapperConstructor = funclass2({
   construct: function (value) {
     readonly2(this, "value", value);
   },

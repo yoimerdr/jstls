@@ -6,7 +6,7 @@ import {apply} from "../../functions/apply";
 import {each} from "../each";
 import {uid} from "../../polyfills/symbol";
 import {WithPrototype} from "../../../types/core/objects";
-import {funclass} from "../../definer/classes/funclass";
+import {funclass2} from "../../definer/classes/funclass";
 import {descriptor2} from "../../definer/shared";
 import {get, set} from "../../objects/handlers/getset";
 import {FunctionClassSimpleStatics} from "../../../types/core/definer";
@@ -109,7 +109,7 @@ const metaHead = uid("mH"),
   metaSize = uid("mS");
 
 
-export const LinkedList: LinkedListConstructor = funclass<LinkedListConstructor>({
+export const LinkedList: LinkedListConstructor = funclass2({
   construct: function (values) {
     const $this = this;
     writeable($this, metaHead, nullable);

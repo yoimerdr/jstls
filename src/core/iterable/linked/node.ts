@@ -6,7 +6,7 @@ import {apply} from "../../functions/apply";
 import {uid} from "../../polyfills/symbol";
 import {get, set} from "../../objects/handlers/getset";
 import {WithPrototype} from "../../../types/core/objects";
-import {funclass} from "../../definer/classes/funclass";
+import {funclass2} from "../../definer/classes/funclass";
 import {FunctionClassSimpleStatics} from "../../../types/core/definer";
 import {nullable} from "../../utils/types";
 
@@ -56,7 +56,7 @@ export interface NodeConstructor extends WithPrototype<Node<any>> {
 /**
  * Represents a node in a singly linked structure.
  */
-export const Node: NodeConstructor = funclass<NodeConstructor>({
+export const Node: NodeConstructor = funclass2({
   construct: function (value) {
     const $this = this;
     writeable($this, metaValue, value);

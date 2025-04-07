@@ -12,7 +12,7 @@ import {get, set} from "../objects/handlers/getset";
 import {freeze} from "../shortcuts/object";
 import {len} from "../shortcuts/indexable";
 import {concat} from "../shortcuts/string";
-import {funclass} from "../definer/classes/funclass";
+import {funclass2} from "../definer/classes/funclass";
 import {FunctionClassSimpleStatics} from "../../types/core/definer";
 import {indefinite} from "../utils/types";
 
@@ -253,7 +253,7 @@ export interface IterConstructor extends WithPrototype<Iter<any>> {
  * The iter class for iterating over a indexable object.
  * @class
  */
-export const Iter: IterConstructor = funclass({
+export const Iter: IterConstructor = funclass2({
   construct: function (source, start, end, step) {
     if (source instanceof Iter) {
       start = source.startIndex;

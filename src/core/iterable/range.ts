@@ -1,6 +1,6 @@
 import {Iter} from "./iter";
 import {WithPrototype} from "../../types/core/objects";
-import {funclass} from "../definer/classes/funclass";
+import {funclass2} from "../definer/classes/funclass";
 import {call} from "../functions/call";
 import {FunctionClassSimpleStatics} from "../../types/core/definer";
 import {protocall} from "../functions/prototype/call";
@@ -13,7 +13,7 @@ export interface IterRangeConstructor extends WithPrototype<IterRange> {
   new(length: number | Iter<any>, start?: number, step?: number): IterRange;
 }
 
-export const IterRange: IterRangeConstructor = funclass({
+export const IterRange: IterRangeConstructor = funclass2({
   cls: (_, parent) => function (length, start, step) {
     if (length instanceof Iter) {
       start = length.startIndex;

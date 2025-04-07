@@ -18,6 +18,9 @@ import {createSuper, parentFirst} from "./supers";
 import {indefinite} from "../../utils/types";
 import {self} from "../getters/builders";
 
+const acceptedTypes = ["object", "function"],
+  Exception = TypeError
+
 export function sourceToDescriptor(source: KeyableObject): KeyableObject<PropertyDescriptor> {
   return reduce(keys(source), (current, key) => {
     current[key] = descriptor(source[key], true, true, false)
@@ -38,6 +41,12 @@ export function funclass<I extends Instanceable>(options: FunctionClassOptions<I
  * @returns The constructor function
  */
 export function funclass<I extends Instanceable, P extends WithPrototype>(options: FunctionClassOptions<I, P>, parent: P): I;
+/**
+ * Creates a function to behave as a class constructor with inheritance capabilities.
+ * @param options The class configuration
+ * @param parent Parent class to inherit from
+ * @returns The constructor function
+ */
 export function funclass<I extends Instanceable>(options: FunctionClassOptions<I, IndeterminatePrototype>, parent: WithPrototype): I;
 /**
  * Creates a function to behave as a class constructor with inheritance capabilities.
@@ -92,20 +101,19 @@ export function funclass<I extends Instanceable, P extends WithPrototype>(builde
 export function funclass<I extends Instanceable, P extends WithPrototype>(builder: FunctionClassBuilder<I, P>, parent: P, withoutSupers: false): I;
 export function funclass<I extends Instanceable, P extends WithPrototype>(builder: KeyableObject | (() => KeyableObject),
                                                                           parent?: P, withoutSupers?: boolean): I {
-  let options: FunctionClassOptions<I, P>,
-    acceptedTypes = ["object", "function"];
+  let options: FunctionClassOptions<I, P>;
 
   if (isPlainObject(builder)) {
     options = builder as FunctionClassOptions<I, P>;
   } else {
     if (!isFunction(builder))
-      throw TypeError("The builder must be a function.");
+      throw Exception("The builder must be a function.");
     // build the super handlers
     let sProperties: FunctionClassSuper<PrototypeType<P>>, sStatics: FunctionClassSuper<P> = sProperties = indefinite!;
 
     if (parent && !withoutSupers) {
       if (!call(includes, acceptedTypes, typeof parent))
-        throw TypeError("The parent must be an object or function.");
+        throw Exception("The parent must be an object or function.");
 
       const staticNames = methodProperties(parent, 'statics'),
         prototype = parent.prototype,
@@ -117,7 +125,39 @@ export function funclass<I extends Instanceable, P extends WithPrototype>(builde
     options = (builder as FunctionClassBuilder<I, P>)(sProperties, sStatics);
   }
 
+  return funclass2(options as any, parent!);
+}
 
+/**
+ * Creates a function to behave as a class constructor with inheritance capabilities.
+ * @param options The class configuration
+ * @returns The constructor function
+ */
+export function funclass2<I extends Instanceable>(options: FunctionClassOptions<I, IndeterminatePrototype>,): I;
+/**
+ * Creates a function to behave as a class constructor with inheritance capabilities.
+ * @param options The class configuration
+ * @param parent Parent class to inherit from
+ * @returns The constructor function
+ */
+export function funclass2<I extends Instanceable, P extends WithPrototype>(options: FunctionClassOptions<I, P>, parent: P): I;
+/**
+ * Creates a function to behave as a class constructor with inheritance capabilities.
+ * @param options The class configuration
+ * @param parent Parent class to inherit from
+ * @returns The constructor function
+ */
+export function funclass2<I extends Instanceable>(options: FunctionClassOptions<I, IndeterminatePrototype>, parent: WithPrototype): I;
+/**
+ * Creates a function to behave as a class constructor with inheritance capabilities.
+ * @param options The class configuration
+ * @param parent Parent class to inherit from
+ * @returns The constructor function
+ */
+export function funclass2<I extends Instanceable>(options: FunctionClassOptions<I, IndeterminatePrototype>, parent: WithPrototype): I;
+
+export function funclass2<I extends Instanceable, P extends WithPrototype>(options: KeyableObject,
+                                                                           parent?: P): I {
   // build options and unpack
   const {statics, statidescriptor, protodescriptor, prototype: proto} = options;
 
@@ -128,15 +168,15 @@ export function funclass<I extends Instanceable, P extends WithPrototype>(builde
   clsBuilder = clsBuilder! || parentFirst;
 
   if (!isFunction(clsBuilder))
-    throw TypeError("The modified constructor builder must be a function.");
+    throw Exception("The modified constructor builder must be a function.");
 
   const cls = clsBuilder(constructor!, parent!);
 
   // check passed constructor
   if (isDefined(init) && !isFunction(init))
-    throw TypeError("The constructor must be a function.");
+    throw Exception("The constructor must be a function.");
   if (isDefined(cls) && !isFunction(cls))
-    throw TypeError("The modified constructor must be a function.");
+    throw Exception("The modified constructor must be a function.");
 
   init = cls || init || self();
 
@@ -149,7 +189,7 @@ export function funclass<I extends Instanceable, P extends WithPrototype>(builde
 
   const funPrototype = init.prototype;
   if (!call(includes, acceptedTypes, typeof funPrototype))
-    throw TypeError("The function prototype must be an object.");
+    throw Exception("The function prototype must be an object.");
 
   // assign prototype properties
   protodescriptor && props(funPrototype, protodescriptor as any);

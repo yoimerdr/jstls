@@ -11,7 +11,7 @@ import {
 import {slice} from "../../iterable";
 import {apply} from "../../functions/apply";
 import {readonly2} from "../../definer";
-import {funclass} from "../../definer/classes/funclass";
+import {funclass2} from "../../definer/classes/funclass";
 import {WithPrototype} from "../../../types/core/objects";
 import {FunctionClassSimpleStatics} from "../../../types/core/definer";
 import {concat} from "../../shortcuts/indexable";
@@ -44,7 +44,7 @@ export interface MixerConstructor extends WithPrototype<Mixer<any>> {
   new<T extends Instanceable[] = any>(target: Object): Mixer<T>;
 }
 
-export const Mixer: MixerConstructor = funclass({
+export const Mixer: MixerConstructor = funclass2({
   construct: function (target) {
     readonly2(this, "target", target);
   },

@@ -4,7 +4,7 @@ import {
   PaginationActLabel, PaginationLabels,
   PaginationResponsive
 } from "../../types/components/pagination";
-import {funclass} from "../../core/definer/classes/funclass";
+import {funclass2} from "../../core/definer/classes/funclass";
 import {isDefined, isFunction, isObject, isString} from "../../core/objects/types";
 import {IllegalArgumentError} from "../../core/exceptions";
 import {get, set} from "../../core/objects/handlers/getset";
@@ -356,7 +356,7 @@ export function remove(target: HTMLElement | string) {
   deletes(target, metaPagination);
 }
 
-export const Pagination: PaginationConstructor = funclass({
+export const Pagination: PaginationConstructor = funclass2({
   construct: function (config, paginator) {
     const $this = this;
 

@@ -7,7 +7,7 @@ import {KeyableObject, WithPrototype} from "../../../types/core/objects";
 import {string} from "../../objects/handlers";
 import {len} from "../../shortcuts/indexable";
 import {concat} from "../../shortcuts/string";
-import {funclass} from "../../definer/classes/funclass";
+import {funclass2} from "../../definer/classes/funclass";
 import {FunctionClassSimpleStatics} from "../../../types/core/definer";
 import {indefinite, nullable} from "../../utils/types";
 import {Maybe} from "../../../types/core";
@@ -212,7 +212,7 @@ export interface SizeConstructor extends WithPrototype<Size> {
  * Represents a size with width and height properties.
  * @class
  */
-export const Size: SizeConstructor = funclass({
+export const Size: SizeConstructor = funclass2({
   construct: function (width, height) {
     if (width instanceof Size) {
       height = width.getHeight();

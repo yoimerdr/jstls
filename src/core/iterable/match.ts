@@ -3,7 +3,7 @@ import {IterMap, IterMatchCondition} from "../../types/core/iterable";
 import {Maybe} from "../../types/core";
 import {WithPrototype} from "../../types/core/objects";
 import {ArrayLike} from "../../types/core/array";
-import {funclass} from "../definer/classes/funclass";
+import {funclass2} from "../definer/classes/funclass";
 import {FunctionClassSimpleStatics} from "../../types/core/definer";
 import {indefinite} from "../utils/types";
 
@@ -64,7 +64,7 @@ export interface IterMatchConstructor extends WithPrototype<IterMatch<any>> {
  * The iter class for iterating over a indexable object.
  * @class
  */
-export const IterMatch: IterMatchConstructor = funclass({
+export const IterMatch: IterMatchConstructor = funclass2({
   prototype: <FunctionClassSimpleStatics<IterMatch<unknown>>>{
     first(condition) {
       const $this = this
