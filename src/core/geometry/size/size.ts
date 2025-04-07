@@ -1,5 +1,4 @@
 import {coerceAtLeast} from "../../extensions/number";
-import {IllegalArgumentError} from "../../exceptions";
 import {toFloat} from "../../extensions/string";
 import {writeable} from "../../definer";
 import {isDefined, isNumber} from "../../objects/types";
@@ -11,8 +10,9 @@ import {concat} from "../../shortcuts/string";
 import {funclass} from "../../definer/classes/funclass";
 import {FunctionClassSimpleStatics} from "../../../types/core/definer";
 import {indefinite, nullable} from "../../utils/types";
-import {FunctionType, Maybe} from "../../../types/core";
+import {Maybe} from "../../../types/core";
 import {requiredWithType} from "../../objects/validators";
+import {parseSize} from "./shared";
 
 export type SizeArgument = Size | string | number;
 
@@ -20,38 +20,6 @@ export type MaybeSizeArgument = Maybe<SizeArgument>;
 
 export function isSize(value: any): boolean {
   return value instanceof Size;
-}
-
-export function parseSize<R extends Size>(constructor: SizeConstructor,
-                                   isSize: FunctionType<void, [size: R], boolean>,
-                                   format: number | string,
-                                   ratio?: MaybeSizeArgument,
-                                   defaultRatio?: boolean,): R {
-  let aspectRatio: number = 1;
-  if (!isDefined(ratio))
-    aspectRatio = parseSize(constructor, isSize, format, 1, true).ratio()
-  else if (isNumber(ratio))
-    aspectRatio = ratio as number;
-  else if (!isSize(ratio as R))
-    aspectRatio = parseSize(constructor, isSize, ratio as any, 1, true).ratio();
-
-  const match = string(format)
-    .split(":");
-
-
-  let width = toFloat(match[0])!,
-    height = toFloat(match[1])!;
-
-  if (isDefined(width) && isDefined(height))
-    return new constructor(width, height)
-      .adjust(defaultRatio ? 0 : aspectRatio) as R;
-  else if (isDefined(width))
-    height = width / aspectRatio;
-  else if (isDefined(height))
-    width = height * aspectRatio;
-  else throw new IllegalArgumentError(concat("The ", defaultRatio ? 'ratio' : 'format', " ", format, " is not valid."));
-
-  return new constructor(width, height) as R;
 }
 
 export function scaleOrAdjustSize<R extends Size>($this: R, target: SizeArgument, adjust?: boolean): R {
@@ -315,3 +283,5 @@ export const Size: SizeConstructor = funclass({
     }
   }
 })
+
+export {parseSize}

@@ -1,10 +1,10 @@
-import {Size} from "../../core/geometry/size";
-import {Instanceable, Maybe} from "./index";
+import {Size,} from "../../core/geometry/size";
+import {Maybe} from "./index";
+
+export {ParseableSize} from "../../core/geometry/size/shared";
+
+export {SizeConstructor} from "../../core/geometry/size/size";
 
 export type SizeArgument = Size | string | number;
 
 export type MaybeSizeArgument = Maybe<SizeArgument>;
-
-export type SizeConstructor<R extends Size> = Instanceable<R, [width: number | Size, height?: number]> & {
-  parse(format: string | number, ratio?: MaybeSizeArgument): R;
-};
