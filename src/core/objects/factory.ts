@@ -54,6 +54,21 @@ function _createNoObjectKey(target: KeyableObject, source: Object, mode: AssignM
   target[source.toString()] = source;
 }
 
+/**
+ * Simple object assign, with only one source object.
+ * @example
+ * var result = {}, source = {name: "value"};
+ * assign2(result, source) // is equivalent to setTo(source, keys(source), result)
+ *
+ * console.log(result) // { name: "value" }
+ *
+ * @param target The target object
+ * @param source The source object
+ */
+export function assign2<T extends Object>(target: T, source: Partial<T>): T {
+  return isObject(source) ? setTo(source as T, keys(source), target) : target;
+}
+
 export function create(...args: Object[]): KeyableObject;
 export function create(): KeyableObject {
   return _assignItems("simple", {}, arguments, _createNoObjectKey);
