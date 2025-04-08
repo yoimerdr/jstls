@@ -53,7 +53,7 @@ export function noact(...args: any) {
  *
  * @returns The reduced text
  */
-export function reduceText(text: string, length: number, separator?: string | RegExp, joiner?: string) {
+export function reduceText(text: string, length?: number, separator?: string | RegExp, joiner?: string) {
   let result = "";
   joiner = joiner || " ";
   separator = separator || " "
@@ -63,7 +63,7 @@ export function reduceText(text: string, length: number, separator?: string | Re
     if (!value)
       continue;
     value = concat(result, joiner, value);
-    if (value.length > length)
+    if (length && len(value) > length)
       break;
     result = value;
   }
