@@ -2,7 +2,7 @@ import {Keys} from "../../../../types/core";
 import {KeyableObject, SetToDescriptor} from "../../../../types/core/objects";
 import {hasOwn} from "../../../polyfills/objects/es2022";
 import {isArray} from "../../../shortcuts/array";
-import {isDefined, isFunction, isObject, isString} from "../../types";
+import {isDefined, isObject, isString} from "../../types";
 import {self} from "../../../utils/fn";
 import {indefinite} from "../../../utils/types";
 import {reduce, slice} from "../../../iterable";
@@ -105,8 +105,7 @@ export function setTo<T, K extends Keys<T>>(object: T & KeyableObject, key: K | 
     props[key as string] = self;
   } else if (isArray(key)) {
     props = reduce(key, (props, name) => {
-      const value = (key as KeyableObject)[name];
-      props[name] = isFunction(value) ? value : self;
+      props[name] = self;
       return props;
     }, props)
   } else if (!isObject(key))
