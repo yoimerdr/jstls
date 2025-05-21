@@ -1,11 +1,11 @@
-import {reduce} from "@/core/iterable";
-import {apply} from "@/core/functions/apply";
-import {bind} from "@/core/functions/bind";
-import {ArrayLike} from "@/types/core/array";
-import {concat, len} from "@/core/shortcuts/indexable";
-import {isArray} from "@/core/shortcuts/array";
-import {getDefined} from "@/core/objects/validators";
-import {returns} from "@/core/utils/fn";
+import {reduce} from "@jstls/core/iterable";
+import {apply} from "@jstls/core/functions/apply";
+import {bind} from "@jstls/core/functions/bind";
+import {ArrayLike} from "@jstls/types/core/array";
+import {concat, len} from "@jstls/core/shortcuts/indexable";
+import {isArray} from "@jstls/core/shortcuts/array";
+import {getDefined} from "@jstls/core/objects/validators";
+import {returns} from "@jstls/core/utils/fn";
 
 export function flat<T>(this: ArrayLike<T>, depth?: number): T[] {
   depth = getDefined(depth, returns(1));

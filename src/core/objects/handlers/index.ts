@@ -1,9 +1,9 @@
-import {Keys, Maybe} from "@/types/core";
-import {isDefined, isFunction} from "@/core/objects/types";
-import {apply} from "@/core/functions/apply";
-import {returns} from "@/core/utils/fn";
-import {len} from "@/core/shortcuts/indexable";
-import {indefinite} from "@/core/utils/types";
+import {Keys, Maybe} from "@jstls/types/core";
+import {isDefined, isFunction} from "@jstls/core/objects/types";
+import {apply} from "@jstls/core/functions/apply";
+import {returns} from "@jstls/core/utils/fn";
+import {len} from "@jstls/core/shortcuts/indexable";
+import {indefinite} from "@jstls/core/utils/types";
 
 /**
  * Calls a function with a given value and optional this context.

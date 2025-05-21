@@ -1,5 +1,5 @@
-import {readonlys} from "@/core/definer";
-import {NumberExtensions} from "@/types/core/extensions/number";
+import {readonlys} from "@jstls/core/definer";
+import {NumberExtensions} from "@jstls/types/core/extensions/number";
 import {coerceAtLeast, coerceAtMost, isFromTo, isFromUntil} from "./simple";
 import {coerceIn} from "./required";
 

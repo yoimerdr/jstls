@@ -1,20 +1,20 @@
-import {readonlys2, writeable} from "@/core/definer";
-import {coerceAtLeast, coerceAtMost, coerceIn, isFromTo} from "@/core/extensions/numbers";
-import {isEmpty} from "@/core/extensions/shared/iterables";
-import {WithPrototype} from "@/types/core/objects";
-import {IterEach, IterEachNext, IterEachPrevious, IterMap, IterMatchCondition} from "@/types/core/iterable";
-import {Instanceable} from "@/types/core";
-import {IllegalAccessError} from "@/core/exceptions/illegal-access";
-import {ArrayLike} from "@/types/core/array";
-import {apply} from "@/core/functions/apply";
-import {uid} from "@/core/polyfills/symbol";
-import {get, set} from "@/core/objects/handlers/getset";
-import {freeze} from "@/core/shortcuts/object";
-import {len} from "@/core/shortcuts/indexable";
-import {concat} from "@/core/shortcuts/string";
-import {funclass2} from "@/core/definer/classes/funclass";
-import {FunctionClassSimpleStatics} from "@/types/core/definer";
-import {indefinite} from "@/core/utils/types";
+import {readonlys2, writeable} from "@jstls/core/definer";
+import {coerceAtLeast, coerceAtMost, coerceIn, isFromTo} from "../extensions/number";
+import {isEmpty} from "@jstls/core/extensions/shared/iterables";
+import {WithPrototype} from "@jstls/types/core/objects";
+import {IterEach, IterEachNext, IterEachPrevious, IterMap, IterMatchCondition} from "@jstls/types/core/iterable";
+import {Instanceable} from "@jstls/types/core";
+import {IllegalAccessError} from "@jstls/core/exceptions/illegal-access";
+import {ArrayLike} from "@jstls/types/core/array";
+import {apply} from "@jstls/core/functions/apply";
+import {uid} from "@jstls/core/polyfills/symbol";
+import {get, set} from "@jstls/core/objects/handlers/getset";
+import {freeze} from "@jstls/core/shortcuts/object";
+import {len} from "@jstls/core/shortcuts/indexable";
+import {concat} from "@jstls/core/shortcuts/string";
+import {funclass2} from "@jstls/core/definer/classes/funclass";
+import {FunctionClassSimpleStatics} from "@jstls/types/core/definer";
+import {indefinite} from "@jstls/core/utils/types";
 
 export function iterEachOrFindIndex<T, R>($this: Iter<T>,
                                           restartFn: (this: Iter<T>) => any,

@@ -1,11 +1,11 @@
-import {EmptyFunctionType, FunctionType, Maybe} from "@/types/core";
-import {readonly2} from "@/core/definer";
-import {apply} from "@/core/functions/apply";
-import {isFunction} from "@/core/objects/types";
-import {requireFunction} from "@/core/objects/validators";
-import {funclass2} from "@/core/definer/classes/funclass";
-import {WithPrototype} from "@/types/core/objects";
-import {FunctionClassSimpleStatics} from "@/types/core/definer";
+import {EmptyFunctionType, FunctionType, Maybe} from "@jstls/types/core";
+import {readonly2} from "@jstls/core/definer";
+import {apply} from "@jstls/core/functions/apply";
+import {isFunction} from "@jstls/core/objects/types";
+import {requireFunction} from "@jstls/core/objects/validators";
+import {funclass2} from "@jstls/core/definer/classes/funclass";
+import {WithPrototype} from "@jstls/types/core/objects";
+import {FunctionClassSimpleStatics} from "@jstls/types/core/definer";
 
 export interface Wrapper<T> {
   /**

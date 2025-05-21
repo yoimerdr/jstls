@@ -1,6 +1,6 @@
-import {FunctionClassConstructor} from "@/types/core/definer";
-import {funclass2} from "@/core/definer/classes/funclass";
-import {WithPrototype} from "@/types/core/objects";
+import {FunctionClassConstructor} from "@jstls/types/core/definer";
+import {funclass2} from "@jstls/core/definer/classes/funclass";
+import {WithPrototype} from "@jstls/types/core/objects";
 
 export interface ErrorConstructor<T extends Error> extends WithPrototype<T> {
   new(message?: string): T;

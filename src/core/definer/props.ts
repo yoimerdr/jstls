@@ -1,8 +1,8 @@
-import {multiple} from "@/core/definer/shared";
-import {Keys} from "@/types/core";
-import {DefinePropertyDescriptor, DefinePropertyDescriptors} from "@/types/core/objects/definer";
-import {defineProperty} from "@/core/shortcuts/object";
-import {KeyableObject} from "@/types/core/objects";
+import {multiple} from "@jstls/core/definer/shared";
+import {Keys} from "@jstls/types/core";
+import {DefinePropertyDescriptor, DefinePropertyDescriptors} from "@jstls/types/core/objects/definer";
+import {defineProperty} from "@jstls/core/shortcuts/object";
+import {KeyableObject} from "@jstls/types/core/objects";
 
 /**
  * Define a new property if it doesn't exist.

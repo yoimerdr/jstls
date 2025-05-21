@@ -1,39 +1,39 @@
-import {KeyableObject, RequiredAll, WithPrototype} from "@/types/core/objects";
+import {KeyableObject, RequiredAll, WithPrototype} from "@jstls/types/core/objects";
 import {
   PaginationActivePages,
   PaginationActLabel, PaginationLabels,
   PaginationResponsive
-} from "@/types/components/pagination";
-import {funclass2} from "@/core/definer/classes/funclass";
-import {isDefined, isFunction, isObject, isString} from "@/core/objects/types";
-import {IllegalArgumentError} from "@/core/exceptions";
-import {get2, set2} from "@/core/objects/handlers/getset";
-import {uid} from "@/core/polyfills/symbol";
-import {configurable, readonlys, writeable} from "@/core/definer";
-import {Entry, Maybe, MaybeNumber} from "@/types/core";
-import {eachprv} from "@/core/iterable/each";
-import {last} from "@/core/extensions/shared/iterables";
-import {entries} from "@/core/polyfills/objects/es2017";
-import {noact} from "@/core/utils";
-import {indefinite, nullable} from "@/core/utils/types";
-import {assign, deepAssign} from "@/core/objects/factory";
-import {bind} from "@/core/functions/bind";
-import {floor, max, min} from "@/core/shortcuts/math";
-import {requireObject} from "@/core/objects/validators";
+} from "@jstls/types/components/pagination";
+import {funclass2} from "@jstls/core/definer/classes/funclass";
+import {isDefined, isFunction, isObject, isString} from "@jstls/core/objects/types";
+import {IllegalArgumentError} from "@jstls/core/exceptions";
+import {get2, set2} from "@jstls/core/objects/handlers/getset";
+import {uid} from "@jstls/core/polyfills/symbol";
+import {configurable, readonlys, writeable} from "@jstls/core/definer";
+import {Entry, Maybe, MaybeNumber} from "@jstls/types/core";
+import {eachprv} from "@jstls/core/iterable/each";
+import {last} from "@jstls/core/extensions/shared/iterables";
+import {entries} from "@jstls/core/polyfills/objects/es2017";
+import {noact} from "@jstls/core/utils";
+import {indefinite, nullable} from "@jstls/core/utils/types";
+import {assign, deepAssign} from "@jstls/core/objects/factory";
+import {bind} from "@jstls/core/functions/bind";
+import {floor, max, min} from "@jstls/core/shortcuts/math";
+import {requireObject} from "@jstls/core/objects/validators";
 import {actEl, ellipsisEl, pageEl} from "./simple-elements";
-import {forEach} from "@/core/shortcuts/array";
-import {concat} from "@/core/shortcuts/indexable";
-import {addClass, append, create, onEvent, selector, toggleClass} from "@/components/shared";
-import {descriptor2} from "@/core/definer/shared";
-import {FunctionClassSimpleStatics} from "@/types/core/definer";
-import {apply} from "@/core/functions/apply";
-import {toInt} from "@/core/extensions/string";
-import {deletes} from "@/core/objects/handlers/deletes";
-import {Paginator} from "@/core/geometry/paginator";
-import {PaginationOnElements} from "@/types/components/pagination/shared";
-import {emitter} from "@/core/emitter";
-import {win} from "@/components/shared/constants";
-import {dataAttribute} from "@/components/shared/elements/attributes";
+import {forEach} from "@jstls/core/shortcuts/array";
+import {concat} from "@jstls/core/shortcuts/indexable";
+import {addClass, append, create, onEvent, selector, toggleClass} from "@jstls/components/shared";
+import {descriptor2} from "@jstls/core/definer/shared";
+import {FunctionClassSimpleStatics} from "@jstls/types/core/definer";
+import {apply} from "@jstls/core/functions/apply";
+import {toInt} from "@jstls/core/extensions/string";
+import {deletes} from "@jstls/core/objects/handlers/deletes";
+import {Paginator} from "@jstls/core/geometry/paginator";
+import {PaginationOnElements} from "@jstls/types/components/pagination/shared";
+import {emitter} from "@jstls/core/emitter";
+import {win} from "@jstls/components/shared/constants";
+import {dataAttribute} from "@jstls/components/shared/elements/attributes";
 
 /**
  * A handler for creates a pagination component.

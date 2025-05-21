@@ -1,5 +1,5 @@
-import {KeyableObject} from "@/types/core/objects";
-import {Paginator} from "@/core/geometry/paginator";
+import {KeyableObject} from "@jstls/types/core/objects";
+import {Paginator} from "@jstls/core/geometry/paginator";
 
 export interface PaginationOnElements<T, C extends KeyableObject = KeyableObject> {
   /**

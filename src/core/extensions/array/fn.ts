@@ -1,16 +1,16 @@
-import {getIf} from "@/core/objects/validators/simple";
-import {isDefined, isFunction} from "@/core/objects/types";
-import {apply} from "@/core/functions/apply";
-import {reduce, slice} from "@/core/iterable";
-import {ArrayLike} from "@/types/core/array";
-import {is} from "@/core/polyfills/objects/es2015";
-import {returns} from "@/core/utils/fn";
-import {Maybe} from "@/types/core";
-import {valueOf} from "@/core/shortcuts/object";
-import {RemoveArray} from "@/types/core/array";
-import {len} from "@/core/shortcuts/indexable";
-import {forEach} from "@/core/shortcuts/array";
-import {CountsCompareFn, Pushable} from "@/types/core/extensions/array";
+import {getIf} from "@jstls/core/objects/validators/simple";
+import {isDefined, isFunction} from "@jstls/core/objects/types";
+import {apply} from "@jstls/core/functions/apply";
+import {reduce, slice} from "@jstls/core/iterable";
+import {ArrayLike} from "@jstls/types/core/array";
+import {is} from "@jstls/core/polyfills/objects/es2015";
+import {returns} from "@jstls/core/utils/fn";
+import {Maybe} from "@jstls/types/core";
+import {valueOf} from "@jstls/core/shortcuts/object";
+import {RemoveArray} from "@jstls/types/core/array";
+import {len} from "@jstls/core/shortcuts/indexable";
+import {forEach} from "@jstls/core/shortcuts/array";
+import {CountsCompareFn, Pushable} from "@jstls/types/core/extensions/array";
 
 export function remove<T extends RemoveArray<R>, R>(source: T, value: R, ...values: R[]): boolean {
   const size = len(source);

@@ -1,11 +1,11 @@
-import {FunctionClassConstructorFunction} from "@/types/core/definer";
-import {Instanceable, InstanceableParameters, InstanceableType} from "@/types/core";
-import {WithPrototype} from "@/types/core/objects";
-import {isDefined} from "@/core/objects/types";
-import {apply} from "@/core/functions/apply";
-import {concat} from "@/core/shortcuts/indexable";
-import {indefinite} from "@/core/utils/types";
-import {slice} from "@/core/iterable";
+import {FunctionClassConstructorFunction} from "@jstls/types/core/definer";
+import {Instanceable, InstanceableParameters, InstanceableType} from "@jstls/types/core";
+import {WithPrototype} from "@jstls/types/core/objects";
+import {isDefined} from "@jstls/core/objects/types";
+import {apply} from "@jstls/core/functions/apply";
+import {concat} from "@jstls/core/shortcuts/indexable";
+import {indefinite} from "@jstls/core/utils/types";
+import {slice} from "@jstls/core/iterable";
 
 export function functionConstructor(constructor: FunctionClassConstructorFunction<Instanceable, WithPrototype>, parent?: WithPrototype) {
   return function FunClass(this: InstanceableType<Instanceable>, ...params: InstanceableParameters<Instanceable>): any {

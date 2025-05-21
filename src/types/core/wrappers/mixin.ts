@@ -1,4 +1,4 @@
-import {Instanceable, InstanceableType, Join, JoinInstanceableTypes,} from "../index";
+import {Instanceable, InstanceableType, Join, JoinInstanceableTypes,} from "@jstls/types/core";
 
 export interface MixinOptions<T extends Instanceable[]> {
   /**

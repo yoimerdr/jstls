@@ -1,10 +1,10 @@
 import {Iter} from "./iter";
-import {WithPrototype} from "@/types/core/objects";
-import {funclass2} from "@/core/definer/classes/funclass";
-import {call} from "@/core/functions/call";
-import {FunctionClassSimpleStatics} from "@/types/core/definer";
-import {protocall} from "@/core/functions/prototype/call";
-import {indefinite} from "@/core/utils/types";
+import {WithPrototype} from "@jstls/types/core/objects";
+import {funclass2} from "@jstls/core/definer/classes/funclass";
+import {call} from "@jstls/core/functions/call";
+import {FunctionClassSimpleStatics} from "@jstls/types/core/definer";
+import {protocall} from "@jstls/core/functions/prototype/call";
+import {indefinite} from "@jstls/core/utils/types";
 
 export interface IterRange extends Iter<number> {
 }

@@ -1,16 +1,16 @@
-import {Keys, Maybe} from "@/types/core";
-import {KeyableObject, SetToDescriptor} from "@/types/core/objects";
-import {hasOwn} from "@/core/polyfills/objects/es2022";
-import {isArray} from "@/core/shortcuts/array";
-import {isDefined, isObject, isString} from "@/core/objects/types";
-import {self} from "@/core/utils/fn";
-import {indefinite} from "@/core/utils/types";
-import {reduce, slice} from "@/core/iterable";
-import {len} from "@/core/shortcuts/indexable";
-import {apply} from "@/core/functions/apply";
-import {keys} from "@/core/shortcuts/object";
+import {Keys, Maybe} from "@jstls/types/core";
+import {KeyableObject, SetToDescriptor} from "@jstls/types/core/objects";
+import {hasOwn} from "@jstls/core/polyfills/objects/es2022";
+import {isArray} from "@jstls/core/shortcuts/array";
+import {isDefined, isObject, isString} from "@jstls/core/objects/types";
+import {self} from "@jstls/core/utils/fn";
+import {indefinite} from "@jstls/core/utils/types";
+import {reduce, slice} from "@jstls/core/iterable";
+import {len} from "@jstls/core/shortcuts/indexable";
+import {apply} from "@jstls/core/functions/apply";
+import {keys} from "@jstls/core/shortcuts/object";
 import {get} from "./get";
-import {SetTransformDescriptor} from "@/types/core/objects/getset";
+import {SetTransformDescriptor} from "@jstls/types/core/objects/getset";
 
 /**
  * Sets the given value as the `key` property in the target `object`, if this is defined.

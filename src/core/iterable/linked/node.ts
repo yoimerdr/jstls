@@ -1,14 +1,14 @@
-import {Maybe} from "@/types/core";
-import {writeable} from "@/core/definer";
-import {isNotEmpty} from "@/core/extensions/shared/iterables";
-import {isDefined} from "@/core/objects/types";
-import {apply} from "@/core/functions/apply";
-import {uid} from "@/core/polyfills/symbol";
-import {get, set} from "@/core/objects/handlers/getset";
-import {WithPrototype} from "@/types/core/objects";
-import {funclass2} from "@/core/definer/classes/funclass";
-import {FunctionClassSimpleStatics} from "@/types/core/definer";
-import {nullable} from "@/core/utils/types";
+import {Maybe} from "@jstls/types/core";
+import {writeable} from "@jstls/core/definer";
+import {isNotEmpty} from "@jstls/core/extensions/shared/iterables";
+import {isDefined} from "@jstls/core/objects/types";
+import {apply} from "@jstls/core/functions/apply";
+import {uid} from "@jstls/core/polyfills/symbol";
+import {get, set} from "@jstls/core/objects/handlers/getset";
+import {WithPrototype} from "@jstls/types/core/objects";
+import {funclass2} from "@jstls/core/definer/classes/funclass";
+import {FunctionClassSimpleStatics} from "@jstls/types/core/definer";
+import {nullable} from "@jstls/core/utils/types";
 
 export type MaybeNode<T> = Maybe<Node<T>>;
 

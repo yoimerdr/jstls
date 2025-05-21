@@ -1,10 +1,10 @@
-import {ArrayLike} from "@/types/core/array";
-import {isDefined} from "@/core/objects/types";
-import {Maybe, MaybeNumber} from "@/types/core";
-import {Concat, IndexableType} from "@/types/core/objects";
-import {apply} from "@/core/functions/apply";
-import {slice} from "@/core/iterable";
-import {nullable} from "@/core/utils/types";
+import {ArrayLike} from "@jstls/types/core/array";
+import {isDefined} from "@jstls/core/objects/types";
+import {Maybe, MaybeNumber} from "@jstls/types/core";
+import {Concat, IndexableType} from "@jstls/types/core/objects";
+import {apply} from "@jstls/core/functions/apply";
+import {slice} from "@jstls/core/iterable";
+import {nullable} from "@jstls/core/utils/types";
 
 /**
  * Return the length of the array like object.

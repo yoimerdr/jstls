@@ -1,9 +1,9 @@
-import {prop} from "@/core/definer/props";
-import {descriptor, multiple} from "@/core/definer/shared";
-import {Keys} from "@/types/core";
-import {DefinePropertyValues} from "@/types/core/objects/definer";
-import {MaybeKeyObjectType} from "@/types/core/objects";
-import {indefinite} from "@/core/utils/types";
+import {prop} from "@jstls/core/definer/props";
+import {descriptor, multiple} from "@jstls/core/definer/shared";
+import {Keys} from "@jstls/types/core";
+import {DefinePropertyValues} from "@jstls/types/core/objects/definer";
+import {MaybeKeyObjectType} from "@jstls/types/core/objects";
+import {indefinite} from "@jstls/core/utils/types";
 
 function _value<T, K extends Keys<T> | PropertyKey>(target: T, key: K, value: MaybeKeyObjectType<T, K>, writable?: boolean, numerable?: boolean) {
   prop(target, key, descriptor(value, writable, indefinite, numerable))

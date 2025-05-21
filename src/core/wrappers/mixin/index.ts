@@ -1,4 +1,4 @@
-import {KeyableObject} from "@/types/core/objects";
+import {KeyableObject} from "@jstls/types/core/objects";
 import {MixinConstructor} from "./mixin";
 
 export * from "./mixin";

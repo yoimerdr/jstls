@@ -1,5 +1,5 @@
-import {FunctionType, Maybe, Nullables} from "@/types/core";
-import {isDefined} from "@/core/objects/types";
+import {FunctionType, Maybe, Nullables} from "@jstls/types/core";
+import {isDefined} from "@jstls/core/objects/types";
 
 export function self<T>(): (this: T) => T {
   return function () {

@@ -1,12 +1,12 @@
-import {Keys} from "@/types/core";
-import {KeyableObject} from "@/types/core/objects";
-import {len} from "@/core/shortcuts/indexable";
-import {apply} from "@/core/functions/apply";
-import {slice} from "@/core/iterable";
+import {Keys} from "@jstls/types/core";
+import {KeyableObject} from "@jstls/types/core/objects";
+import {len} from "@jstls/core/shortcuts/indexable";
+import {apply} from "@jstls/core/functions/apply";
+import {slice} from "@jstls/core/iterable";
 import {get} from "./getset";
-import {forEach} from "@/core/shortcuts/array";
+import {forEach} from "@jstls/core/shortcuts/array";
 import {propertyNames} from "./properties";
-import {indefinite} from "@/core/utils/types";
+import {indefinite} from "@jstls/core/utils/types";
 
 /**
  * Deletes the given `key` property in the target `object`, if this is defined.

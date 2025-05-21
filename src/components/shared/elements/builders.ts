@@ -1,5 +1,5 @@
-import {doc} from "../constants";
-import {bind} from "@/core/functions/bind";
+import {doc} from "@jstls/components/shared/constants";
+import {bind} from "@jstls/core/functions/bind";
 
 export const create = bind(doc.createElement, doc),
   createNS = bind(doc.createElementNS, doc),

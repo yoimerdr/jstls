@@ -1,7 +1,7 @@
-import {reduce, slice} from "@/core/iterable";
-import {indefinite} from "@/core/utils/types";
-import {len} from "@/core/shortcuts/indexable";
-import {Maybe} from "@/types/core";
+import {reduce, slice} from "@jstls/core/iterable";
+import {indefinite} from "@jstls/core/utils/types";
+import {len} from "@jstls/core/shortcuts/indexable";
+import {Maybe} from "@jstls/types/core";
 
 /**
  * Appends a child on an element

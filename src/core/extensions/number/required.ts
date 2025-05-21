@@ -1,9 +1,9 @@
-import {IllegalArgumentError} from "@/core/exceptions";
-import {concat} from "@/core/shortcuts/indexable";
-import {max, min} from "@/core/shortcuts/math";
-import {valueOf} from "@/core/shortcuts/object";
-import {getDefined} from "@/core/objects/validators";
-import {returns} from "@/core/utils";
+import {IllegalArgumentError} from "@jstls/core/exceptions";
+import {concat} from "@jstls/core/shortcuts/indexable";
+import {max, min} from "@jstls/core/shortcuts/math";
+import {valueOf} from "@jstls/core/shortcuts/object";
+import {getDefined} from "@jstls/core/objects/validators";
+import {returns} from "@jstls/core/utils";
 
 export function coerceIn(this: Number, minimum: number, maximum: number): number;
 export function coerceIn(minimum: number, maximum: number, $this: number): number;

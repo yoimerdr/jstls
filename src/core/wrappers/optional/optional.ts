@@ -1,14 +1,14 @@
-import {Wrapper} from "@/core/wrappers/wrapper";
-import {Maybe} from "@/types/core";
-import {readonlys2} from "@/core/definer";
-import {isDefined} from "@/core/objects/types";
-import {apply} from "@/core/functions/apply";
-import {WithPrototype} from "@/types/core/objects";
-import {funclass2} from "@/core/definer/classes/funclass";
-import {call} from "@/core/functions/call";
-import {FunctionClassSimpleStatics} from "@/types/core/definer";
-import {requireFunction} from "@/core/objects/validators";
-import {indefinite} from "@/core/utils/types";
+import {Wrapper} from "@jstls/core/wrappers/wrapper";
+import {Maybe} from "@jstls/types/core";
+import {readonlys2} from "@jstls/core/definer";
+import {isDefined} from "@jstls/core/objects/types";
+import {apply} from "@jstls/core/functions/apply";
+import {WithPrototype} from "@jstls/types/core/objects";
+import {funclass2} from "@jstls/core/definer/classes/funclass";
+import {call} from "@jstls/core/functions/call";
+import {FunctionClassSimpleStatics} from "@jstls/types/core/definer";
+import {requireFunction} from "@jstls/core/objects/validators";
+import {indefinite} from "@jstls/core/utils/types";
 
 export interface Optional<T> extends Wrapper<Maybe<T>> {
   /**

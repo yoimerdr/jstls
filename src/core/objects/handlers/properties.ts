@@ -1,14 +1,14 @@
-import {Keys, MethodKeys, PropertiesKeys} from "@/types/core";
-import {call} from "@/core/functions/call";
-import {isFunction} from "@/core/objects/types";
-import {includes} from "@/core/polyfills/indexable/es2016";
-import {filter} from "@/core/iterable/filter";
-import {nreturns} from "@/core/utils/fn";
-import {nullable} from "@/core/utils/types";
-import {PropertyDescriptors} from "@/types/core/objects/definer";
-import {reduce} from "@/core/iterable";
-import {descriptor, keys, propertyNames} from "@/core/shortcuts/object";
-import {KeyableObject} from "@/types/core/objects";
+import {Keys, MethodKeys, PropertiesKeys} from "@jstls/types/core";
+import {call} from "@jstls/core/functions/call";
+import {isFunction} from "@jstls/core/objects/types";
+import {includes} from "@jstls/core/polyfills/indexable/es2016";
+import {filter} from "@jstls/core/iterable/filter";
+import {nreturns} from "@jstls/core/utils/fn";
+import {nullable} from "@jstls/core/utils/types";
+import {PropertyDescriptors} from "@jstls/types/core/objects/definer";
+import {reduce} from "@jstls/core/iterable";
+import {descriptor, keys, propertyNames} from "@jstls/core/shortcuts/object";
+import {KeyableObject} from "@jstls/types/core/objects";
 
 export function descriptors<T>(object: T, mode?: 'keys' | 'names'): PropertyDescriptors<T> {
   return reduce((mode === 'names' ? propertyNames : keys)(object), (current, key) => {

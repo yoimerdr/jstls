@@ -1,4 +1,4 @@
-import {KeyableObject} from "../types/core/objects";
+import {KeyableObject} from "@jstls/types/core/objects";
 import {get, set} from "./objects/handlers/getset";
 import {forEach} from "./shortcuts/array";
 import {slice} from "./iterable";

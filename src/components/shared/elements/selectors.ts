@@ -1,4 +1,4 @@
-import {doc} from "@/components/shared/constants";
+import {doc} from "@jstls/components/shared/constants";
 
 /**
  * Finds the first element matching a selector within a parent node

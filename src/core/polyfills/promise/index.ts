@@ -1,16 +1,16 @@
-import {PromiseExecutor, PromiseFilled, PromiseRejected, PromiseState} from "@/types/core/polyfills"
-import {requireFunction} from "@/core/objects/validators";
-import {writeable} from "@/core/definer";
-import {isFunction} from "@/core/objects/types";
-import {uid} from "@/core/polyfills/symbol";
-import {hasOwn} from "@/core/polyfills/objects/es2022";
-import {bind} from "@/core/functions/bind";
-import {get, set} from "@/core/objects/handlers/getset";
-import {concat, len} from "@/core/shortcuts/indexable";
-import {funclass2} from "@/core/definer/classes/funclass";
-import {forEach} from "@/core/shortcuts/array";
-import {FunctionClassSimpleStatics} from "@/types/core/definer";
-import {nullable} from "@/core/utils/types";
+import {PromiseExecutor, PromiseFilled, PromiseRejected, PromiseState} from "@jstls/types/core/polyfills"
+import {requireFunction} from "@jstls/core/objects/validators";
+import {writeable} from "@jstls/core/definer";
+import {isFunction} from "@jstls/core/objects/types";
+import {uid} from "@jstls/core/polyfills/symbol";
+import {hasOwn} from "@jstls/core/polyfills/objects/es2022";
+import {bind} from "@jstls/core/functions/bind";
+import {get, set} from "@jstls/core/objects/handlers/getset";
+import {concat, len} from "@jstls/core/shortcuts/indexable";
+import {funclass2} from "@jstls/core/definer/classes/funclass";
+import {forEach} from "@jstls/core/shortcuts/array";
+import {FunctionClassSimpleStatics} from "@jstls/types/core/definer";
+import {nullable} from "@jstls/core/utils/types";
 
 const promiseState = uid("mS"),
   promiseResult = uid("mR"),

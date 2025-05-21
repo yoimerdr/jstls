@@ -1,5 +1,5 @@
-import {slice} from "@/core/iterable";
-import {apply} from "@/core/functions/apply";
+import {slice} from "@jstls/core/iterable";
+import {apply} from "@jstls/core/functions/apply";
 
 interface WithClasses {
   readonly classList: DOMTokenList

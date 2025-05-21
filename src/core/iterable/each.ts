@@ -1,11 +1,11 @@
-import {ArrayLike, ArrayLikeEach, ArrayLikeEachNext, ArrayLikeEachPrevious} from "@/types/core/array";
-import {Foreachable, ForeachableEach, IterableLike, IterableLikeEach} from "@/types/core/iterable";
-import {KeyableObject} from "@/types/core/objects";
-import {isFunction} from "@/core/objects/types";
-import {bind} from "@/core/functions/bind";
-import {protoapply} from "@/core/functions/prototype/apply";
-import {len} from "@/core/shortcuts/indexable";
-import {forEach} from "@/core/shortcuts/array";
+import {ArrayLike, ArrayLikeEach, ArrayLikeEachNext, ArrayLikeEachPrevious} from "@jstls/types/core/array";
+import {Foreachable, ForeachableEach, IterableLike, IterableLikeEach} from "@jstls/types/core/iterable";
+import {KeyableObject} from "@jstls/types/core/objects";
+import {isFunction} from "@jstls/core/objects/types";
+import {bind} from "@jstls/core/functions/bind";
+import {protoapply} from "@jstls/core/functions/prototype/apply";
+import {len} from "@jstls/core/shortcuts/indexable";
+import {forEach} from "@jstls/core/shortcuts/array";
 
 export function each<T, I extends ArrayLike<T>, R = void>(source: I, each: ArrayLikeEach<T, R, I>, thisArg?: R): void;
 export function each<T, I extends Foreachable<T>, R = void>(source: I, each: ForeachableEach<T, R, I>, thisArg?: R): void;

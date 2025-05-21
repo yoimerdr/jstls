@@ -1,6 +1,6 @@
-import {ArrayLike, ArrayLikeType} from "@/types/core/array";
-import {IllegalAccessError} from "@/core/exceptions";
-import {len} from "@/core/shortcuts/indexable";
+import {ArrayLike, ArrayLikeType} from "@jstls/types/core/array";
+import {IllegalAccessError} from "@jstls/core/exceptions";
+import {len} from "@jstls/core/shortcuts/indexable";
 import { isEmpty } from "./simple";
 
 export function first<T, I extends ArrayLike<T> = ArrayLike<T>>(this: I): T;

@@ -1,7 +1,7 @@
-import {MaybeNumber} from "@/types/core";
-import {floor} from "@/core/shortcuts/math";
-import {len} from "@/core/shortcuts/indexable";
-import {indefinite} from "@/core/utils/types";
+import {MaybeNumber} from "@jstls/types/core";
+import {floor} from "@jstls/core/shortcuts/math";
+import {len} from "@jstls/core/shortcuts/indexable";
+import {indefinite} from "@jstls/core/utils/types";
 
 export function endsWith(this: string, searchString: string, endPosition?: number): boolean {
   const $this = this;

@@ -1,7 +1,7 @@
-import {max, min} from "@/core/shortcuts/math";
-import {valueOf} from "@/core/shortcuts/object";
-import {getDefined} from "@/core/objects/validators";
-import {returns} from "@/core/utils";
+import {max, min} from "@jstls/core/shortcuts/math";
+import {valueOf} from "@jstls/core/shortcuts/object";
+import {getDefined} from "@jstls/core/objects/validators";
+import {returns} from "@jstls/core/utils";
 
 export function coerceAtLeast(this: Number, minimum: number): number;
 export function coerceAtLeast(minimum: number, $this: number): number;

@@ -1,8 +1,8 @@
-import {WithLength} from "@/types/core/objects";
-import {len} from "@/core/shortcuts/indexable";
-import {ArrayLike, ArrayLikeType} from "@/types/core/array";
-import {Maybe} from "@/types/core";
-import {nullable} from "@/core/utils/types";
+import {WithLength} from "@jstls/types/core/objects";
+import {len} from "@jstls/core/shortcuts/indexable";
+import {ArrayLike, ArrayLikeType} from "@jstls/types/core/array";
+import {Maybe} from "@jstls/types/core";
+import {nullable} from "@jstls/core/utils/types";
 
 export function isEmpty<T extends WithLength>(this: T): boolean;
 export function isEmpty<T extends WithLength>($this: T): boolean;

@@ -1,4 +1,4 @@
-import {Entry, FunctionType, Keys} from "../index";
+import {Entry, FunctionType, Keys} from "@jstls/types/core";
 import {KeyableObject} from "./index";
 
 type SetTransformValue<T = any, P extends Keys<T> = any> = string | Entry<FunctionType<void, [value: T[P]], any>>;

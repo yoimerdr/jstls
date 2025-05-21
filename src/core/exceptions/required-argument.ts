@@ -1,4 +1,4 @@
-import {defineException, ErrorConstructor} from "@/core/exceptions/shared";
+import {defineException, ErrorConstructor} from "@jstls/core/exceptions/shared";
 
 export interface RequiredArgumentError extends Error {
 }

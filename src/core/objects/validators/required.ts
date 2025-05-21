@@ -1,8 +1,8 @@
-import {Maybe, Typeof} from "@/types/core";
-import {IllegalArgumentError} from "@/core/exceptions/illegal-argument";
-import {isArray} from "@/core/shortcuts/array";
-import {concat} from "@/core/shortcuts/string";
-import {isDefined, typeIs} from "@/core/objects/types";
+import {Maybe, Typeof} from "@jstls/types/core";
+import {IllegalArgumentError} from "@jstls/core/exceptions/illegal-argument";
+import {isArray} from "@jstls/core/shortcuts/array";
+import {concat} from "@jstls/core/shortcuts/string";
+import {isDefined, typeIs} from "@jstls/core/objects/types";
 
 /**
  * Checks if the value meets the given condition and returns it. If not, throws error.

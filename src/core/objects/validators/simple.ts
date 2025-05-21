@@ -1,6 +1,6 @@
-import {isDefined} from "@/core/objects/types";
-import {Maybe} from "@/types/core";
-import {apply} from "@/core/functions/apply";
+import {isDefined} from "@jstls/core/objects/types";
+import {Maybe} from "@jstls/types/core";
+import {apply} from "@jstls/core/functions/apply";
 
 /**
  * Checks if the value is defined and returns it.

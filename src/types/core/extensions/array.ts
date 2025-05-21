@@ -1,4 +1,4 @@
-import {Maybe} from "../index";
+import {Maybe} from "@jstls/types/core";
 
 export type CountsCompareFn<T, A, R> = (this: R, target: T, current: T, index: number, arr: A) => boolean;
 

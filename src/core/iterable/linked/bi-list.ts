@@ -1,10 +1,10 @@
 import {linkedAdd, linkedAddedNode, linkedAndNext, LinkedList, linkedPop, linkedRemovedNode} from "./list";
 import {BiNode, MaybeBiNode} from "./bi-node";
-import {round} from "@/core/shortcuts/math";
-import {WithPrototype} from "@/types/core/objects";
-import {funclass2} from "@/core/definer/classes/funclass";
-import {FunctionClassSimpleStatics} from "@/types/core/definer";
-import {nullable} from "@/core/utils/types";
+import {round} from "@jstls/core/shortcuts/math";
+import {WithPrototype} from "@jstls/types/core/objects";
+import {funclass2} from "@jstls/core/definer/classes/funclass";
+import {FunctionClassSimpleStatics} from "@jstls/types/core/definer";
+import {nullable} from "@jstls/core/utils/types";
 
 function linkedAddPrev<T>($this: BiLinkedList<T>, source: any) {
   source.index = $this.size - source.index + 1;

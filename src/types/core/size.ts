@@ -1,9 +1,9 @@
-import {Size,} from "../../core/geometry/size";
+import {Size,} from "@jstls/core/geometry/size";
 import {Maybe} from "./index";
 
-export {ParseableSize} from "../../core/geometry/size/shared";
+export {ParseableSize} from "@jstls/core/geometry/size/shared";
 
-export {SizeConstructor} from "../../core/geometry/size/size";
+export {SizeConstructor} from "@jstls/core/geometry/size/size";
 
 export type SizeArgument = Size | string | number;
 

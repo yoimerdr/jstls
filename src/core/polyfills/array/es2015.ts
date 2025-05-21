@@ -1,9 +1,9 @@
-import {IterableLike} from "@/types/core/iterable";
-import {isDefined} from "@/core/objects/types";
-import {requireFunction} from "@/core/objects/validators";
-import {self} from "@/core/utils";
-import {bind} from "@/core/functions/bind";
-import {each} from "@/core/iterable/each";
+import {IterableLike} from "@jstls/types/core/iterable";
+import {isDefined} from "@jstls/core/objects/types";
+import {requireFunction} from "@jstls/core/objects/validators";
+import {self} from "@jstls/core/utils";
+import {bind} from "@jstls/core/functions/bind";
+import {each} from "@jstls/core/iterable/each";
 
 export function arrayFrom<T>(iterable: IterableLike<T>): T[];
 export function arrayFrom<T, U, R>(iterable: IterableLike<T>, mapfn: (this: R, value: T, index: number) => U, thisArg?: any): U[];

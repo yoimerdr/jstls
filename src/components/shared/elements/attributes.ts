@@ -1,10 +1,10 @@
-import {MaybeString} from "@/types/core";
-import {KeyableObject} from "@/types/core/objects";
-import {isDefined, isPlainObject} from "@/core/objects/types";
-import {reduce} from "@/core/iterable";
-import {keys} from "@/core/shortcuts/object";
-import {indefinite} from "@/core/utils/types";
-import {concat} from "@/core/shortcuts/indexable";
+import {MaybeString} from "@jstls/types/core";
+import {KeyableObject} from "@jstls/types/core/objects";
+import {isDefined, isPlainObject} from "@jstls/core/objects/types";
+import {reduce} from "@jstls/core/iterable";
+import {keys} from "@jstls/core/shortcuts/object";
+import {indefinite} from "@jstls/core/utils/types";
+import {concat} from "@jstls/core/shortcuts/indexable";
 
 export function attribute(el: Element, name: string): MaybeString;
 /**

@@ -1,13 +1,13 @@
-import {isString} from "@/core/objects/types";
-import {readonly} from "@/core/definer";
-import {KeyableObject} from "@/types/core/objects";
-import {keys} from "@/core/shortcuts/object";
-import {PromiseConstructor} from "@/types/core/polyfills";
-import {extend} from "@/core/extensions/array";
-import {setTo} from "@/core/objects/handlers/getset";
-import {forEach} from "@/core/shortcuts/array";
-import {reduce} from "@/core/iterable";
-import {nullable} from "@/core/utils/types";
+import {isString} from "@jstls/core/objects/types";
+import {readonly} from "@jstls/core/definer";
+import {KeyableObject} from "@jstls/types/core/objects";
+import {keys} from "@jstls/core/shortcuts/object";
+import {PromiseConstructor} from "@jstls/types/core/polyfills";
+import {extend} from "@jstls/core/extensions/array";
+import {setTo} from "@jstls/core/objects/handlers/getset";
+import {forEach} from "@jstls/core/shortcuts/array";
+import {reduce} from "@jstls/core/iterable";
+import {nullable} from "@jstls/core/utils/types";
 
 declare const Promise: PromiseConstructor;
 

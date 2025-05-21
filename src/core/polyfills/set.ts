@@ -1,22 +1,22 @@
-import {Maybe, MaybeString} from "@/types/core";
-import {KeyableObject, WithPrototype} from "@/types/core/objects";
-import {configurable, readonly} from "@/core/definer";
-import {isDefined, isObject} from "@/core/objects/types";
-import {assign} from "@/core/objects/factory";
-import {bind} from "@/core/functions/bind";
-import {each} from "@/core/iterable/each";
-import {len} from "@/core/shortcuts/indexable";
-import {clear, forEach} from "@/core/shortcuts/array";
-import {concat} from "@/core/shortcuts/string";
+import {Maybe, MaybeString} from "@jstls/types/core";
+import {KeyableObject, WithPrototype} from "@jstls/types/core/objects";
+import {configurable, readonly} from "@jstls/core/definer";
+import {isDefined, isObject} from "@jstls/core/objects/types";
+import {assign} from "@jstls/core/objects/factory";
+import {bind} from "@jstls/core/functions/bind";
+import {each} from "@jstls/core/iterable/each";
+import {len} from "@jstls/core/shortcuts/indexable";
+import {clear, forEach} from "@jstls/core/shortcuts/array";
+import {concat} from "@jstls/core/shortcuts/string";
 import {uid} from "./symbol";
-import {get, set} from "@/core/objects/handlers/getset";
-import {funclass2} from "@/core/definer/classes/funclass";
-import {FunctionClassSimpleStatics} from "@/types/core/definer";
-import {deletes, deletesAll} from "@/core/objects/handlers/deletes";
-import {descriptor2} from "@/core/definer/shared";
-import {mapped} from "@/core/definer/getters/builders";
-import {nullable} from "@/core/utils/types";
-import {slice} from "@/core/iterable";
+import {get, set} from "@jstls/core/objects/handlers/getset";
+import {funclass2} from "@jstls/core/definer/classes/funclass";
+import {FunctionClassSimpleStatics} from "@jstls/types/core/definer";
+import {deletes, deletesAll} from "@jstls/core/objects/handlers/deletes";
+import {descriptor2} from "@jstls/core/definer/shared";
+import {mapped} from "@jstls/core/definer/getters/builders";
+import {nullable} from "@jstls/core/utils/types";
+import {slice} from "@jstls/core/iterable";
 
 type SetSource = Readonly<{
   key: MaybeString,

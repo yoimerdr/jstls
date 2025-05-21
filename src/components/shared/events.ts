@@ -1,6 +1,6 @@
-import {isArray} from "@/core/shortcuts/array";
-import {Keys} from "@/types/core";
-import {len} from "@/core/shortcuts/indexable";
+import {isArray} from "@jstls/core/shortcuts/array";
+import {Keys} from "@jstls/types/core";
+import {len} from "@jstls/core/shortcuts/indexable";
 
 /**
  * Adds an event listener to an element or media query

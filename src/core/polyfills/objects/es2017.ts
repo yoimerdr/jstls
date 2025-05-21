@@ -1,5 +1,5 @@
-import {Keys, KeysType} from "@/types/core";
-import {keys} from "@/core/shortcuts/object";
+import {Keys, KeysType} from "@jstls/types/core";
+import {keys} from "@jstls/core/shortcuts/object";
 
 export function entries<T>(object: T): [Keys<T>, T[Keys<T>]][] {
   return keys(object)

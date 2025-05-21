@@ -1,5 +1,5 @@
-import {Entry, Keys} from "../index";
-import {ArrayOr, ArraySelect} from "../array";
+import {Entry, Keys} from "@jstls/types/core";
+import {ArrayOr, ArraySelect} from "@jstls/types/core/array";
 import {KeyableObject} from "./index";
 
 export type PickProperty<T> = {

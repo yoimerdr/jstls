@@ -1,10 +1,10 @@
-import {configurables} from "@/core/definer";
-import {apply} from "@/core/functions/apply";
-import {string} from "@/core/objects/handlers";
-import {create} from "@/core/shortcuts/object";
-import {random} from "@/core/shortcuts/math";
-import {concat} from "@/core/shortcuts/string";
-import {indefinite} from "@/core/utils/types";
+import {configurables} from "@jstls/core/definer";
+import {apply} from "@jstls/core/functions/apply";
+import {string} from "@jstls/core/objects/handlers";
+import {create} from "@jstls/core/shortcuts/object";
+import {random} from "@jstls/core/shortcuts/math";
+import {concat} from "@jstls/core/shortcuts/string";
+import {indefinite} from "@jstls/core/utils/types";
 
 let id = 0;
 const postfix = random();

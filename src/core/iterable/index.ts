@@ -1,5 +1,5 @@
-import {ArrayLike, ArrayLikeReduce, } from "@/types/core/array";
-import {protoapply} from "@/core/functions/prototype/apply";
+import {ArrayLike, ArrayLikeReduce, } from "@jstls/types/core/array";
+import {protoapply} from "@jstls/core/functions/prototype/apply";
 
 
 export function slice<T extends any>(source: ArrayLike<T>, startIndex?: number, endIndex?: number): T[] {

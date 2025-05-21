@@ -1,15 +1,15 @@
-import {includes} from "@/core/polyfills/indexable/es2016";
+import {includes} from "@jstls/core/polyfills/indexable/es2016";
 
-import {join, reduce, slice} from "@/core/iterable";
-import {apply} from "@/core/functions/apply";
-import {WithClassName} from "@/types/core";
-import {remove} from "@/core/extensions/array/fn";
-import {indefinite} from "@/core/utils/types";
-import {concat} from "@/core/shortcuts/indexable";
-import {isDefined} from "@/core/objects/types";
-import {set2} from "@/core/objects/handlers/getset";
-import {KeyableObject} from "@/types/core/objects";
-import {keys} from "@/core/shortcuts/object";
+import {join, reduce, slice} from "@jstls/core/iterable";
+import {apply} from "@jstls/core/functions/apply";
+import {WithClassName} from "@jstls/types/core";
+import {remove} from "@jstls/core/extensions/array/fn";
+import {indefinite} from "@jstls/core/utils/types";
+import {concat} from "@jstls/core/shortcuts/indexable";
+import {isDefined} from "@jstls/core/objects/types";
+import {set2} from "@jstls/core/objects/handlers/getset";
+import {KeyableObject} from "@jstls/types/core/objects";
+import {keys} from "@jstls/core/shortcuts/object";
 
 export function getClasses<T extends WithClassName>(el: T): string[] {
   const name = el && el.className || "";

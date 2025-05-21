@@ -4,24 +4,24 @@ import {
   paginationConfig, PaginationConstructor, PaginationOptions,
   wasFirstLoad
 } from "./simple";
-import {KeyableObject, WithPrototype} from "@/types/core/objects";
-import {assign, deepAssign} from "@/core/objects/factory";
+import {KeyableObject, WithPrototype} from "@jstls/types/core/objects";
+import {assign, deepAssign} from "@jstls/core/objects/factory";
 import {actEl, pageEl} from "./page-elements";
-import {funclass2} from "@/core/definer/classes/funclass";
-import {descriptor2} from "@/core/definer/shared";
-import {call} from "@/core/functions/call";
-import {toInt} from "@/core/extensions/string";
-import {attribute, selector} from "@/components/shared";
-import {FunctionClassSimpleStatics} from "@/types/core/definer";
-import {singleton} from "@/core/wrappers/singleton/fn";
-import {nullable} from "@/core/utils/types";
-import {PaginationActLabel} from "@/types/components/pagination";
-import {Paginator} from "@/core/geometry/paginator";
-import {PagePaginationOnElements} from "@/types/components/pagination/shared";
-import {get2} from "@/core/objects/handlers/getset";
-import {his} from "@/components/shared/constants";
-import {concat} from "@/core/shortcuts/string";
-import {protoapply} from "@/core/functions/prototype/apply";
+import {funclass2} from "@jstls/core/definer/classes/funclass";
+import {descriptor2} from "@jstls/core/definer/shared";
+import {call} from "@jstls/core/functions/call";
+import {toInt} from "@jstls/core/extensions/string";
+import {attribute, selector} from "@jstls/components/shared";
+import {FunctionClassSimpleStatics} from "@jstls/types/core/definer";
+import {singleton} from "@jstls/core/wrappers/singleton/fn";
+import {nullable} from "@jstls/core/utils/types";
+import {PaginationActLabel} from "@jstls/types/components/pagination";
+import {Paginator} from "@jstls/core/geometry/paginator";
+import {PagePaginationOnElements} from "@jstls/types/components/pagination/shared";
+import {get2} from "@jstls/core/objects/handlers/getset";
+import {his} from "@jstls/components/shared/constants";
+import {concat} from "@jstls/core/shortcuts/string";
+import {protoapply} from "@jstls/core/functions/prototype/apply";
 
 /**
  * A handler for creates a page pagination component.

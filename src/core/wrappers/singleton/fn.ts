@@ -1,16 +1,16 @@
-import {uid} from "@/core/polyfills/symbol";
-import {SingletonInit} from "@/types/core/wrappers/singleton";
-import {apply} from "@/core/functions/apply";
-import {configurable} from "@/core/definer";
-import {hasOwn} from "@/core/polyfills/objects/es2022";
-import {KeyableObject, PrototypeType, WithPrototype} from "@/types/core/objects";
-import {FunctionType, Instanceable, WithConstructor} from "@/types/core";
-import {get2} from "@/core/objects/handlers/getset";
-import {deletes2} from "@/core/objects/handlers/deletes";
-import {isFunction} from "@/core/objects/types";
-import {funclass2} from "@/core/definer/classes/funclass";
-import {returns} from "@/core/utils";
-import {slice} from "@/core/iterable";
+import {uid} from "@jstls/core/polyfills/symbol";
+import {SingletonInit} from "@jstls/types/core/wrappers/singleton";
+import {apply} from "@jstls/core/functions/apply";
+import {configurable} from "@jstls/core/definer";
+import {hasOwn} from "@jstls/core/polyfills/objects/es2022";
+import {KeyableObject, PrototypeType, WithPrototype} from "@jstls/types/core/objects";
+import {FunctionType, Instanceable, WithConstructor} from "@jstls/types/core";
+import {get2} from "@jstls/core/objects/handlers/getset";
+import {deletes2} from "@jstls/core/objects/handlers/deletes";
+import {isFunction} from "@jstls/core/objects/types";
+import {funclass2} from "@jstls/core/definer/classes/funclass";
+import {returns} from "@jstls/core/utils";
+import {slice} from "@jstls/core/iterable";
 
 const singletonSymbol = uid('mI');
 

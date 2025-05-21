@@ -1,4 +1,4 @@
-import {Keys} from "../index";
+import {Keys} from "@jstls/types/core";
 import {KeyableObject, KeyObjectType, MaybeKeyReturnType, ThisObjectKeys} from "./index";
 
 export interface PropertyDescriptor<T = any, K extends Keys<T> = any> {

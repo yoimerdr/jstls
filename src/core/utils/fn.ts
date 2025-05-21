@@ -1,7 +1,7 @@
-import {apply} from "@/core/functions/apply";
-import {slice} from "@/core/iterable";
+import {apply} from "@jstls/core/functions/apply";
+import {slice} from "@jstls/core/iterable";
 import {nullable} from "./types";
-import {concat, len} from "@/core/shortcuts/indexable";
+import {concat, len} from "@jstls/core/shortcuts/indexable";
 
 
 /**

@@ -1,16 +1,16 @@
-import {Instanceable, InstanceableParameters, InstanceableType} from "@/types/core";
-import {IllegalAccessError} from "@/core/exceptions/illegal-access";
-import {is} from "@/core/polyfills/objects/es2015";
-import {slice} from "@/core/iterable";
-import {apply} from "@/core/functions/apply";
-import {SingletonInit} from "@/types/core/wrappers/singleton";
-import {funclass2} from "@/core/definer/classes/funclass";
-import {nullable} from "@/core/utils/types";
-import {WithPrototype} from "@/types/core/objects";
-import {concat} from "@/core/shortcuts/indexable";
-import {checkSingleton, getInstance, hasInstance} from "@/core/wrappers/singleton/fn";
+import {Instanceable, InstanceableParameters, InstanceableType} from "@jstls/types/core";
+import {IllegalAccessError} from "@jstls/core/exceptions/illegal-access";
+import {is} from "@jstls/core/polyfills/objects/es2015";
+import {slice} from "@jstls/core/iterable";
+import {apply} from "@jstls/core/functions/apply";
+import {SingletonInit} from "@jstls/types/core/wrappers/singleton";
+import {funclass2} from "@jstls/core/definer/classes/funclass";
+import {nullable} from "@jstls/core/utils/types";
+import {WithPrototype} from "@jstls/types/core/objects";
+import {concat} from "@jstls/core/shortcuts/indexable";
+import {checkSingleton, getInstance, hasInstance} from "@jstls/core/wrappers/singleton/fn";
 
-export {getInstance, hasInstance, removeInstance, singleton} from "@/core/wrappers/singleton/fn";
+export {getInstance, hasInstance, removeInstance, singleton} from "@jstls/core/wrappers/singleton/fn";
 
 
 export interface Singleton<S extends Singleton<S>> {

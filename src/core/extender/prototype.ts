@@ -1,9 +1,9 @@
-import {KeyableObject, WithPrototype} from "@/types/core/objects";
-import {get, set, setTo} from "@/core/objects/handlers/getset";
-import {isFunction} from "@/core/objects/types";
-import {concat} from "@/core/shortcuts/string";
-import {propertyNames} from "@/core/shortcuts/object";
-import {nullable} from "@/core/utils/types";
+import {KeyableObject, WithPrototype} from "@jstls/types/core/objects";
+import {get, set, setTo} from "@jstls/core/objects/handlers/getset";
+import {isFunction} from "@jstls/core/objects/types";
+import {concat} from "@jstls/core/shortcuts/string";
+import {propertyNames} from "@jstls/core/shortcuts/object";
+import {nullable} from "@jstls/core/utils/types";
 
 export function statics<T extends WithPrototype>(target: T, base: WithPrototype): T {
   (

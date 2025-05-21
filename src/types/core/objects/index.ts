@@ -1,4 +1,4 @@
-import {IncludeThisParameter, Indeterminate, Keys, MethodKeys, SafeReturnType} from "../index";
+import {IncludeThisParameter, Indeterminate, Keys, MethodKeys, SafeReturnType} from "@jstls/types/core";
 
 export type KeyableObject<R = any> = Record<PropertyKey, R> & Object;
 

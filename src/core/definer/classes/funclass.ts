@@ -1,22 +1,22 @@
-import {Instanceable, InstanceableType, MethodKeys, Nullables} from "@/types/core";
+import {Instanceable, InstanceableType, MethodKeys, Nullables} from "@jstls/types/core";
 import {
   FunctionClassBuilder,
   FunctionClassOptions,
   FunctionClassSimpleBuilder,
   FunctionClassSuper
-} from "@/types/core/definer";
-import {call} from "@/core/functions/call";
-import {reduce} from "@/core/iterable";
-import {IndeterminatePrototype, KeyableObject, PrototypeType, WithPrototype} from "@/types/core/objects";
-import {keys, methodProperties} from "@/core/objects/handlers/properties";
-import {props} from "@/core/definer/props";
-import {prototype} from "@/core/extender/prototype";
-import {includes} from "@/core/polyfills/indexable/es2016";
-import {descriptor} from "@/core/definer/shared";
-import {isDefined, isFunction, isPlainObject} from "@/core/objects/types";
+} from "@jstls/types/core/definer";
+import {call} from "@jstls/core/functions/call";
+import {reduce} from "@jstls/core/iterable";
+import {IndeterminatePrototype, KeyableObject, PrototypeType, WithPrototype} from "@jstls/types/core/objects";
+import {keys, methodProperties} from "@jstls/core/objects/handlers/properties";
+import {props} from "@jstls/core/definer/props";
+import {prototype} from "@jstls/core/extender/prototype";
+import {includes} from "@jstls/core/polyfills/indexable/es2016";
+import {descriptor} from "@jstls/core/definer/shared";
+import {isDefined, isFunction, isPlainObject} from "@jstls/core/objects/types";
 import {createSuper, parentFirst} from "./supers";
-import {indefinite} from "@/core/utils/types";
-import {self} from "@/core/definer/getters/builders";
+import {indefinite} from "@jstls/core/utils/types";
+import {self} from "@jstls/core/definer/getters/builders";
 
 const acceptedTypes = ["object", "function"],
   Exception = TypeError

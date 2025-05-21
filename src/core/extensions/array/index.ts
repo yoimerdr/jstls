@@ -1,6 +1,6 @@
-import {readonlys} from "@/core/definer/values";
-import {first, firstOrNull, isEmpty, isNotEmpty, last, lastOrNull} from "@/core/extensions/shared/iterables";
-import {ArrayExtensions} from "@/types/core/extensions/array";
+import {readonlys} from "@jstls/core/definer/values";
+import {first, firstOrNull, isEmpty, isNotEmpty, last, lastOrNull} from "@jstls/core/extensions/shared/iterables";
+import {ArrayExtensions} from "@jstls/types/core/extensions/array";
 import {counts, extend, filterDefined, remove} from "./fn";
 
 export {counts, extend, filterDefined, remove} from "./fn";

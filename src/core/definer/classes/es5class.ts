@@ -1,7 +1,7 @@
-import {Instanceable, InstanceableFunction, InstanceableType} from "@/types/core";
-import {ES5ClassOptions} from "@/types/core/definer";
-import {requireObject} from "@/core/objects/validators";
-import {props} from "@/core/definer/props";
+import {Instanceable, InstanceableFunction, InstanceableType} from "@jstls/types/core";
+import {ES5ClassOptions} from "@jstls/types/core/definer";
+import {requireObject} from "@jstls/core/objects/validators";
+import {props} from "@jstls/core/definer/props";
 import {sourceToDescriptor} from "./funclass";
 
 /**

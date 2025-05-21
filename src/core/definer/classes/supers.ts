@@ -1,11 +1,11 @@
-import {Instanceable, InstanceableParameters, InstanceableType, Maybe, MethodKeys} from "@/types/core";
-import {reduce, slice} from "@/core/iterable";
-import {apply} from "@/core/functions/apply";
-import {FunctionClassConstructorFunction, FunctionClassSuper} from "@/types/core/definer";
-import {len} from "@/core/shortcuts/indexable";
-import {call} from "@/core/functions/call";
-import {IndeterminatePrototype, WithPrototype} from "@/types/core/objects";
-import {indefinite} from "@/core/utils/types";
+import {Instanceable, InstanceableParameters, InstanceableType, Maybe, MethodKeys} from "@jstls/types/core";
+import {reduce, slice} from "@jstls/core/iterable";
+import {apply} from "@jstls/core/functions/apply";
+import {FunctionClassConstructorFunction, FunctionClassSuper} from "@jstls/types/core/definer";
+import {len} from "@jstls/core/shortcuts/indexable";
+import {call} from "@jstls/core/functions/call";
+import {IndeterminatePrototype, WithPrototype} from "@jstls/types/core/objects";
+import {indefinite} from "@jstls/core/utils/types";
 
 
 /**

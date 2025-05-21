@@ -1,4 +1,4 @@
-import {len} from "@/core/shortcuts/indexable";
+import {len} from "@jstls/core/shortcuts/indexable";
 
 export function at<T>(this: ArrayLike<T>, index: number): T {
   index = index >> 0;

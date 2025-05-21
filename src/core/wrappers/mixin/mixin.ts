@@ -1,20 +1,20 @@
-import {Instanceable, JoinInstanceableTypes,} from "@/types/core";
-import {MixinOptions} from "@/types/core/wrappers/mixin";
-import {readonly} from "@/core/definer";
-import {uid} from "@/core/polyfills/symbol";
-import {commonPrototype, commonStatics, propertyNames} from "@/core/objects/handlers/properties";
-import {isDefined, isPlainObject} from "@/core/objects/types";
-import {KeyableObject, WithPrototype} from "@/types/core/objects";
-import {isEmpty} from "@/core/extensions/shared/iterables";
-import {IllegalAccessError} from "@/core/exceptions/illegal-access";
-import {RequiredArgumentError} from "@/core/exceptions/required-argument";
-import {hasOwn} from "@/core/polyfills/objects/es2022";
-import {is} from "@/core/polyfills/objects/es2015";
-import {get} from "@/core/objects/handlers/getset";
-import {forEach} from "@/core/shortcuts/array";
-import {includes} from "@/core/polyfills/indexable/es2016";
-import {call} from "@/core/functions/call";
-import {funclass2} from "@/core/definer/classes/funclass";
+import {Instanceable, JoinInstanceableTypes,} from "@jstls/types/core";
+import {MixinOptions} from "@jstls/types/core/wrappers/mixin";
+import {readonly} from "@jstls/core/definer";
+import {uid} from "@jstls/core/polyfills/symbol";
+import {commonPrototype, commonStatics, propertyNames} from "@jstls/core/objects/handlers/properties";
+import {isDefined, isPlainObject} from "@jstls/core/objects/types";
+import {KeyableObject, WithPrototype} from "@jstls/types/core/objects";
+import {isEmpty} from "@jstls/core/extensions/shared/iterables";
+import {IllegalAccessError} from "@jstls/core/exceptions/illegal-access";
+import {RequiredArgumentError} from "@jstls/core/exceptions/required-argument";
+import {hasOwn} from "@jstls/core/polyfills/objects/es2022";
+import {is} from "@jstls/core/polyfills/objects/es2015";
+import {get} from "@jstls/core/objects/handlers/getset";
+import {forEach} from "@jstls/core/shortcuts/array";
+import {includes} from "@jstls/core/polyfills/indexable/es2016";
+import {call} from "@jstls/core/functions/call";
+import {funclass2} from "@jstls/core/definer/classes/funclass";
 
 
 const mixinKey = uid("mC");

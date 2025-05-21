@@ -1,13 +1,13 @@
-import {PaginationActLabel} from "@/types/components/pagination";
-import {requireDefined} from "@/core/objects/validators";
-import {IllegalArgumentError} from "@/core/exceptions";
-import {concat} from "@/core/shortcuts/indexable";
-import {attribute, create, onEvent} from "@/components/shared";
-import {apply} from "@/core/functions/apply";
-import {nullable} from "@/core/utils/types";
-import {PaginationOnElements} from "@/types/components/pagination/shared";
-import {innerHTML} from "@/components/shared/elements/builders";
-import {addClass} from "@/components/shared/styles/classname";
+import {PaginationActLabel} from "@jstls/types/components/pagination";
+import {requireDefined} from "@jstls/core/objects/validators";
+import {IllegalArgumentError} from "@jstls/core/exceptions";
+import {concat} from "@jstls/core/shortcuts/indexable";
+import {attribute, create, onEvent} from "@jstls/components/shared";
+import {apply} from "@jstls/core/functions/apply";
+import {nullable} from "@jstls/core/utils/types";
+import {PaginationOnElements} from "@jstls/types/components/pagination/shared";
+import {innerHTML} from "@jstls/components/shared/elements/builders";
+import {addClass} from "@jstls/components/shared/styles/classname";
 
 export function withPrefix(name: Object): string {
   return concat("pagination-", name);

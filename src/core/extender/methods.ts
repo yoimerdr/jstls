@@ -1,10 +1,10 @@
-import {MethodKeys, SafeParameters, SafeReturnType} from "@/types/core";
-import {ExtendMethodBuilder, ExtendMethodBuilders} from "@/types/core/objects/extender";
-import {multiple} from "@/core/definer/shared";
-import {requiredWithType, requireFunction} from "@/core/objects/validators";
-import {slice} from "@/core/iterable";
-import {apply} from "@/core/functions/apply";
-import {concat} from "@/core/shortcuts/indexable";
+import {MethodKeys, SafeParameters, SafeReturnType} from "@jstls/types/core";
+import {ExtendMethodBuilder, ExtendMethodBuilders} from "@jstls/types/core/objects/extender";
+import {multiple} from "@jstls/core/definer/shared";
+import {requiredWithType, requireFunction} from "@jstls/core/objects/validators";
+import {slice} from "@jstls/core/iterable";
+import {apply} from "@jstls/core/functions/apply";
+import {concat} from "@jstls/core/shortcuts/indexable";
 
 /**
  * Extends a method to add additional functionality.

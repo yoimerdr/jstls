@@ -1,13 +1,13 @@
-import {isDefined} from "@/core/objects/types";
-import {requireFunction} from "@/core/objects/validators";
-import {ArrayEach, ArrayLike, ArrayLikeEach} from "@/types/core/array";
-import {Maybe} from "@/types/core";
-import {bind} from "@/core/functions/bind";
-import {apply} from "@/core/functions/apply";
-import {max, min} from "@/core/shortcuts/math";
-import {len} from "@/core/shortcuts/indexable";
-import {deletes} from "@/core/objects/handlers/deletes";
-import {indefinite} from "@/core/utils/types";
+import {isDefined} from "@jstls/core/objects/types";
+import {requireFunction} from "@jstls/core/objects/validators";
+import {ArrayEach, ArrayLike, ArrayLikeEach} from "@jstls/types/core/array";
+import {Maybe} from "@jstls/types/core";
+import {bind} from "@jstls/core/functions/bind";
+import {apply} from "@jstls/core/functions/apply";
+import {max, min} from "@jstls/core/shortcuts/math";
+import {len} from "@jstls/core/shortcuts/indexable";
+import {deletes} from "@jstls/core/objects/handlers/deletes";
+import {indefinite} from "@jstls/core/utils/types";
 
 export function findIndex<V, T = any, A extends ArrayLike<V> = ArrayLike<V>>(this: A, predicate: ArrayLikeEach<V, T, A, boolean>, thisArg?: T): number;
 export function findIndex<V, T>(this: V[], predicate: ArrayEach<V, T | void, boolean>, thisArg?: T): number {

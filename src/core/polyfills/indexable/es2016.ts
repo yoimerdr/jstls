@@ -1,6 +1,6 @@
-import {ArrayLike} from "@/types/core/array";
-import {protoapply} from "@/core/functions/prototype/apply";
-import {len} from "@/core/shortcuts/indexable";
+import {ArrayLike} from "@jstls/types/core/array";
+import {protoapply} from "@jstls/core/functions/prototype/apply";
+import {len} from "@jstls/core/shortcuts/indexable";
 
 export function includes<T, A extends ArrayLike<T> = ArrayLike<T>>(this: A, searchElement: any, fromIndex?: number): boolean {
   const $this = this;

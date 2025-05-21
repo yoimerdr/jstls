@@ -1,8 +1,8 @@
-import {Keys, Maybe} from "@/types/core";
-import {KeyableObject} from "@/types/core/objects";
-import {indefinite} from "@/core/utils/types";
-import {len} from "@/core/shortcuts/indexable";
-import {hasKey} from "../properties";
+import {Keys, Maybe} from "@jstls/types/core";
+import {KeyableObject} from "@jstls/types/core/objects";
+import {indefinite} from "@jstls/core/utils/types";
+import {len} from "@jstls/core/shortcuts/indexable";
+import {hasKey} from "@jstls/core/objects/handlers/properties";
 
 /**
  * Returns the value of the `key` property in the target `object`, if this is defined.

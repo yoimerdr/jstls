@@ -1,7 +1,7 @@
 
-import {paginator, Paginator} from "@/core/geometry/paginator";
-import {Instanceable} from "@/types/core";
-import {requireObject} from "@/core/objects/validators";
+import {paginator, Paginator} from "@jstls/core/geometry/paginator";
+import {Instanceable} from "@jstls/types/core";
+import {requireObject} from "@jstls/core/objects/validators";
 import {PagePagination, PagePaginationOptions} from "./page";
 import {wasFirstLoad, Pagination, PaginationOptions} from "./simple";
 

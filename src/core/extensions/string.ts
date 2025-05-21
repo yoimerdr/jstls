@@ -1,10 +1,10 @@
-import {readonlys} from "@/core/definer";
-import {StringExtensions} from "@/types/core/extensions/string";
-import {MaybeNumber} from "@/types/core";
+import {readonlys} from "@jstls/core/definer";
+import {StringExtensions} from "@jstls/types/core/extensions/string";
+import {MaybeNumber} from "@jstls/types/core";
 import {isEmpty, isNotEmpty} from "./shared/iterables";
-import {getDefined} from "@/core/objects/validators";
-import {returns} from "@/core/utils/fn";
-import {nullable} from "@/core/utils/types";
+import {getDefined} from "@jstls/core/objects/validators";
+import {returns} from "@jstls/core/utils/fn";
+import {nullable} from "@jstls/core/utils/types";
 
 
 export function toInt(this: string | number, radix?: number): MaybeNumber;

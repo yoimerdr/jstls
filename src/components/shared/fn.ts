@@ -1,10 +1,10 @@
-import {getfirst} from "@/core/objects/handlers/getset";
-import {apply} from "@/core/functions/apply";
-import {applyFirstDefined} from "@/core/objects/handlers";
-import {resolve} from "@/core/polyfills/promise/fn";
+import {getfirst} from "@jstls/core/objects/handlers/getset";
+import {apply} from "@jstls/core/functions/apply";
+import {applyFirstDefined} from "@jstls/core/objects/handlers";
+import {resolve} from "@jstls/core/polyfills/promise/fn";
 import {doc, nav, win} from "./constants";
-import {hasKey} from "@/core/objects/handlers/properties";
-import {Keys} from "@/types/core";
+import {hasKey} from "@jstls/core/objects/handlers/properties";
+import {Keys} from "@jstls/types/core";
 
 export function isMobile(): boolean {
   let hasTouchScreen: boolean,

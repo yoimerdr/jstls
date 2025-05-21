@@ -1,19 +1,19 @@
-import {writeable} from "@/core/definer";
-import {toInt} from "@/core/extensions/string";
-import {requireIf} from "@/core/objects/validators";
-import {coerceAtLeast, coerceIn} from "@/core/extensions/numbers/";
-import {slice} from "@/core/iterable";
-import {funclass2} from "@/core/definer/classes/funclass";
-import {ceil, min} from "@/core/shortcuts/math";
-import {isDefined, isNumber} from "@/core/objects/types";
-import {uid} from "@/core/polyfills/symbol";
-import {descriptor2} from "@/core/definer/shared";
-import {set} from "@/core/objects/handlers/getset";
-import {simple} from "@/core/definer/getters/builders";
-import {indefinite, nullable} from "@/core/utils/types";
-import {WithPrototype} from "@/types/core/objects";
-import {ArrayLike} from "@/types/core/array";
-import {len} from "@/core/shortcuts/indexable";
+import {writeable} from "@jstls/core/definer";
+import {toInt} from "@jstls/core/extensions/string";
+import {requireIf} from "@jstls/core/objects/validators";
+import {coerceAtLeast, coerceIn} from "@jstls/core/extensions/number/";
+import {slice} from "@jstls/core/iterable";
+import {funclass2} from "@jstls/core/definer/classes/funclass";
+import {ceil, min} from "@jstls/core/shortcuts/math";
+import {isDefined, isNumber} from "@jstls/core/objects/types";
+import {uid} from "@jstls/core/polyfills/symbol";
+import {descriptor2} from "@jstls/core/definer/shared";
+import {set} from "@jstls/core/objects/handlers/getset";
+import {simple} from "@jstls/core/definer/getters/builders";
+import {indefinite, nullable} from "@jstls/core/utils/types";
+import {WithPrototype} from "@jstls/types/core/objects";
+import {ArrayLike} from "@jstls/types/core/array";
+import {len} from "@jstls/core/shortcuts/indexable";
 /**
  * Paginating through collections of items
  */

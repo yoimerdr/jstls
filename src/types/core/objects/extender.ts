@@ -1,4 +1,4 @@
-import {MethodKeys, SafeParameters, SafeReturnType} from "../index";
+import {MethodKeys, SafeParameters, SafeReturnType} from "@jstls/types/core";
 
 
 export interface ExtendMethodBuilder<T, K extends MethodKeys<T>> {

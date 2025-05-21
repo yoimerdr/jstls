@@ -1,11 +1,11 @@
-import {AssignMode, KeyableObject} from "@/types/core/objects";
+import {AssignMode, KeyableObject} from "@jstls/types/core/objects";
 import {isDefined, isObject, isPlainObject} from "./types";
-import {Entry, Maybe} from "@/types/core";
-import {keys} from "@/core/shortcuts/object";
-import {hasOwn} from "@/core/polyfills/objects/es2022";
-import {len} from "@/core/shortcuts/indexable";
-import {reduce} from "@/core/iterable";
-import {get, setTo} from "./handlers/getset";
+import {Entry, Maybe} from "@jstls/types/core";
+import {keys} from "@jstls/core/shortcuts/object";
+import {hasOwn} from "@jstls/core/polyfills/objects/es2022";
+import {len} from "@jstls/core/shortcuts/indexable";
+import {reduce} from "@jstls/core/iterable";
+import {get2, setTo} from "./handlers/getset";
 
 type AssignNoObjectFn<T> = (target: T, source: T, mode: AssignMode) => void;
 
@@ -14,14 +14,13 @@ function _assign<T extends Object>(target: T, source: T, mode: AssignMode, noObj
     return;
 
   if (!isObject(source)) {
-    if (noObject)
-      noObject(target, source, mode);
+    noObject && noObject(target, source, mode);
     return;
   }
   return reduce(keys(source), (source, key) => {
     if (mode === 'deep' && hasOwn(target, key)) {
-      const tp = get(target, key) as T;
-      const ts = get(source, key) as T;
+      const tp = get2(target, key) as T;
+      const ts = get2(source, key) as T;
       if (isPlainObject(tp) && isObject(ts))
         _assign(tp, ts, mode)
       else setTo(source, key, target);
