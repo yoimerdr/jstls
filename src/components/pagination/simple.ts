@@ -339,7 +339,7 @@ const metaPagination = uid("p"),
 
 function getContainer(target: HTMLElement | string): HTMLElement {
   if (isString(target)) {
-    target = selector(document, target as string) as HTMLElement;
+    target = selector(target as string) as HTMLElement;
     if (!target)
       throw new IllegalArgumentError(concat("Not exists an element for '", target, "'."));
   }

@@ -125,8 +125,8 @@ export const PagePagination: PagePaginationConstructor = funclass2<PagePaginatio
         const container = $this.container;
         afterPageChange($this, page);
         history.replaceState({}, "", $this.url(page));
-        const prev = selector(container, '[pagination-role="previous"]'),
-          next = selector(container, '[pagination-role="next"]');
+        const prev = selector('[pagination-role="previous"]', container),
+          next = selector('[pagination-role="next"]', container,);
 
         prev && attribute(prev, "href", $this.url(page - 1));
         next && attribute(next, "href", $this.url(page + 1));

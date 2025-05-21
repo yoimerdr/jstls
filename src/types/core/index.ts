@@ -39,6 +39,10 @@ export type WithConstructor = {
   constructor: Function;
 }
 
+export interface WithClassName {
+  className: string
+}
+
 /**
  * Includes the context parameter 'this' to the type T if it is a function.
  * @template T The type
