@@ -71,6 +71,8 @@ export interface ArrayExtensions<T> {
    * @returns {Maybe<T>} The first element if array is not empty; otherwise undefined
    */
   lastOrNull(): Maybe<T>;
+
+  remove(value: T, ...values: T[]): boolean;
 }
 
 export interface ArrayWithExtensions<T> extends Array<T>, ArrayExtensions<T> {}

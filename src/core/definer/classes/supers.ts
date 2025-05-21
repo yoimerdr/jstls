@@ -31,7 +31,7 @@ export function createSuper<T>(names: MethodKeys<T>[], parent: T): Maybe<Functio
 export function parentFirst(constructor: FunctionClassConstructorFunction<Instanceable, WithPrototype>, parent: WithPrototype): FunctionClassConstructorFunction<Instanceable, WithPrototype>;
 export function parentFirst(constructor: FunctionClassConstructorFunction<Instanceable, WithPrototype>): FunctionClassConstructorFunction<Instanceable, IndeterminatePrototype>
 export function parentFirst(constructor: FunctionClassConstructorFunction<Instanceable, WithPrototype>, parent?: WithPrototype) {
-  return parent ? function (this: InstanceableType<Instanceable>, ...params: InstanceableParameters<Instanceable>) {
+  return parent ? function Instanceable(this: InstanceableType<Instanceable>, ...params: InstanceableParameters<Instanceable>) {
     const args: any = slice(arguments),
       $this = (parent && apply(parent as any, this, args)) || this;
     constructor && apply(constructor, $this, args);
@@ -40,9 +40,9 @@ export function parentFirst(constructor: FunctionClassConstructorFunction<Instan
 }
 
 export function constructorFirst(constructor: FunctionClassConstructorFunction<Instanceable, WithPrototype>, parent: WithPrototype): FunctionClassConstructorFunction<Instanceable, WithPrototype>;
-export function constructorFirst(constructor: FunctionClassConstructorFunction<Instanceable, IndeterminatePrototype>): FunctionClassConstructorFunction<Instanceable, IndeterminatePrototype>;
+export function constructorFirst(constructor: FunctionClassConstructorFunction<Instanceable>): FunctionClassConstructorFunction<Instanceable, IndeterminatePrototype>;
 export function constructorFirst(constructor: FunctionClassConstructorFunction<Instanceable, WithPrototype>, parent?: WithPrototype) {
-  return parent ? function (this: InstanceableType<Instanceable>, ...params: InstanceableParameters<Instanceable>) {
+  return parent ? function Instanceable(this: InstanceableType<Instanceable>, ...params: InstanceableParameters<Instanceable>) {
     const args: any = slice(arguments),
       $this = (constructor && apply(constructor, this, args)) || this;
     parent && apply(parent as any, $this, args);
