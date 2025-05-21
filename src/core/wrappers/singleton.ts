@@ -1,29 +1,46 @@
-import {readonly} from "../definer";
-import {FunctionType, Instanceable, InstanceableParameters, InstanceableType} from "../../types/core";
-import {IllegalAccessError} from "../exceptions";
-import {isFunction} from "../objects/types";
-import {is} from "../polyfills/objects/es2015";
-import {uid} from "../polyfills/symbol";
-import {slice} from "../iterable";
-import {apply} from "../functions/apply";
-import {hasOwn} from "../polyfills/objects/es2022";
-import {SingletonInit} from "../../types/core/wrappers/singleton";
-import {get} from "../objects/handlers/getset";
-import {funclass2} from "../definer/classes/funclass";
-import {returns} from "../utils/fn";
-import {nullable} from "../utils/types";
-import {WithPrototype} from "../../types/core/objects";
-import {concat} from "../shortcuts/indexable";
+import {configurable} from "@/core/definer";
+import {FunctionType, Instanceable, InstanceableParameters, InstanceableType, WithConstructor} from "@/types/core";
+import {IllegalAccessError} from "@/core/exceptions/illegal-access";
+import {isFunction} from "@/core/objects/types";
+import {is} from "@/core/polyfills/objects/es2015";
+import {uid} from "@/core/polyfills/symbol";
+import {slice} from "@/core/iterable";
+import {apply} from "@/core/functions/apply";
+import {hasOwn} from "@/core/polyfills/objects/es2022";
+import {SingletonInit} from "@/types/core/wrappers/singleton";
+import {get, get2} from "@/core/objects/handlers/getset";
+import {funclass2} from "@/core/definer/classes/funclass";
+import {returns} from "@/core/utils/fn";
+import {nullable} from "@/core/utils/types";
+import {KeyableObject, PrototypeType, WithPrototype} from "@/types/core/objects";
+import {concat} from "@/core/shortcuts/indexable";
+import {deletes2} from "@/core/objects/handlers/deletes";
 
 const singletonSymbol = uid('mI');
 
 function checkSingleton(target: Object, init?: SingletonInit<any>) {
-  const instance = get(target.constructor, singletonSymbol);
+  const instance = getInstance(target);
   if (instance)
     return instance;
   init && apply(init!, target, [target]);
-  readonly(target.constructor, singletonSymbol, target);
+  configurable(target.constructor, singletonSymbol, target);
   return target;
+}
+
+export function hasInstance(target: Object): boolean {
+  return hasOwn(target.constructor, singletonSymbol);
+}
+
+export function getInstance<T extends (WithPrototype & WithConstructor)>(target: T): PrototypeType<T>;
+export function getInstance<T extends WithConstructor>(target: T): KeyableObject;
+export function getInstance<T extends (WithPrototype & WithConstructor)>(target: T): PrototypeType<T> {
+  return get2(target.constructor, singletonSymbol);
+}
+
+export function removeInstance(target: Object): boolean {
+  const has = hasInstance(target);
+  has && deletes2(target, [singletonSymbol])
+  return has;
 }
 
 /**
@@ -118,7 +135,7 @@ export const Singleton: SingletonConstructor = funclass2({
     getInstance() {
       const $this = this;
       if (!get($this, singletonSymbol))
-        readonly($this, singletonSymbol, new (apply($this.bind, $this, concat([<any>nullable], slice(arguments))))());
+        configurable($this, singletonSymbol, new (apply($this.bind, $this, concat([<any>nullable], slice(arguments))))());
       return get($this, singletonSymbol);
     },
     hasInstance() {

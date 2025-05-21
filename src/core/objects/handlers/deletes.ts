@@ -1,12 +1,12 @@
-import {Keys} from "../../../types/core";
-import {KeyableObject} from "../../../types/core/objects";
-import {len} from "../../shortcuts/indexable";
-import {apply} from "../../functions/apply";
-import {slice} from "../../iterable";
+import {Keys} from "@/types/core";
+import {KeyableObject} from "@/types/core/objects";
+import {len} from "@/core/shortcuts/indexable";
+import {apply} from "@/core/functions/apply";
+import {slice} from "@/core/iterable";
 import {get} from "./getset";
-import {forEach} from "../../shortcuts/array";
+import {forEach} from "@/core/shortcuts/array";
 import {propertyNames} from "./properties";
-import {indefinite} from "../../utils/types";
+import {indefinite} from "@/core/utils/types";
 
 /**
  * Deletes the given `key` property in the target `object`, if this is defined.

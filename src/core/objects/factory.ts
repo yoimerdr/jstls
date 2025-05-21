@@ -1,10 +1,10 @@
-import {AssignMode, KeyableObject} from "../../types/core/objects";
+import {AssignMode, KeyableObject} from "@/types/core/objects";
 import {isDefined, isObject, isPlainObject} from "./types";
-import {Entry, Maybe} from "../../types/core";
-import {keys} from "../shortcuts/object";
-import {hasOwn} from "../polyfills/objects/es2022";
-import {len} from "../shortcuts/indexable";
-import {reduce} from "../iterable";
+import {Entry, Maybe} from "@/types/core";
+import {keys} from "@/core/shortcuts/object";
+import {hasOwn} from "@/core/polyfills/objects/es2022";
+import {len} from "@/core/shortcuts/indexable";
+import {reduce} from "@/core/iterable";
 import {get, setTo} from "./handlers/getset";
 
 type AssignNoObjectFn<T> = (target: T, source: T, mode: AssignMode) => void;

@@ -1,6 +1,6 @@
-import {Typeof} from "../../types/core";
-import {isArray} from "../shortcuts/array";
-import {indefinite, nullable} from "../utils/types";
+import {Typeof} from "@/types/core";
+import {isArray} from "@/core/shortcuts/array";
+import {indefinite, nullable} from "@/core/utils/types";
 
 /**
  * Checks if the value is of the specified type or types.

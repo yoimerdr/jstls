@@ -1,36 +1,36 @@
-import {KeyableObject, RequiredAll, WithPrototype} from "../../types/core/objects";
+import {KeyableObject, RequiredAll, WithPrototype} from "@/types/core/objects";
 import {
   PaginationActivePages,
   PaginationActLabel, PaginationLabels,
   PaginationResponsive
-} from "../../types/components/pagination";
-import {funclass2} from "../../core/definer/classes/funclass";
-import {isDefined, isFunction, isObject, isString} from "../../core/objects/types";
-import {IllegalArgumentError} from "../../core/exceptions";
-import {get, set} from "../../core/objects/handlers/getset";
-import {uid} from "../../core/polyfills/symbol";
-import {configurable, readonlys, writeable} from "../../core/definer";
-import {Entry, Maybe, MaybeNumber} from "../../types/core";
-import {eachprv} from "../../core/iterable/each";
-import {last} from "../../core/extensions/shared/iterables";
-import {entries} from "../../core/polyfills/objects/es2017";
-import {noact} from "../../core/utils/fn";
-import {indefinite, nullable} from "../../core/utils/types";
-import {assign, deepAssign} from "../../core/objects/factory";
-import {bind} from "../../core/functions/bind";
-import {floor, max, min} from "../../core/shortcuts/math";
-import {requireObject} from "../../core/objects/validators";
+} from "@/types/components/pagination";
+import {funclass2} from "@/core/definer/classes/funclass";
+import {isDefined, isFunction, isObject, isString} from "@/core/objects/types";
+import {IllegalArgumentError} from "@/core/exceptions";
+import {get, set} from "@/core/objects/handlers/getset";
+import {uid} from "@/core/polyfills/symbol";
+import {configurable, readonlys, writeable} from "@/core/definer";
+import {Entry, Maybe, MaybeNumber} from "@/types/core";
+import {eachprv} from "@/core/iterable/each";
+import {last} from "@/core/extensions/shared/iterables";
+import {entries} from "@/core/polyfills/objects/es2017";
+import {noact} from "@/core/utils";
+import {indefinite, nullable} from "@/core/utils/types";
+import {assign, deepAssign} from "@/core/objects/factory";
+import {bind} from "@/core/functions/bind";
+import {floor, max, min} from "@/core/shortcuts/math";
+import {requireObject} from "@/core/objects/validators";
 import {actEl, ellipsisEl, pageEl} from "./simple-elements";
-import {forEach} from "../../core/shortcuts/array";
-import {concat} from "../../core/shortcuts/string";
-import {addClass, append, attribute, create, onEvent, selector, toggleClass} from "../shared";
-import {descriptor2} from "../../core/definer/shared";
-import {FunctionClassSimpleStatics} from "../../types/core/definer";
-import {apply} from "../../core/functions/apply";
-import {toInt} from "../../core/extensions/string";
-import {deletes} from "../../core/objects/handlers/deletes";
+import {forEach} from "@/core/shortcuts/array";
+import {concat} from "@/core/shortcuts/indexable";
+import {addClass, append, attribute, create, onEvent, selector, toggleClass} from "@/components/shared";
+import {descriptor2} from "@/core/definer/shared";
+import {FunctionClassSimpleStatics} from "@/types/core/definer";
+import {apply} from "@/core/functions/apply";
+import {toInt} from "@/core/extensions/string";
+import {deletes} from "@/core/objects/handlers/deletes";
 import {Paginator} from "./paginator";
-import {PaginationOnElements} from "../../types/components/pagination/shared";
+import {PaginationOnElements} from "@/types/components/pagination/shared";
 
 /**
  * A handler for creates a pagination component.

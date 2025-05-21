@@ -1,4 +1,4 @@
-import {Applicable, Instanceable, InstanceableParameters, InstanceableType,} from "../../types/core";
+import {Applicable, Instanceable, InstanceableParameters, InstanceableType,} from "@/types/core";
 
 /**
  * Applies a function with the specified this context and arguments.

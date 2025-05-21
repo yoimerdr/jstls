@@ -1,11 +1,11 @@
-import {readonlys} from "../definer";
-import {IllegalArgumentError} from "../exceptions";
-import {NumberExtensions} from "../../types/core/extensions/number";
-import {max, min} from "../shortcuts/math";
-import {concat} from "../shortcuts/string";
-import {getDefined} from "../objects/validators";
-import {returns} from "../utils/fn";
-import {valueOf} from "../shortcuts/object";
+import {readonlys} from "@/core/definer";
+import {IllegalArgumentError} from "@/core/exceptions/illegal-argument";
+import {NumberExtensions} from "@/types/core/extensions/number";
+import {max, min} from "@/core/shortcuts/math";
+import {concat} from "@/core/shortcuts/string";
+import {getDefined} from "@/core/objects/validators";
+import {returns} from "@/core/utils/fn";
+import {valueOf} from "@/core/shortcuts/object";
 
 export function coerceAtLeast(this: Number, minimum: number): number;
 export function coerceAtLeast(minimum: number, $this: number): number;

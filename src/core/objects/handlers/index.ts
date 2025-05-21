@@ -1,7 +1,9 @@
-import {Maybe} from "../../../types/core";
-import {isDefined, isFunction} from "../types";
-import {apply} from "../../functions/apply";
-import {returns} from "../../utils/fn";
+import {Keys, Maybe} from "@/types/core";
+import {isDefined, isFunction} from "@/core/objects/types";
+import {apply} from "@/core/functions/apply";
+import {returns} from "@/core/utils/fn";
+import {len} from "@/core/shortcuts/indexable";
+import {indefinite} from "@/core/utils/types";
 
 /**
  * Calls a function with a given value and optional this context.
@@ -47,10 +49,23 @@ export function string<T>(value: Maybe<T>, nullableString: () => string): string
  *
  * @see {Object.toString}
  */
-export function string<T>(value: Maybe<T>, ): string;
+export function string<T>(value: Maybe<T>,): string;
 export function string<T>(value: Maybe<T>, nullableString?: () => string): string {
   if (isDefined(value))
     return value!.toString();
   nullableString = isFunction(nullableString) ? nullableString! : returns("");
   return nullableString();
+}
+
+export function applyFirstDefined<T>(object: Maybe<T>, keys: Keys<T>[], args?: any[]): any;
+export function applyFirstDefined(object: Maybe<Object>, keys: string[], args?: any[]): any;
+export function applyFirstDefined<T>(object: Maybe<T>, keys: Keys<T>[], args?: any) {
+  if (object) {
+    for (let i = 0; i < len(keys); i++) {
+      if (isFunction(object[keys[i]])) {
+        return apply<any>(object[keys[i]], object, args);
+      }
+    }
+  }
+  return indefinite;
 }

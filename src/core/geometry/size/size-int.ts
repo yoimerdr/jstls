@@ -1,13 +1,13 @@
 import {SizeArgument} from "./size";
 import {isSize, Size, sizeToString,} from "./size";
-import {round} from "../../shortcuts/math";
-import {WithPrototype} from "../../../types/core/objects";
-import {funclass2} from "../../definer/classes/funclass";
-import {FunctionClassSimpleStatics} from "../../../types/core/definer";
-import {protocall} from "../../functions/prototype/call";
-import {isDefined} from "../../objects/types";
-import {toInt} from "../../extensions/string";
-import {nullable} from "../../utils/types";
+import {round} from "@/core/shortcuts/math";
+import {WithPrototype} from "@/types/core/objects";
+import {funclass2} from "@/core/definer/classes/funclass";
+import {FunctionClassSimpleStatics} from "@/types/core/definer";
+import {protocall} from "@/core/functions/prototype/call";
+import {isDefined} from "@/core/objects/types";
+import {toInt} from "@/core/extensions/string";
+import {nullable} from "@/core/utils/types";
 
 export interface SizeInt extends Size {
   adjust(ratio: SizeArgument): SizeInt;

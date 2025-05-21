@@ -1,11 +1,11 @@
-import {ArrayLike, ArrayLikeEach, ArrayLikeEachNext, ArrayLikeEachPrevious} from "../../types/core/array";
-import {Foreachable, ForeachableEach, IterableLike, IterableLikeEach} from "../../types/core/iterable";
-import {KeyableObject} from "../../types/core/objects";
-import {isFunction} from "../objects/types";
-import {bind} from "../functions/bind";
-import {protoapply} from "../functions/prototype/apply";
-import {len} from "../shortcuts/indexable";
-import {forEach} from "../shortcuts/array";
+import {ArrayLike, ArrayLikeEach, ArrayLikeEachNext, ArrayLikeEachPrevious} from "@/types/core/array";
+import {Foreachable, ForeachableEach, IterableLike, IterableLikeEach} from "@/types/core/iterable";
+import {KeyableObject} from "@/types/core/objects";
+import {isFunction} from "@/core/objects/types";
+import {bind} from "@/core/functions/bind";
+import {protoapply} from "@/core/functions/prototype/apply";
+import {len} from "@/core/shortcuts/indexable";
+import {forEach} from "@/core/shortcuts/array";
 
 export function each<T, I extends ArrayLike<T>, R = void>(source: I, each: ArrayLikeEach<T, R, I>, thisArg?: R): void;
 export function each<T, I extends Foreachable<T>, R = void>(source: I, each: ForeachableEach<T, R, I>, thisArg?: R): void;

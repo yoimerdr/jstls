@@ -1,19 +1,19 @@
-import {Instanceable, Maybe, MaybeNumber} from "../../../types/core";
-import {writeable} from "../../definer";
-import {getDefined} from "../../objects/validators";
+import {Instanceable, Maybe, MaybeNumber} from "@/types/core";
+import {writeable} from "@/core/definer";
+import {getDefined} from "@/core/objects/validators";
 import {MaybeNode, Node} from "./node";
-import {apply} from "../../functions/apply";
+import {apply} from "@/core/functions/apply";
 import {each} from "../each";
-import {uid} from "../../polyfills/symbol";
-import {WithPrototype} from "../../../types/core/objects";
-import {funclass2} from "../../definer/classes/funclass";
-import {descriptor2} from "../../definer/shared";
-import {get, set} from "../../objects/handlers/getset";
-import {FunctionClassSimpleStatics} from "../../../types/core/definer";
-import {isDefined} from "../../objects/types";
-import {returns} from "../../utils/fn";
-import {nullable} from "../../utils/types";
-import {simple} from "../../definer/getters/builders";
+import {uid} from "@/core/polyfills/symbol";
+import {WithPrototype} from "@/types/core/objects";
+import {funclass2} from "@/core/definer/classes/funclass";
+import {descriptor2} from "@/core/definer/shared";
+import {get, set} from "@/core/objects/handlers/getset";
+import {FunctionClassSimpleStatics} from "@/types/core/definer";
+import {isDefined} from "@/core/objects/types";
+import {returns} from "@/core/utils";
+import {nullable} from "@/core/utils/types";
+import {simple} from "@/core/definer/getters/builders";
 
 
 export function linkedAdd<T, N extends Node<T>>($this: LinkedList<T>, constructor: Instanceable<N, [value: T]>, value: T, index?: number) {

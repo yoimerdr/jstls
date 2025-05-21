@@ -1,10 +1,10 @@
-import {configurables} from "../../definer";
-import {apply} from "../../functions/apply";
-import {string} from "../../objects/handlers";
-import {create} from "../../shortcuts/object";
-import {random} from "../../shortcuts/math";
-import {concat} from "../../shortcuts/string";
-import {indefinite} from "../../utils/types";
+import {configurables} from "@/core/definer";
+import {apply} from "@/core/functions/apply";
+import {string} from "@/core/objects/handlers";
+import {create} from "@/core/shortcuts/object";
+import {random} from "@/core/shortcuts/math";
+import {concat} from "@/core/shortcuts/string";
+import {indefinite} from "@/core/utils/types";
 
 let id = 0;
 const postfix = random();

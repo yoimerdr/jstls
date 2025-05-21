@@ -1,19 +1,20 @@
-import {Instanceable, JoinInstanceableTypes,} from "../../../types/core";
-import {MixinOptions} from "../../../types/core/wrappers/mixin";
-import {readonly} from "../../definer";
-import {uid} from "../../polyfills/symbol";
-import {commonPrototype, commonStatics, propertyNames} from "../../objects/handlers/properties";
-import {isDefined, isPlainObject} from "../../objects/types";
-import {KeyableObject, WithPrototype} from "../../../types/core/objects";
-import {isEmpty} from "../../extensions/shared/iterables";
-import {IllegalAccessError, RequiredArgumentError} from "../../exceptions";
-import {hasOwn} from "../../polyfills/objects/es2022";
-import {is} from "../../polyfills/objects/es2015";
-import {get} from "../../objects/handlers/getset";
-import {forEach} from "../../shortcuts/array";
-import {includes} from "../../polyfills/indexable/es2016";
-import {call} from "../../functions/call";
-import {funclass2} from "../../definer/classes/funclass";
+import {Instanceable, JoinInstanceableTypes,} from "@/types/core";
+import {MixinOptions} from "@/types/core/wrappers/mixin";
+import {readonly} from "@/core/definer";
+import {uid} from "@/core/polyfills/symbol";
+import {commonPrototype, commonStatics, propertyNames} from "@/core/objects/handlers/properties";
+import {isDefined, isPlainObject} from "@/core/objects/types";
+import {KeyableObject, WithPrototype} from "@/types/core/objects";
+import {isEmpty} from "@/core/extensions/shared/iterables";
+import {IllegalAccessError} from "@/core/exceptions/illegal-access";
+import {RequiredArgumentError} from "@/core/exceptions/required-argument";
+import {hasOwn} from "@/core/polyfills/objects/es2022";
+import {is} from "@/core/polyfills/objects/es2015";
+import {get} from "@/core/objects/handlers/getset";
+import {forEach} from "@/core/shortcuts/array";
+import {includes} from "@/core/polyfills/indexable/es2016";
+import {call} from "@/core/functions/call";
+import {funclass2} from "@/core/definer/classes/funclass";
 
 
 const mixinKey = uid("mC");

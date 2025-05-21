@@ -4,11 +4,12 @@ import {
   InstanceMethodKeys,
   InstanceMethodParameters, InstanceMethodReturn,
   SafeReturnType
-} from "../../../types/core";
-import {IllegalAccessError, IllegalArgumentError} from "../../exceptions";
+} from "@/types/core";
+import {IllegalArgumentError} from "@/core/exceptions/illegal-argument";
+import {IllegalAccessError} from "@/core/exceptions/illegal-access";
 import {getMixinBases} from "./mixin";
-import {protoapply} from "../../functions/prototype/apply";
-import {slice} from "../../iterable";
+import {protoapply} from "@/core/functions/prototype/apply";
+import {slice} from "@/core/iterable";
 
 function checkMixin(instance: Object) {
   const bases: any[] = getMixinBases(instance);

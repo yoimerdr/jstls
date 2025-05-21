@@ -1,17 +1,17 @@
-import {readonly2, writeable} from "../../core/definer";
-import {toInt} from "../../core/extensions/string";
-import {requireIf} from "../../core/objects/validators";
-import {coerceAtLeast, coerceIn} from "../../core/extensions/number";
-import {slice} from "../../core/iterable";
-import {funclass2} from "../../core/definer/classes/funclass";
-import {ceil, min} from "../../core/shortcuts/math";
-import {isDefined} from "../../core/objects/types";
-import {uid} from "../../core/polyfills/symbol";
-import {descriptor2} from "../../core/definer/shared";
-import {set} from "../../core/objects/handlers/getset";
-import {simple} from "../../core/definer/getters/builders";
-import {nullable} from "../../core/utils/types";
-import {WithPrototype} from "../../types/core/objects";
+import {readonly2, writeable} from "@/core/definer";
+import {toInt} from "@/core/extensions/string";
+import {requireIf} from "@/core/objects/validators";
+import {coerceAtLeast, coerceIn} from "@/core/extensions/number";
+import {slice} from "@/core/iterable";
+import {funclass2} from "@/core/definer/classes/funclass";
+import {ceil, min} from "@/core/shortcuts/math";
+import {isDefined} from "@/core/objects/types";
+import {uid} from "@/core/polyfills/symbol";
+import {descriptor2} from "@/core/definer/shared";
+import {set} from "@/core/objects/handlers/getset";
+import {simple} from "@/core/definer/getters/builders";
+import {nullable} from "@/core/utils/types";
+import {WithPrototype} from "@/types/core/objects";
 
 /**
  * Paginating through collections of items

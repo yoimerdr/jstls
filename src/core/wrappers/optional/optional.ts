@@ -1,14 +1,14 @@
-import {Wrapper} from "../wrapper";
-import {Maybe} from "../../../types/core";
-import {readonlys2} from "../../definer";
-import {isDefined} from "../../objects/types";
-import {apply} from "../../functions/apply";
-import {WithPrototype} from "../../../types/core/objects";
-import {funclass2} from "../../definer/classes/funclass";
-import {call} from "../../functions/call";
-import {FunctionClassSimpleStatics} from "../../../types/core/definer";
-import {requireFunction} from "../../objects/validators";
-import {indefinite} from "../../utils/types";
+import {Wrapper} from "@/core/wrappers/wrapper";
+import {Maybe} from "@/types/core";
+import {readonlys2} from "@/core/definer";
+import {isDefined} from "@/core/objects/types";
+import {apply} from "@/core/functions/apply";
+import {WithPrototype} from "@/types/core/objects";
+import {funclass2} from "@/core/definer/classes/funclass";
+import {call} from "@/core/functions/call";
+import {FunctionClassSimpleStatics} from "@/types/core/definer";
+import {requireFunction} from "@/core/objects/validators";
+import {indefinite} from "@/core/utils/types";
 
 export interface Optional<T> extends Wrapper<Maybe<T>> {
   /**

@@ -1,22 +1,22 @@
-import {Instanceable, InstanceableType, MethodKeys, Nullables} from "../../../types/core";
+import {Instanceable, InstanceableType, MethodKeys, Nullables} from "@/types/core";
 import {
   FunctionClassBuilder,
   FunctionClassOptions,
   FunctionClassSimpleBuilder,
   FunctionClassSuper
-} from "../../../types/core/definer";
-import {call} from "../../functions/call";
-import {reduce} from "../../iterable";
-import {IndeterminatePrototype, KeyableObject, PrototypeType, WithPrototype} from "../../../types/core/objects";
-import {keys, methodProperties} from "../../objects/handlers/properties";
-import {props} from "../props";
-import {prototype} from "../../extender/prototype";
-import {includes} from "../../polyfills/indexable/es2016";
-import {descriptor} from "../shared";
-import {isDefined, isFunction, isPlainObject} from "../../objects/types";
+} from "@/types/core/definer";
+import {call} from "@/core/functions/call";
+import {reduce} from "@/core/iterable";
+import {IndeterminatePrototype, KeyableObject, PrototypeType, WithPrototype} from "@/types/core/objects";
+import {keys, methodProperties} from "@/core/objects/handlers/properties";
+import {props} from "@/core/definer/props";
+import {prototype} from "@/core/extender/prototype";
+import {includes} from "@/core/polyfills/indexable/es2016";
+import {descriptor} from "@/core/definer/shared";
+import {isDefined, isFunction, isPlainObject} from "@/core/objects/types";
 import {createSuper, parentFirst} from "./supers";
-import {indefinite} from "../../utils/types";
-import {self} from "../getters/builders";
+import {indefinite} from "@/core/utils/types";
+import {self} from "@/core/definer/getters/builders";
 
 const acceptedTypes = ["object", "function"],
   Exception = TypeError

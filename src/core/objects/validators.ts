@@ -1,9 +1,9 @@
-import {Maybe, Typeof} from "../../types/core";
+import {Maybe, Typeof} from "@/types/core";
 import {isDefined, typeIs} from "./types";
-import {IllegalArgumentError} from "../exceptions";
-import {apply} from "../functions/apply";
-import {isArray} from "../shortcuts/array";
-import {concat} from "../shortcuts/string";
+import {IllegalArgumentError} from "@/core/exceptions/illegal-argument";
+import {apply} from "@/core/functions/apply";
+import {isArray} from "@/core/shortcuts/array";
+import {concat} from "@/core/shortcuts/string";
 
 /**
  * Checks if the value is defined and returns it.

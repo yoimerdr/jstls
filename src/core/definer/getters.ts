@@ -1,7 +1,7 @@
-import {prop} from "./props";
-import {descriptor2, multiple} from "./shared";
-import {MethodKeys} from "../../types/core";
-import {DefinePropertyGetter, DefinePropertyGetters} from "../../types/core/objects/definer";
+import {prop} from "@/core/definer/props";
+import {descriptor2, multiple} from "@/core/definer/shared";
+import {MethodKeys} from "@/types/core";
+import {DefinePropertyGetter, DefinePropertyGetters} from "@/types/core/objects/definer";
 
 /**
  * A shortcut for define a new property according to key and getter fn.

@@ -1,5 +1,5 @@
-import {Foreachable, ForeachableEach} from "../../types/core/iterable";
-import {ArrayLike} from "../../types/core/array";
+import {Foreachable, ForeachableEach} from "@/types/core/iterable";
+import {ArrayLike} from "@/types/core/array";
 
 export const isArray = Array.isArray;
 

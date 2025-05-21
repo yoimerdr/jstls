@@ -1,10 +1,10 @@
-import {FunctionType, Instanceable} from "../../../types/core";
-import {isDefined, isFunction, isNumber} from "../../objects/types";
-import {string} from "../../objects/handlers";
-import {toFloat} from "../../extensions/string";
-import {IllegalArgumentError} from "../../exceptions";
-import {concat} from "../../shortcuts/indexable";
-import {get} from "../../objects/handlers/getset";
+import {FunctionType, Instanceable} from "@/types/core";
+import {isDefined, isFunction, isNumber} from "@/core/objects/types";
+import {string} from "@/core/objects/handlers";
+import {toFloat} from "@/core/extensions/string";
+import {IllegalArgumentError} from "@/core/exceptions/illegal-argument";
+import {concat} from "@/core/shortcuts/indexable";
+import {get} from "@/core/objects/handlers/getset";
 
 export interface ParseableSize {
   /**

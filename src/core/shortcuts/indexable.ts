@@ -1,10 +1,10 @@
-import {ArrayLike} from "../../types/core/array";
-import {isDefined} from "../objects/types";
-import {Maybe, MaybeNumber} from "../../types/core";
-import {Concat, IndexableType} from "../../types/core/objects";
-import {apply} from "../functions/apply";
-import {slice} from "../iterable";
-import {nullable} from "../utils/types";
+import {ArrayLike} from "@/types/core/array";
+import {isDefined} from "@/core/objects/types";
+import {Maybe, MaybeNumber} from "@/types/core";
+import {Concat, IndexableType} from "@/types/core/objects";
+import {apply} from "@/core/functions/apply";
+import {slice} from "@/core/iterable";
+import {nullable} from "@/core/utils/types";
 
 /**
  * Return the length of the array like object.

@@ -1,10 +1,10 @@
 import {Iter} from "./iter";
-import {WithPrototype} from "../../types/core/objects";
-import {funclass2} from "../definer/classes/funclass";
-import {call} from "../functions/call";
-import {FunctionClassSimpleStatics} from "../../types/core/definer";
-import {protocall} from "../functions/prototype/call";
-import {indefinite} from "../utils/types";
+import {WithPrototype} from "@/types/core/objects";
+import {funclass2} from "@/core/definer/classes/funclass";
+import {call} from "@/core/functions/call";
+import {FunctionClassSimpleStatics} from "@/types/core/definer";
+import {protocall} from "@/core/functions/prototype/call";
+import {indefinite} from "@/core/utils/types";
 
 export interface IterRange extends Iter<number> {
 }

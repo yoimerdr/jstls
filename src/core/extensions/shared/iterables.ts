@@ -1,9 +1,9 @@
-import {WithLength} from "../../../types/core/objects";
-import {IllegalAccessError} from "../../exceptions";
-import {Maybe} from "../../../types/core";
-import {ArrayLike, ArrayLikeType} from "../../../types/core/array";
-import {len} from "../../shortcuts/indexable";
-import {nullable} from "../../utils/types";
+import {WithLength} from "@/types/core/objects";
+import {IllegalAccessError} from "@/core/exceptions/illegal-access";
+import {Maybe} from "@/types/core";
+import {ArrayLike, ArrayLikeType} from "@/types/core/array";
+import {len} from "@/core/shortcuts/indexable";
+import {nullable} from "@/core/utils/types";
 
 export function isEmpty<T extends WithLength>(this: T): boolean;
 export function isEmpty<T extends WithLength>($this: T): boolean;

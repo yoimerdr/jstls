@@ -1,22 +1,22 @@
-import {Maybe, MaybeString} from "../../types/core";
-import {KeyableObject, WithPrototype} from "../../types/core/objects";
-import {configurable, readonly} from "../definer";
-import {isDefined, isObject} from "../objects/types";
-import {assign} from "../objects/factory";
-import {bind} from "../functions/bind";
-import {each} from "../iterable/each";
-import {len} from "../shortcuts/indexable";
-import {clear, forEach} from "../shortcuts/array";
-import {concat} from "../shortcuts/string";
+import {Maybe, MaybeString} from "@/types/core";
+import {KeyableObject, WithPrototype} from "@/types/core/objects";
+import {configurable, readonly} from "@/core/definer";
+import {isDefined, isObject} from "@/core/objects/types";
+import {assign} from "@/core/objects/factory";
+import {bind} from "@/core/functions/bind";
+import {each} from "@/core/iterable/each";
+import {len} from "@/core/shortcuts/indexable";
+import {clear, forEach} from "@/core/shortcuts/array";
+import {concat} from "@/core/shortcuts/string";
 import {uid} from "./symbol";
-import {get, set} from "../objects/handlers/getset";
-import {funclass2} from "../definer/classes/funclass";
-import {FunctionClassSimpleStatics} from "../../types/core/definer";
-import {deletes, deletesAll} from "../objects/handlers/deletes";
-import {descriptor2} from "../definer/shared";
-import {mapped} from "../definer/getters/builders";
-import {nullable} from "../utils/types";
-import {slice} from "../iterable";
+import {get, set} from "@/core/objects/handlers/getset";
+import {funclass2} from "@/core/definer/classes/funclass";
+import {FunctionClassSimpleStatics} from "@/types/core/definer";
+import {deletes, deletesAll} from "@/core/objects/handlers/deletes";
+import {descriptor2} from "@/core/definer/shared";
+import {mapped} from "@/core/definer/getters/builders";
+import {nullable} from "@/core/utils/types";
+import {slice} from "@/core/iterable";
 
 type SetSource = Readonly<{
   key: MaybeString,

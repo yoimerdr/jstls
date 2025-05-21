@@ -7,15 +7,15 @@ import {
   InstanceMethodReturn,
   SafeReturnType,
   Split
-} from "../../../types/core";
-import {slice} from "../../iterable";
-import {apply} from "../../functions/apply";
-import {readonly2} from "../../definer";
-import {funclass2} from "../../definer/classes/funclass";
-import {WithPrototype} from "../../../types/core/objects";
-import {FunctionClassSimpleStatics} from "../../../types/core/definer";
-import {concat} from "../../shortcuts/indexable";
-import {nullable} from "../../utils/types";
+} from "@/types/core";
+import {slice} from "@/core/iterable";
+import {apply} from "@/core/functions/apply";
+import {readonly2} from "@/core/definer";
+import {funclass2} from "@/core/definer/classes/funclass";
+import {WithPrototype} from "@/types/core/objects";
+import {FunctionClassSimpleStatics} from "@/types/core/definer";
+import {concat} from "@/core/shortcuts/indexable";
+import {nullable} from "@/core/utils/types";
 import {mixerInit, mixerSuper} from "./shared";
 
 export interface Mixer<T extends Instanceable[]> {

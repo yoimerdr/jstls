@@ -1,13 +1,13 @@
-import {isString} from "../objects/types";
-import {readonly} from "../definer";
-import {KeyableObject} from "../../types/core/objects";
-import {keys} from "../objects/handlers/properties";
-import {PromiseConstructor} from "../../types/core/polyfills";
-import {extend} from "../extensions/array";
-import {setTo} from "../objects/handlers/getset";
-import {forEach} from "../shortcuts/array";
-import {reduce} from "../iterable";
-import {nullable} from "../utils/types";
+import {isString} from "@/core/objects/types";
+import {readonly} from "@/core/definer";
+import {KeyableObject} from "@/types/core/objects";
+import {keys} from "@/core/shortcuts/object";
+import {PromiseConstructor} from "@/types/core/polyfills";
+import {extend} from "@/core/extensions/array";
+import {setTo} from "@/core/objects/handlers/getset";
+import {forEach} from "@/core/shortcuts/array";
+import {reduce} from "@/core/iterable";
+import {nullable} from "@/core/utils/types";
 
 declare const Promise: PromiseConstructor;
 

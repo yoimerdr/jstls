@@ -1,9 +1,9 @@
-import {prop} from "./props";
-import {descriptor, multiple} from "./shared";
-import {Keys} from "../../types/core";
-import {DefinePropertyValues} from "../../types/core/objects/definer";
-import {MaybeKeyObjectType} from "../../types/core/objects";
-import {indefinite} from "../utils/types";
+import {prop} from "@/core/definer/props";
+import {descriptor, multiple} from "@/core/definer/shared";
+import {Keys} from "@/types/core";
+import {DefinePropertyValues} from "@/types/core/objects/definer";
+import {MaybeKeyObjectType} from "@/types/core/objects";
+import {indefinite} from "@/core/utils/types";
 
 function _value<T, K extends Keys<T> | PropertyKey>(target: T, key: K, value: MaybeKeyObjectType<T, K>, writable?: boolean, numerable?: boolean) {
   prop(target, key, descriptor(value, writable, indefinite, numerable))

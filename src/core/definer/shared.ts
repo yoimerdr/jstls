@@ -1,7 +1,7 @@
-import {Keys} from "../../types/core";
-import {keys} from "../shortcuts/object";
-import {forEach} from "../shortcuts/array";
-import {PropertyDescriptor} from "../../types/core/objects/definer";
+import {Keys} from "@/types/core";
+import {keys} from "@/core/shortcuts/object";
+import {forEach} from "@/core/shortcuts/array";
+import {PropertyDescriptor} from "@/types/core/objects/definer";
 
 export function multiple<T, D>(target: T, descriptors: D, definer: (target: T, key: Keys<D>, descriptor: NonNullable<D[Keys<D>]>) => void) {
   forEach(keys(descriptors), key => definer(target, key, descriptors[key]!))

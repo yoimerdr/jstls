@@ -1,16 +1,16 @@
-import {Keys} from "../../../../types/core";
-import {KeyableObject, SetToDescriptor} from "../../../../types/core/objects";
-import {hasOwn} from "../../../polyfills/objects/es2022";
-import {isArray} from "../../../shortcuts/array";
-import {isDefined, isObject, isString} from "../../types";
-import {self} from "../../../utils/fn";
-import {indefinite} from "../../../utils/types";
-import {reduce, slice} from "../../../iterable";
-import {len} from "../../../shortcuts/indexable";
-import {apply} from "../../../functions/apply";
-import {keys} from "../../../shortcuts/object";
+import {Keys, Maybe} from "@/types/core";
+import {KeyableObject, SetToDescriptor} from "@/types/core/objects";
+import {hasOwn} from "@/core/polyfills/objects/es2022";
+import {isArray} from "@/core/shortcuts/array";
+import {isDefined, isObject, isString} from "@/core/objects/types";
+import {self} from "@/core/utils/fn";
+import {indefinite} from "@/core/utils/types";
+import {reduce, slice} from "@/core/iterable";
+import {len} from "@/core/shortcuts/indexable";
+import {apply} from "@/core/functions/apply";
+import {keys} from "@/core/shortcuts/object";
 import {get} from "./get";
-import {SetTransformDescriptor} from "../../../../types/core/objects/getset";
+import {SetTransformDescriptor} from "@/types/core/objects/getset";
 
 /**
  * Sets the given value as the `key` property in the target `object`, if this is defined.
@@ -53,6 +53,12 @@ export function set<T, K extends Keys<T>>(object: T & KeyableObject, key: K | Pr
 
   object[key] = value;
   return object[key];
+}
+
+export function set2<T, K extends Keys<T>>(object: T, key: K, value: T[K]): Maybe<T[K]>;
+export function set2(object: KeyableObject, key: PropertyKey, value: any): any;
+export function set2<T, K extends Keys<T>>(object: T & KeyableObject, key: K | PropertyKey, value: any): Maybe<K> {
+  return object ? (object[key] = value, value) : indefinite;
 }
 
 /**

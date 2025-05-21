@@ -1,11 +1,11 @@
 import {Iter, iterEachOrFindIndex, iterMap} from "./iter";
-import {IterMap, IterMatchCondition} from "../../types/core/iterable";
-import {Maybe} from "../../types/core";
-import {WithPrototype} from "../../types/core/objects";
-import {ArrayLike} from "../../types/core/array";
-import {funclass2} from "../definer/classes/funclass";
-import {FunctionClassSimpleStatics} from "../../types/core/definer";
-import {indefinite} from "../utils/types";
+import {IterMap, IterMatchCondition} from "@/types/core/iterable";
+import {Maybe} from "@/types/core";
+import {WithPrototype} from "@/types/core/objects";
+import {ArrayLike} from "@/types/core/array";
+import {funclass2} from "@/core/definer/classes/funclass";
+import {FunctionClassSimpleStatics} from "@/types/core/definer";
+import {indefinite} from "@/core/utils/types";
 
 export interface IterMatch<T> extends Iter<T> {
   /**

@@ -1,7 +1,7 @@
-import {apply} from "../functions/apply";
-import {slice} from "../iterable";
+import {apply} from "@/core/functions/apply";
+import {slice} from "@/core/iterable";
 import {nullable} from "./types";
-import {concat, len} from "../shortcuts/indexable";
+import {concat, len} from "@/core/shortcuts/indexable";
 
 
 /**

@@ -5,20 +5,20 @@ import {
   paginationConfig, PaginationConstructor, PaginationOptions,
   wasFirstLoad
 } from "./simple";
-import {KeyableObject, WithPrototype} from "../../types/core/objects";
-import {assign, deepAssign} from "../../core/objects/factory";
+import {KeyableObject, WithPrototype} from "@/types/core/objects";
+import {assign, deepAssign} from "@/core/objects/factory";
 import {actEl, pageEl} from "./page-elements";
-import {funclass2} from "../../core/definer/classes/funclass";
-import {descriptor2} from "../../core/definer/shared";
-import {call} from "../../core/functions/call";
-import {toInt} from "../../core/extensions/string";
-import {attribute, selector} from "../shared";
-import {FunctionClassSimpleStatics} from "../../types/core/definer";
-import {singleton} from "../../core/wrappers/singleton";
-import {nullable} from "../../core/utils/types";
-import {PaginationActLabel} from "../../types/components/pagination";
+import {funclass2} from "@/core/definer/classes/funclass";
+import {descriptor2} from "@/core/definer/shared";
+import {call} from "@/core/functions/call";
+import {toInt} from "@/core/extensions/string";
+import {attribute, selector} from "@/components/shared";
+import {FunctionClassSimpleStatics} from "@/types/core/definer";
+import {singleton} from "@/core/wrappers/singleton";
+import {nullable} from "@/core/utils/types";
+import {PaginationActLabel} from "@/types/components/pagination";
 import {Paginator} from "./paginator";
-import {PagePaginationOnElements} from "../../types/components/pagination/shared";
+import {PagePaginationOnElements} from "@/types/components/pagination/shared";
 
 /**
  * A handler for creates a page pagination component.

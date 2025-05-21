@@ -1,8 +1,8 @@
-import {string} from "../../objects/handlers";
+import {string} from "@/core/objects/handlers";
 import {repeat} from "./es2015";
-import {apply} from "../../functions/apply";
-import {len} from "../../shortcuts/indexable";
-import {returns} from "../../utils/fn";
+import {apply} from "@/core/functions/apply";
+import {len} from "@/core/shortcuts/indexable";
+import {returns} from "@/core/utils";
 
 function padString(this: string, length: number, fill?: string, start?: boolean): string {
   fill = string(fill, returns(" "));

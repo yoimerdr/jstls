@@ -1,5 +1,5 @@
-import {ArrayLike, ArrayLikeReduce,} from "../../types/core/array";
-import {protoapply} from "../functions/prototype/apply";
+import {ArrayLike, ArrayLikeReduce, } from "@/types/core/array";
+import {protoapply} from "@/core/functions/prototype/apply";
 
 
 export function slice<T extends any>(source: ArrayLike<T>, startIndex?: number, endIndex?: number): T[] {
@@ -14,5 +14,5 @@ export function reduce<T>(source: ArrayLike<T>, callbackfn: any, initialValue?: 
 }
 
 export function join<T>(source: ArrayLike<T>, separator?: string): string {
-  return protoapply(Array,"join", source, [separator])
+  return protoapply(Array, "join", source, [separator])
 }

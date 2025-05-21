@@ -1,5 +1,5 @@
-import {Keys} from "../../types/core";
-import {PropertyDescriptor} from "../../types/core/objects/definer";
+import {Keys} from "@/types/core";
+import {PropertyDescriptor} from "@/types/core/objects/definer";
 
 interface CreateShortcut {
   /**

@@ -1,5 +1,5 @@
-import {slice} from "../iterable";
-import {Callable, Instanceable, InstanceableParameters, InstanceableType} from "../../types/core";
+import {slice} from "@/core/iterable";
+import {Callable, Instanceable, InstanceableParameters, InstanceableType} from "@/types/core";
 
 /**
  * Calls a function with the specified this context and arguments.

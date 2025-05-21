@@ -1,16 +1,16 @@
 import {readonlys} from "../definer";
 import {first, firstOrNull, isEmpty, isNotEmpty, last, lastOrNull} from "./shared/iterables";
-import {ArrayExtensions, CountsCompareFn, Pushable} from "../../types/core/extensions/array";
+import {ArrayExtensions, CountsCompareFn, Pushable} from "@/types/core/extensions/array";
 
-import {getIf, requireDefined, requireIf} from "../objects/validators";
-import {isDefined, isFunction, isObject} from "../objects/types";
-import {apply} from "../functions/apply";
-import {reduce} from "../iterable";
-import {ArrayLike} from "../../types/core/array";
-import {is} from "../polyfills/objects/es2015";
-import {returns} from "../utils/fn";
-import {Maybe} from "../../types/core";
-import {valueOf} from "../shortcuts/object";
+import {getIf, requireDefined, requireIf} from "@/core/objects/validators";
+import {isDefined, isFunction, isObject} from "@/core/objects/types";
+import {apply} from "@/core/functions/apply";
+import {reduce} from "@/core/iterable";
+import {ArrayLike} from "@/types/core/array";
+import {is} from "@/core/polyfills/objects/es2015";
+import {returns} from "@/core/utils/fn";
+import {Maybe} from "@/types/core";
+import {valueOf} from "@/core/shortcuts/object";
 
 
 export function counts<T, R = any, I extends ArrayLike<T> = ArrayLike<T>>(this: I, value: T, compare?: CountsCompareFn<T, I, R>, thisArg?: R): number;

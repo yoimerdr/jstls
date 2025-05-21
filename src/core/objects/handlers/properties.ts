@@ -1,13 +1,14 @@
-import {Keys, MethodKeys, PropertiesKeys} from "../../../types/core";
-import {call} from "../../functions/call";
-import {isFunction} from "../types";
-import {includes} from "../../polyfills/indexable/es2016";
-import {filter} from "../../iterable/filter";
-import {nreturns} from "../../utils/fn";
-import {nullable} from "../../utils/types";
-import {PropertyDescriptors} from "../../../types/core/objects/definer";
-import {reduce} from "../../iterable";
-import {descriptor, keys, propertyNames} from "../../shortcuts/object";
+import {Keys, MethodKeys, PropertiesKeys} from "@/types/core";
+import {call} from "@/core/functions/call";
+import {isFunction} from "@/core/objects/types";
+import {includes} from "@/core/polyfills/indexable/es2016";
+import {filter} from "@/core/iterable/filter";
+import {nreturns} from "@/core/utils/fn";
+import {nullable} from "@/core/utils/types";
+import {PropertyDescriptors} from "@/types/core/objects/definer";
+import {reduce} from "@/core/iterable";
+import {descriptor, keys, propertyNames} from "@/core/shortcuts/object";
+import {KeyableObject} from "@/types/core/objects";
 
 export function descriptors<T>(object: T, mode?: 'keys' | 'names'): PropertyDescriptors<T> {
   return reduce((mode === 'names' ? propertyNames : keys)(object), (current, key) => {
@@ -51,6 +52,12 @@ export function methodProperties<T>(object: T): MethodKeys<T>[];
 export function methodProperties<T>(object: T, filter: 'statics' | 'prototype'): MethodKeys<T>[];
 export function methodProperties<T>(object: T, mode?: 'statics' | 'prototype'): MethodKeys<T>[] {
   return filterFromObject('names', isFunction, object, mode!) as MethodKeys<T>[];
+}
+
+export function hasKey<T, K extends Keys<T>>(object: T, key: K): boolean;
+export function hasKey(object: KeyableObject, key: PropertyKey): boolean;
+export function hasKey(object: KeyableObject, key: PropertyKey) {
+  return key in object;
 }
 
 /*

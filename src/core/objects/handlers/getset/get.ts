@@ -1,7 +1,8 @@
-import {Keys, Maybe} from "../../../../types/core";
-import {KeyableObject} from "../../../../types/core/objects";
-import {indefinite} from "../../../utils/types";
-import {len} from "../../../shortcuts/indexable";
+import {Keys, Maybe} from "@/types/core";
+import {KeyableObject} from "@/types/core/objects";
+import {indefinite} from "@/core/utils/types";
+import {len} from "@/core/shortcuts/indexable";
+import {hasKey} from "../properties";
 
 /**
  * Returns the value of the `key` property in the target `object`, if this is defined.
@@ -46,4 +47,20 @@ export function get<T, K extends Keys<T>>(object: T & KeyableObject, key: K | Pr
   }
 
   return object as T[K];
+}
+
+export function get2<T, K extends Keys<T>>(object: T, key: K): Maybe<T[K]>;
+export function get2(object: KeyableObject, key: PropertyKey): any;
+export function get2<T, K extends Keys<T>>(object: T & KeyableObject, key: K | PropertyKey): Maybe<K> {
+  return object ? object[key] : indefinite;
+}
+
+export function getfirst<T, K extends Keys<T>>(object: T, keys: K[]): Maybe<T[K]>;
+export function getfirst(object: KeyableObject, keys: PropertyKey[]): any;
+export function getfirst<T, K extends Keys<T>>(object: T & KeyableObject, keys: K[] | PropertyKey[]): Maybe<T[K]> {
+  for (let i = 0; i < len(keys); i++)
+    if (hasKey(object, keys[i]))
+      return object[keys[i]];
+
+  return indefinite;
 }

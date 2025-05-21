@@ -1,5 +1,5 @@
-import {MaybeBoolean} from "../../types/core";
-import {getDefined} from "../objects/validators";
+import {MaybeBoolean} from "@/types/core";
+import {getDefined} from "@/core/objects/validators";
 import {returns} from "./fn";
 
 /**

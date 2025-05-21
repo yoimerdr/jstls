@@ -1,10 +1,10 @@
-import {MethodKeys, SafeParameters, SafeReturnType} from "../../types/core";
-import {ExtendMethodBuilder, ExtendMethodBuilders} from "../../types/core/objects/extender";
-import {multiple} from "../definer/shared";
-import {requiredWithType, requireFunction} from "../objects/validators";
-import {slice} from "../iterable";
-import {apply} from "../functions/apply";
-import {concat} from "../shortcuts/indexable";
+import {MethodKeys, SafeParameters, SafeReturnType} from "@/types/core";
+import {ExtendMethodBuilder, ExtendMethodBuilders} from "@/types/core/objects/extender";
+import {multiple} from "@/core/definer/shared";
+import {requiredWithType, requireFunction} from "@/core/objects/validators";
+import {slice} from "@/core/iterable";
+import {apply} from "@/core/functions/apply";
+import {concat} from "@/core/shortcuts/indexable";
 
 /**
  * Extends a method to add additional functionality.

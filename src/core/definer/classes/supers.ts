@@ -1,11 +1,11 @@
-import {Instanceable, InstanceableParameters, InstanceableType, Maybe, MethodKeys} from "../../../types/core";
-import {reduce, slice} from "../../iterable";
-import {apply} from "../../functions/apply";
-import {FunctionClassConstructorFunction, FunctionClassSuper} from "../../../types/core/definer";
-import {len} from "../../shortcuts/indexable";
-import {call} from "../../functions/call";
-import {IndeterminatePrototype, WithPrototype} from "../../../types/core/objects";
-import {indefinite} from "../../utils/types";
+import {Instanceable, InstanceableParameters, InstanceableType, Maybe, MethodKeys} from "@/types/core";
+import {reduce, slice} from "@/core/iterable";
+import {apply} from "@/core/functions/apply";
+import {FunctionClassConstructorFunction, FunctionClassSuper} from "@/types/core/definer";
+import {len} from "@/core/shortcuts/indexable";
+import {call} from "@/core/functions/call";
+import {IndeterminatePrototype, WithPrototype} from "@/types/core/objects";
+import {indefinite} from "@/core/utils/types";
 
 
 /**

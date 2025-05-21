@@ -1,17 +1,17 @@
 import {Optional} from "./optional";
-import {readonly2} from "../../definer";
-import {IllegalAccessError} from "../../exceptions";
-import {Keys, Maybe, MaybeKeyType} from "../../../types/core";
-import {KeyableObject, MaybeKeyObjectType, WithPrototype} from "../../../types/core/objects";
-import {isDefined, isFunction, isObject} from "../../objects/types";
-import {keys} from "../../shortcuts/object";
-import {apply} from "../../functions/apply";
-import {forEach} from "../../shortcuts/array";
-import {concat} from "../../shortcuts/string";
-import {funclass2} from "../../definer/classes/funclass";
-import {call} from "../../functions/call";
-import {FunctionClassSimpleStatics} from "../../../types/core/definer";
-import {indefinite} from "../../utils/types";
+import {readonly2} from "@/core/definer";
+import {IllegalAccessError} from "@/core/exceptions/illegal-access";
+import {Keys, Maybe, MaybeKeyType} from "@/types/core";
+import {KeyableObject, MaybeKeyObjectType, WithPrototype} from "@/types/core/objects";
+import {isDefined, isFunction, isObject} from "@/core/objects/types";
+import {keys} from "@/core/shortcuts/object";
+import {apply} from "@/core/functions/apply";
+import {forEach} from "@/core/shortcuts/array";
+import {concat} from "@/core/shortcuts/string";
+import {funclass2} from "@/core/definer/classes/funclass";
+import {call} from "@/core/functions/call";
+import {FunctionClassSimpleStatics} from "@/types/core/definer";
+import {indefinite} from "@/core/utils/types";
 
 function checkObjectAccess(optional: OptionalProperties<any>) {
   const present = optional.isPresent;

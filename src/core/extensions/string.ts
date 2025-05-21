@@ -1,10 +1,10 @@
-import {readonlys} from "../definer";
-import {StringExtensions} from "../../types/core/extensions/string";
-import {MaybeNumber} from "../../types/core";
+import {readonlys} from "@/core/definer";
+import {StringExtensions} from "@/types/core/extensions/string";
+import {MaybeNumber} from "@/types/core";
 import {isEmpty, isNotEmpty} from "./shared/iterables";
-import {getDefined} from "../objects/validators";
-import {returns} from "../utils/fn";
-import {nullable} from "../utils/types";
+import {getDefined} from "@/core/objects/validators";
+import {returns} from "@/core/utils/fn";
+import {nullable} from "@/core/utils/types";
 
 
 export function toInt(this: string | number, radix?: number): MaybeNumber;

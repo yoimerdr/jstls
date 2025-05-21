@@ -1,8 +1,8 @@
-import {ArrayLike} from "../../types/core/array";
-import {isNumber} from "../../core/objects/types";
+import {ArrayLike} from "@/types/core/array";
+import {isNumber} from "@/core/objects/types";
 import {Paginator} from "./paginator";
-import {Instanceable} from "../../types/core";
-import {requireObject} from "../../core/objects/validators";
+import {Instanceable} from "@/types/core";
+import {requireObject} from "@/core/objects/validators";
 import {PagePagination, PagePaginationOptions} from "./page";
 import {wasFirstLoad, Pagination, PaginationOptions} from "./simple";
 

@@ -1,20 +1,20 @@
-import {readonlys2, writeable} from "../definer";
-import {coerceAtLeast, coerceAtMost, coerceIn, isFromTo} from "../extensions/number";
-import {isEmpty} from "../extensions/shared/iterables";
-import {WithPrototype} from "../../types/core/objects";
-import {IterEach, IterEachNext, IterEachPrevious, IterMap, IterMatchCondition} from "../../types/core/iterable";
-import {Instanceable} from "../../types/core";
-import {IllegalAccessError} from "../exceptions";
-import {ArrayLike} from "../../types/core/array";
-import {apply} from "../functions/apply";
-import {uid} from "../polyfills/symbol";
-import {get, set} from "../objects/handlers/getset";
-import {freeze} from "../shortcuts/object";
-import {len} from "../shortcuts/indexable";
-import {concat} from "../shortcuts/string";
-import {funclass2} from "../definer/classes/funclass";
-import {FunctionClassSimpleStatics} from "../../types/core/definer";
-import {indefinite} from "../utils/types";
+import {readonlys2, writeable} from "@/core/definer";
+import {coerceAtLeast, coerceAtMost, coerceIn, isFromTo} from "@/core/extensions/number";
+import {isEmpty} from "@/core/extensions/shared/iterables";
+import {WithPrototype} from "@/types/core/objects";
+import {IterEach, IterEachNext, IterEachPrevious, IterMap, IterMatchCondition} from "@/types/core/iterable";
+import {Instanceable} from "@/types/core";
+import {IllegalAccessError} from "@/core/exceptions/illegal-access";
+import {ArrayLike} from "@/types/core/array";
+import {apply} from "@/core/functions/apply";
+import {uid} from "@/core/polyfills/symbol";
+import {get, set} from "@/core/objects/handlers/getset";
+import {freeze} from "@/core/shortcuts/object";
+import {len} from "@/core/shortcuts/indexable";
+import {concat} from "@/core/shortcuts/string";
+import {funclass2} from "@/core/definer/classes/funclass";
+import {FunctionClassSimpleStatics} from "@/types/core/definer";
+import {indefinite} from "@/core/utils/types";
 
 export function iterEachOrFindIndex<T, R>($this: Iter<T>,
                                           restartFn: (this: Iter<T>) => any,

@@ -1,12 +1,12 @@
-import {isFromUntil} from "../../extensions/number";
-import {ArrayEach, ArrayLike, ArrayLikeEach} from "../../../types/core/array";
-import {slice} from "../../iterable";
-import {Maybe} from "../../../types/core";
-import {bind} from "../../functions/bind";
-import {apply} from "../../functions/apply";
-import {len} from "../../shortcuts/indexable";
-import {concat} from "../../shortcuts/string";
-import {indefinite} from "../../utils/types";
+import {isFromUntil} from "@/core/extensions/number";
+import {ArrayEach, ArrayLike, ArrayLikeEach} from "@/types/core/array";
+import {slice} from "@/core/iterable";
+import {Maybe} from "@/types/core";
+import {bind} from "@/core/functions/bind";
+import {apply} from "@/core/functions/apply";
+import {len} from "@/core/shortcuts/indexable";
+import {concat} from "@/core/shortcuts/string";
+import {indefinite} from "@/core/utils/types";
 
 export function findLastIndex<V, T = any, A extends ArrayLike<V> = ArrayLike<V>>(this: A, predicate: ArrayLikeEach<V, T, A, boolean>, thisArg?: T): number;
 export function findLastIndex<V, T>(this: V[], predicate: ArrayEach<V, T | void, boolean>, thisArg?: T): number {

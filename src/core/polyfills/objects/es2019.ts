@@ -1,7 +1,7 @@
-import {Keys} from "../../../types/core";
-import {KeyableObject} from "../../../types/core/objects";
-import {loop} from "../../utils/iterables";
-import {len} from "../../shortcuts/indexable";
+import {Keys} from "@/types/core";
+import {KeyableObject} from "@/types/core/objects";
+import {loop} from "@/core/utils";
+import {len} from "@/core/shortcuts/indexable";
 
 export function fromEntries<T>(entries: [Keys<KeyableObject>, T][]): KeyableObject<T> {
   const result: KeyableObject<T> = {};

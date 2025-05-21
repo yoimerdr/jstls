@@ -1,16 +1,16 @@
-import {Maybe} from "../../../types/core";
-import {writeable} from "../../definer";
-import {isNotEmpty} from "../../extensions/shared/iterables";
-import {isDefined} from "../../objects/types";
+import {Maybe} from "@/types/core";
+import {writeable} from "@/core/definer";
+import {isNotEmpty} from "@/core/extensions/shared/iterables";
+import {isDefined} from "@/core/objects/types";
 import {assignNextNode, Node} from "./node";
-import {apply} from "../../functions/apply";
-import {WithPrototype} from "../../../types/core/objects";
-import {uid} from "../../polyfills/symbol";
-import {funclass2} from "../../definer/classes/funclass";
-import {FunctionClassSimpleStatics} from "../../../types/core/definer";
-import {get, set} from "../../objects/handlers/getset";
-import {nullable} from "../../utils/types";
-import {mapped} from "../../definer/getters/builders";
+import {apply} from "@/core/functions/apply";
+import {WithPrototype} from "@/types/core/objects";
+import {uid} from "@/core/polyfills/symbol";
+import {funclass2} from "@/core/definer/classes/funclass";
+import {FunctionClassSimpleStatics} from "@/types/core/definer";
+import {get, set} from "@/core/objects/handlers/getset";
+import {nullable} from "@/core/utils/types";
+import {mapped} from "@/core/definer/getters/builders";
 
 export type MaybeBiNode<T> = Maybe<BiNode<T>>;
 
