@@ -5,13 +5,21 @@
   "scripts": {
     "build": "tsc -b",
     "clean": "tsc -b --clean",
-    "main": "npx ts-node src/index.ts",
+    "main": "ts-node src/index.ts",
     "checks": "npx madge --circular src --extensions ts"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
-
+    "ts-node": "^10.9.2"
+  },
+  "madge": {
+    "tsConfig": "./tsconfig.json",
+    "detectiveOptions": {
+      "ts": {
+        "skipTypeImports": true
+      }
+    }
   }
 }
