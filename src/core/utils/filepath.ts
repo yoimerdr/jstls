@@ -123,7 +123,7 @@ export const Path: PathConstructor = funclass2({
   prototype: {
     withSuffix(suffix) {
       if (isEmpty(suffix) || suffix === "." || suffix[0] !== "." || /[\\/]/g.test(suffix))
-        throw new IllegalArgumentError("[Path] Invalid suffix: " + suffix)
+        throw new IllegalArgumentError("Invalid suffix: " + suffix)
       const $this = this,
         parts = $this.parts;
       parts[len(parts) - 1] = $this.prefix + suffix;
@@ -140,12 +140,12 @@ export const Path: PathConstructor = funclass2({
     name: descriptor2<Path>(simple(pathName), function (name: string) {
       name = string(name);
       if (isEmpty(name) || name === "." /*others path name validations*/)
-        throw new IllegalArgumentError("[Path] Invalid path name.")
+        throw new IllegalArgumentError("Invalid path name.")
       set(this, pathName, name);
     }),
     parent: descriptor2<Path>(simple(pathParent), function (parent) {
       if (!parent || !(parent instanceof Path))
-        throw new IllegalArgumentError("[Path] Invalid parent path");
+        throw new IllegalArgumentError("Invalid parent path");
 
       set(this, pathParent, parent);
     }),

@@ -29,7 +29,7 @@ import {FunctionClassSimpleStatics} from "@/types/core/definer";
 import {apply} from "@/core/functions/apply";
 import {toInt} from "@/core/extensions/string";
 import {deletes} from "@/core/objects/handlers/deletes";
-import {Paginator} from "./paginator";
+import {Paginator} from "@/core/geometry/paginator";
 import {PaginationOnElements} from "@/types/components/pagination/shared";
 
 /**

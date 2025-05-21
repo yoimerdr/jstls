@@ -1,21 +1,29 @@
-import {get} from "../../core/objects/handlers/getset";
-import {apply} from "../../core/functions/apply";
+import {getfirst} from "@/core/objects/handlers/getset";
+import {apply} from "@/core/functions/apply";
+import {applyFirstDefined} from "@/core/objects/handlers";
+import {resolve} from "@/core/polyfills/promise/fn";
+import {doc, nav, win} from "./constants";
+import {hasKey} from "@/core/objects/handlers/properties";
+import {Keys} from "@/types/core";
 
 export function isMobile(): boolean {
-  let hasTouchScreen: boolean;
-  const nav = navigator, win = window;
-  if ("maxTouchPoints" in nav) {
-    hasTouchScreen = nav.maxTouchPoints > 0;
-  } else if ("msMaxTouchPoints" in nav) {
-    hasTouchScreen = get(nav, 'msMaxTouchPoints') > 0;
+  let hasTouchScreen: boolean,
+    mxTouch: Keys<Navigator> = "maxTouchPoints",
+    msTouch: Keys<Navigator> = "msMaxTouchPoints" as "maxTouchPoints",
+    media: Keys<Window> = "matchMedia";
+
+  if (hasKey(nav, mxTouch)) {
+    hasTouchScreen = nav[mxTouch] > 0;
+  } else if (hasKey(nav, msTouch)) {
+    hasTouchScreen = nav[msTouch] > 0;
   } else {
-    const mQ = win.matchMedia && win.matchMedia("(pointer:coarse)");
+    const mQ = win[media] && win[media]("(pointer:coarse)");
     if (mQ && mQ.media === "(pointer:coarse)") {
       hasTouchScreen = !!mQ.matches;
-    } else if ('orientation' in win) {
+    } else if (hasKey(win, 'orientation')) {
       hasTouchScreen = true; // deprecated, but good fallback
     } else {
-      let agent: string = get(nav, 'userAgent') || get(nav, 'vendor') || get(win, 'opera');
+      let agent: string = getfirst(nav, ['userAgent', 'vendor', 'opera'])!;
       const sub = agent.substring || agent.substr;
 
       hasTouchScreen = /(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge |maemo|midp|mmp|mobile.+firefox|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows ce|xda|xiino|android|ipad|playbook|silk/i
@@ -25,4 +33,24 @@ export function isMobile(): boolean {
     }
   }
   return hasTouchScreen;
+}
+
+export function requestFullscreen(el: Element): Promise<void> {
+  return applyFirstDefined(el, ["requestFullscreen", "webkitRequestFullscreen", "mozRequestFullScreen", "msRequestFullscreen"])
+    || resolve();
+}
+
+export function exitFullscreen(): Promise<void> {
+  return (isFullscreen() &&
+      applyFirstDefined(doc, ["exitFullscreen", "webkitExitFullscreen", "mozCancelFullScreen", "msExitFullscreen"])) ||
+    resolve();
+}
+
+export function isFullscreen(): boolean {
+  return Boolean(getfirst(doc, [
+    "fullscreenElement",
+    "webkitFullscreenElement",
+    "mozFullScreenElement",
+    "msFullscreenElement",
+  ]));
 }

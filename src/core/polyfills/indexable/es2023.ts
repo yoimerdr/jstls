@@ -1,4 +1,4 @@
-import {isFromUntil} from "@/core/extensions/number";
+import {isFromUntil} from "@/core/extensions/numbers/simple";
 import {ArrayEach, ArrayLike, ArrayLikeEach} from "@/types/core/array";
 import {slice} from "@/core/iterable";
 import {Maybe} from "@/types/core";

@@ -1,24 +1,20 @@
-import {configurable} from "@/core/definer";
-import {FunctionType, Instanceable, InstanceableParameters, InstanceableType, WithConstructor} from "@/types/core";
-import {IllegalAccessError} from "@/core/exceptions/illegal-access";
-import {isFunction} from "@/core/objects/types";
-import {is} from "@/core/polyfills/objects/es2015";
 import {uid} from "@/core/polyfills/symbol";
-import {slice} from "@/core/iterable";
-import {apply} from "@/core/functions/apply";
-import {hasOwn} from "@/core/polyfills/objects/es2022";
 import {SingletonInit} from "@/types/core/wrappers/singleton";
-import {get, get2} from "@/core/objects/handlers/getset";
-import {funclass2} from "@/core/definer/classes/funclass";
-import {returns} from "@/core/utils/fn";
-import {nullable} from "@/core/utils/types";
+import {apply} from "@/core/functions/apply";
+import {configurable} from "@/core/definer";
+import {hasOwn} from "@/core/polyfills/objects/es2022";
 import {KeyableObject, PrototypeType, WithPrototype} from "@/types/core/objects";
-import {concat} from "@/core/shortcuts/indexable";
+import {FunctionType, Instanceable, WithConstructor} from "@/types/core";
+import {get2} from "@/core/objects/handlers/getset";
 import {deletes2} from "@/core/objects/handlers/deletes";
+import {isFunction} from "@/core/objects/types";
+import {funclass2} from "@/core/definer/classes/funclass";
+import {returns} from "@/core/utils";
+import {slice} from "@/core/iterable";
 
 const singletonSymbol = uid('mI');
 
-function checkSingleton(target: Object, init?: SingletonInit<any>) {
+export function checkSingleton(target: Object, init?: SingletonInit<any>) {
   const instance = getInstance(target);
   if (instance)
     return instance;
@@ -92,54 +88,3 @@ export function singleton<T extends Instanceable>(target: T, context: any) {
     })
   }, target);
 }
-
-export interface Singleton<S extends Singleton<S>> {
-
-}
-
-export interface SingletonConstructor<T extends Singleton<T> = any> extends WithPrototype<T> {
-  new<S extends Singleton<S>>(init?: SingletonInit<S>): Singleton<S>;
-
-  getInstance<T extends Instanceable>(this: T, ...args: InstanceableParameters<T>): InstanceableType<T>;
-
-  getInstance<S extends Singleton<S>>(this: Instanceable<S>,): S;
-
-  hasInstance(): boolean;
-}
-
-/**
- * The singleton class. Classes that inherit from it can have a single instance.
- *
- * @example
- * class A extends Singleton<A> {
- *   constructor(...args) {
- *     return super((instance) => {
- *       // init instance properties
- *     })
- *   }
- * }
- *
- * const a = new A();
- * const b = new A();
- *
- * console.log(a === b) // true
- */
-export const Singleton: SingletonConstructor = funclass2({
-  construct: function (init) {
-    const $this = this;
-    if (is($this.constructor, Singleton))
-      throw new IllegalAccessError('[Singleton] The Singleton class not allowed to be instantiated. Is only allowed to be extended.');
-    return checkSingleton($this, init)
-  },
-  statics: {
-    getInstance() {
-      const $this = this;
-      if (!get($this, singletonSymbol))
-        configurable($this, singletonSymbol, new (apply($this.bind, $this, concat([<any>nullable], slice(arguments))))());
-      return get($this, singletonSymbol);
-    },
-    hasInstance() {
-      return hasOwn(this, singletonSymbol);
-    }
-  }
-})

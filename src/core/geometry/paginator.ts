@@ -1,18 +1,19 @@
-import {readonly2, writeable} from "@/core/definer";
+import {writeable} from "@/core/definer";
 import {toInt} from "@/core/extensions/string";
 import {requireIf} from "@/core/objects/validators";
-import {coerceAtLeast, coerceIn} from "@/core/extensions/number";
+import {coerceAtLeast, coerceIn} from "@/core/extensions/numbers/";
 import {slice} from "@/core/iterable";
 import {funclass2} from "@/core/definer/classes/funclass";
 import {ceil, min} from "@/core/shortcuts/math";
-import {isDefined} from "@/core/objects/types";
+import {isDefined, isNumber} from "@/core/objects/types";
 import {uid} from "@/core/polyfills/symbol";
 import {descriptor2} from "@/core/definer/shared";
 import {set} from "@/core/objects/handlers/getset";
 import {simple} from "@/core/definer/getters/builders";
-import {nullable} from "@/core/utils/types";
+import {indefinite, nullable} from "@/core/utils/types";
 import {WithPrototype} from "@/types/core/objects";
-
+import {ArrayLike} from "@/types/core/array";
+import {len} from "@/core/shortcuts/indexable";
 /**
  * Paginating through collections of items
  */
@@ -20,7 +21,7 @@ export interface Paginator {
   /**
    * Total number of items
    * */
-  readonly total: number;
+  total: number;
 
   /**
    * Number of items per page
@@ -95,7 +96,8 @@ export interface PaginatorConstructor extends WithPrototype<Paginator> {
 
 const metaCurrent = uid('mC'),
   metaPerPage = uid('mP'),
-  metaPages = uid('mP');
+  metaPages = uid('mP'),
+  metaTotal = uid('mT');
 
 /**
  * Paginating through collections of items
@@ -103,16 +105,13 @@ const metaCurrent = uid('mC'),
 export const Paginator: PaginatorConstructor = funclass2({
   construct: function (total, perPage, page) {
     const $this = this;
-    total = toInt(nullable, total)!;
-    requireIf(total, isDefined, "The total must be a parseable number.");
-
+    writeable($this, metaTotal, indefinite);
+    $this.total = total;
     perPage = coerceAtLeast(1, toInt(nullable, perPage || 1) || 1)
 
     writeable($this, metaPerPage, perPage);
     writeable($this, metaPages, ceil(total / perPage!));
     writeable($this, metaCurrent, 1);
-
-    readonly2($this, "total", total);
 
     page && $this.goto(page);
   },
@@ -144,6 +143,14 @@ export const Paginator: PaginatorConstructor = funclass2({
   protodescriptor: {
     current: descriptor2(simple(metaCurrent)),
     pages: descriptor2(simple(metaPages)),
+    total: descriptor2(simple(metaTotal), function (total: number) {
+      total = toInt(nullable, total)!
+      requireIf(total, isDefined, "The total must be a parseable number.");
+      const $this = this;
+      set($this, metaTotal, total);
+      set($this, metaPages, ceil(total / $this.perPage));
+      set($this, metaCurrent, $this.norm($this.current));
+    }),
     hasNext: descriptor2<Paginator>(function () {
       const $this = this;
       return $this.current < $this.total;
@@ -169,3 +176,14 @@ export const Paginator: PaginatorConstructor = funclass2({
       })
   }
 })
+
+/**
+ * Creates a paginator based on the given arguments.
+ * @param total Total number of items or array-like object to paginate
+ * @param perPage Number of items per page
+ * @param page Current page number
+ */
+export function paginator(total: number | ArrayLike, perPage?: number, page?: number): Paginator {
+  total = isNumber(total) ? total as number : len(total as ArrayLike);
+  return new Paginator(total, perPage, page);
+}

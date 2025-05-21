@@ -1,5 +1,5 @@
-import {Paginator} from "@/components/pagination";
 import {KeyableObject} from "@/types/core/objects";
+import {Paginator} from "@/core/geometry/paginator";
 
 export interface PaginationOnElements<T, C extends KeyableObject = KeyableObject> {
   /**

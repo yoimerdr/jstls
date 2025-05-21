@@ -1,22 +1,10 @@
-import {ArrayLike} from "@/types/core/array";
-import {isNumber} from "@/core/objects/types";
-import {Paginator} from "./paginator";
+
+import {paginator, Paginator} from "@/core/geometry/paginator";
 import {Instanceable} from "@/types/core";
 import {requireObject} from "@/core/objects/validators";
 import {PagePagination, PagePaginationOptions} from "./page";
 import {wasFirstLoad, Pagination, PaginationOptions} from "./simple";
 
-
-/**
- * Creates a paginator based on the given arguments.
- * @param total Total number of items or array-like object to paginate
- * @param perPage Number of items per page
- * @param page Current page number
- */
-export function paginator(total: number | ArrayLike, perPage?: number, page?: number): Paginator {
-  total = isNumber(total) ? total as number : (total as ArrayLike).length;
-  return new Paginator(total, perPage, page);
-}
 
 function create<T, P extends Pagination<T>>(options: PaginationOptions<T>, cls: Instanceable<P>): P {
   requireObject(options, "options");
@@ -46,5 +34,4 @@ export function pagination2<T = never>(options: PagePaginationOptions<T>): PageP
 
 
 export {Pagination, PagePagination}
-export {Paginator} from "./paginator";
 export {remove} from "./simple"

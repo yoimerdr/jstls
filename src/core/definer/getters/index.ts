@@ -31,6 +31,6 @@ export function getter<T, K extends MethodKeys<T> | PropertyKey = PropertyKey>(t
  * @param getters The property keys and getter fns.
  * @see {getter}
  */
-export function index<T>(target: T, getters: DefinePropertyGetters<T>) {
+export function getters<T>(target: T, getters: DefinePropertyGetters<T>) {
   multiple(target, getters, getter)
 }

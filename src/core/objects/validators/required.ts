@@ -1,37 +1,8 @@
 import {Maybe, Typeof} from "@/types/core";
-import {isDefined, typeIs} from "./types";
 import {IllegalArgumentError} from "@/core/exceptions/illegal-argument";
-import {apply} from "@/core/functions/apply";
 import {isArray} from "@/core/shortcuts/array";
 import {concat} from "@/core/shortcuts/string";
-
-/**
- * Checks if the value is defined and returns it.
- * @param value The value to checks.
- * @param builder The default value builder.
- * @param thisArg The this arg for the builder.
- * @return The value param if is defined, else, the value returned by the builder.
- * @see {isDefined}
- */
-export function getDefined<T, R>(value: Maybe<T>, builder: (this: R) => T, thisArg?: R): T {
-  return isDefined(value) ? value! : getIf(value, isDefined, builder, thisArg);
-}
-
-/**
- * Checks if the value meets the given condition and returns it,
- * @param value The value to checks.
- * @param condition The condition that the value must meet.
- * @param builder The default value builder.
- * @param thisArg The this arg for the builder.
- * @return The value param if meets the condition, else, the value returned by the builder.
- */
-export function getIf<T, R>(value: Maybe<T>, condition: (value: Maybe<T>) => boolean, builder: (this: R) => T, thisArg?: R): T {
-  if (condition(value))
-    return value!;
-  requiredWithType(builder, "function", "builder");
-  value = apply(builder, thisArg!);
-  return value;
-}
+import {isDefined, typeIs} from "@/core/objects/types";
 
 /**
  * Checks if the value meets the given condition and returns it. If not, throws error.

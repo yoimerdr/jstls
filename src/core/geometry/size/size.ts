@@ -1,4 +1,4 @@
-import {coerceAtLeast} from "@/core/extensions/number";
+import {coerceAtLeast} from "@/core/extensions/numbers";
 import {toFloat} from "@/core/extensions/string";
 import {writeable} from "@/core/definer";
 import {isDefined, isNumber} from "@/core/objects/types";

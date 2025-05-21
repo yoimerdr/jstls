@@ -1,5 +1,5 @@
 import {readonlys2, writeable} from "@/core/definer";
-import {coerceAtLeast, coerceAtMost, coerceIn, isFromTo} from "@/core/extensions/number";
+import {coerceAtLeast, coerceAtMost, coerceIn, isFromTo} from "@/core/extensions/numbers";
 import {isEmpty} from "@/core/extensions/shared/iterables";
 import {WithPrototype} from "@/types/core/objects";
 import {IterEach, IterEachNext, IterEachPrevious, IterMap, IterMatchCondition} from "@/types/core/iterable";

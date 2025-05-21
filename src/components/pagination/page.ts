@@ -14,10 +14,10 @@ import {call} from "@/core/functions/call";
 import {toInt} from "@/core/extensions/string";
 import {attribute, selector} from "@/components/shared";
 import {FunctionClassSimpleStatics} from "@/types/core/definer";
-import {singleton} from "@/core/wrappers/singleton";
+import {singleton} from "@/core/wrappers/singleton/fn";
 import {nullable} from "@/core/utils/types";
 import {PaginationActLabel} from "@/types/components/pagination";
-import {Paginator} from "./paginator";
+import {Paginator} from "@/core/geometry/paginator";
 import {PagePaginationOnElements} from "@/types/components/pagination/shared";
 
 /**
