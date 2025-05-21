@@ -1,6 +1,5 @@
 import {
-  afterPageChange,
-  goto,
+  on,
   Pagination, PaginationCommon,
   paginationConfig, PaginationConstructor, PaginationOptions,
   wasFirstLoad
@@ -19,6 +18,10 @@ import {nullable} from "@/core/utils/types";
 import {PaginationActLabel} from "@/types/components/pagination";
 import {Paginator} from "@/core/geometry/paginator";
 import {PagePaginationOnElements} from "@/types/components/pagination/shared";
+import {get2} from "@/core/objects/handlers/getset";
+import {his} from "@/components/shared/constants";
+import {concat} from "@/core/shortcuts/string";
+import {protoapply} from "@/core/functions/prototype/apply";
 
 /**
  * A handler for creates a page pagination component.
@@ -114,23 +117,14 @@ export const PagePagination: PagePaginationConstructor = funclass2<PagePaginatio
       url.searchParams.set($this.cfg.parameter!, page as string)
       return url.toString();
     },
-    goto(page) {
+    goto(page, force) {
       const $this = this;
       if (wasFirstLoad($this) && $this.cfg.reload) {
         location.href = $this.url(page);
         return true;
       }
 
-      return goto($this, page, function ($this, page) {
-        const container = $this.container;
-        afterPageChange($this, page);
-        history.replaceState({}, "", $this.url(page));
-        const prev = selector('[pagination-role="previous"]', container),
-          next = selector('[pagination-role="next"]', container,);
-
-        prev && attribute(prev, "href", $this.url(page - 1));
-        next && attribute(next, "href", $this.url(page + 1));
-      });
+      return protoapply(Pagination, 'goto', $this, [page, force]);
     }
   },
   protodescriptor: {
@@ -148,6 +142,19 @@ export const PagePagination: PagePaginationConstructor = funclass2<PagePaginatio
         config = pagePaginationConfig(config);
         call(parent, $this, config, paginator);
         paginator.goto($this.parameter);
+        on(get2($this, '_ev_change'), ($this: PagePagination<any>, page: number) => {
+          const container = $this.container;
+          his.replaceState({}, "", $this.url(page));
+          const roleAttr = 'data-action',
+            prev = selector(concat('[', roleAttr, '="previous"]'), container),
+            next = selector(concat('[', roleAttr, '="next"]'), container),
+            paginator = $this.paginator,
+            nxtPage = page + 1,
+            prevPage = page - 1;
+
+          prev && prevPage && attribute(prev, "href", $this.url(prevPage));
+          next && nxtPage <= paginator.pages && attribute(next, "href", $this.url(nxtPage));
+        });
         return $this;
       });
     }

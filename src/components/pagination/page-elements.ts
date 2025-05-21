@@ -30,7 +30,7 @@ export function actEl<T = any>(this: PagePaginationOnElements<T>, label: Paginat
     onClick = $this.next;
   }
 
-  const url = page ? $this.url(page) : indefinite;
+  const url = page && page <= paginator.pages ? $this.url(page) : indefinite;
   onClick && onEvent(el, "click", (ev) => {
     if (!$this.cfg.reload) {
       ev.preventDefault();

@@ -10,28 +10,29 @@ export interface PaginationOnElements<T, C extends KeyableObject = KeyableObject
   /**
    * Navigate to first page
    * */
-  toFirst(): boolean;
+  toFirst(force?: boolean): boolean;
 
   /**
    * Navigate to last page
    * */
-  toLast(): boolean;
+  toLast(force?: boolean): boolean;
 
   /**
    * Navigate to next page
    * */
-  next(): boolean;
+  next(force?: boolean): boolean;
 
   /**
    * Navigate to previous page
    * */
-  previous(): boolean;
+  previous(force?: boolean): boolean;
 
   /**
    * Navigate to specific page
    * @param page The page to go
+   * @param force
    * */
-  goto(page: number | string): boolean;
+  goto(page: number | string, force?: boolean): boolean;
 
   /**
    * The paginator instance

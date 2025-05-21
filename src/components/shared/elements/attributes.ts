@@ -4,6 +4,7 @@ import {isDefined, isPlainObject} from "@/core/objects/types";
 import {reduce} from "@/core/iterable";
 import {keys} from "@/core/shortcuts/object";
 import {indefinite} from "@/core/utils/types";
+import {concat} from "@/core/shortcuts/indexable";
 
 export function attribute(el: Element, name: string): MaybeString;
 /**
@@ -26,6 +27,16 @@ export function attribute(el: Element, name: string | KeyableObject<Object>, val
 
   isDefined(value) && el.setAttribute(name as string, value as string)
   return el.getAttribute(name as string)!;
+}
+
+export function dataAttribute(el: Element, name: string, value?: Object): string {
+  if (isPlainObject(name))
+    return reduce(
+      keys(name),
+      (_, value) => attribute(el, concat("data-", name), name[value as any]),
+      indefinite! as string,
+    )
+  return attribute(el, concat("data-", name), value!)!
 }
 
 export function removeAttribute(el: Element, name: string | KeyableObject<Object>): string {

@@ -6,6 +6,12 @@ import {attribute, create, onEvent} from "@/components/shared";
 import {apply} from "@/core/functions/apply";
 import {nullable} from "@/core/utils/types";
 import {PaginationOnElements} from "@/types/components/pagination/shared";
+import {innerHTML} from "@/components/shared/elements/builders";
+import {addClass} from "@/components/shared/styles/classname";
+
+export function withPrefix(name: Object): string {
+  return concat("pagination-", name);
+}
 
 /**
  * Creates an action element for pagination
@@ -18,10 +24,12 @@ export function createActElement<K extends keyof HTMLElementTagNameMap, T = any>
   const el = create(tag),
     value = requireDefined($this.cfg.labels![label]);
 
-  el.className = concat("pagination-page pagination-action pagination-", label);
-  el.innerHTML = value.text!;
-  el.title = value.name!;
-  attribute(el, "aria-current", "page");
+  addClass(el, withPrefix("page"), withPrefix("action"), withPrefix(label))
+  innerHTML(el, value.text)
+  attribute(el, {
+    "aria-current": "page",
+    title: value.name!,
+  });
 
   return el;
 }
@@ -63,18 +71,20 @@ export function createPageElement<K extends keyof HTMLElementTagNameMap, T = any
   if (!page)
     throw new IllegalArgumentError(concat("The page ", page, " is not allowed."));
 
-  const el = create(tag),
+  const el = create<K>(tag),
     paginator = $this.paginator,
-    classList = el.classList;
+    current = paginator.current;
 
-  el.className = "pagination-page pagination-" + page;
-  el.innerHTML = page as string;
-  el.title = $this.cfg.name + " " + page as string;
-  classList.toggle("pagination-disabled", page === paginator.current)
-  classList.toggle("pagination-current", page === paginator.current)
+  addClass(el, withPrefix("page"), withPrefix(page));
+  page === current && addClass(el, withPrefix("current"), withPrefix("disabled"));
+  innerHTML(el, page);
 
-  attribute(el, "aria-current", "page")
-  attribute(el, "pagination-page", page)
+  attribute(el, {
+    "aria-current": "page",
+    "data-page": page,
+    title: $this.cfg.name + " " + page,
+  });
+
   return el;
 }
 
@@ -97,7 +107,7 @@ export function pageEl<T = any>(this: PaginationOnElements<T>, page: number | st
  */
 export function ellipsisEl<T = any>(this: PaginationOnElements<T>, text: string): HTMLElement {
   const el = create("button");
-  el.className = "pagination-page pagination-ellipsis pagination-disabled";
-  el.innerHTML = text;
+  addClass(el, withPrefix("page"), withPrefix("ellipsis"), withPrefix("disabled"))
+  innerHTML(el, text);
   return el;
 }
