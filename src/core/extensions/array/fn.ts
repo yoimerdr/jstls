@@ -14,7 +14,10 @@ import {CountsCompareFn, Pushable} from "@jstls/types/core/extensions/array";
 
 export function remove<T extends RemoveArray<R>, R>(source: T, value: R, ...values: R[]): boolean {
   const size = len(source);
-  forEach(slice(arguments, 1), value => source.splice(source.indexOf(value), 1));
+  forEach(slice(arguments, 1), value => {
+    const index = source.indexOf(value)
+    value > -1 && source.splice(index, 1);
+  });
   return size !== len(source);
 }
 
