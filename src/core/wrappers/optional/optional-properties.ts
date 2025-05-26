@@ -90,7 +90,7 @@ export const OptionalProperties: OptionalPropertiesConstructor = funclass2({
       const $this = this,
         value = $this.value;
       if (checkObjectAccess($this) && isFunction(fn)) {
-        forEach(keys(value), (key) => call(fn!, value, key))
+        forEach(keys(value), (key) => call(fn!, value as KeyableObject, key))
       }
       return $this;
     },

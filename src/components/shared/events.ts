@@ -11,6 +11,8 @@ import {len} from "@jstls/core/shortcuts/indexable";
  * @see [MDN Reference](https://developer.mozilla.org/docs/Web/API/EventTarget/addEventListener)
  */
 export function onEvent<T extends MediaQueryList, K extends keyof MediaQueryListEventMap>(el: T, type: K | K[], listener: (this: T, ev: MediaQueryListEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+export function onEvent<T extends Document, K extends keyof DocumentEventMap>(el: T, type: K | K[], listener: (this: T, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+export function onEvent<T extends Window, K extends keyof WindowEventMap>(el: T, type: K | K[], listener: (this: T, ev: WindowEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
 export function onEvent<T extends Element, K extends Keys<HTMLElementEventMap>>(el: T, type: K | K [], listener: (this: T, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
 export function onEvent<K extends Keys<HTMLElementEventMap>>(el: EventTarget, type: string | string[], listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
 export function onEvent(el: EventTarget, type: string | string[], listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions) {
@@ -20,6 +22,8 @@ export function onEvent(el: EventTarget, type: string | string[], listener: Even
 }
 
 export function offEvent<T extends MediaQueryList, K extends keyof MediaQueryListEventMap>(el: T, type: K | K[], listener: (this: T, ev: MediaQueryListEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+export function offEvent<T extends Document, K extends keyof DocumentEventMap>(el: T, type: K | K[], listener: (this: T, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+export function offEvent<T extends Window, K extends keyof WindowEventMap>(el: T, type: K | K[], listener: (this: T, ev: WindowEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
 export function offEvent<T extends Element, K extends Keys<HTMLElementEventMap>>(el: T, type: K | K [], listener: (this: T, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
 export function offEvent<K extends Keys<HTMLElementEventMap>>(el: EventTarget, type: string | string[], listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
 export function offEvent(el: EventTarget, type: string | string[], listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions) {

@@ -1,5 +1,5 @@
 import {slice} from "@jstls/core/iterable";
-import {Callable, Instanceable, InstanceableParameters, InstanceableType} from "@jstls/types/core";
+import {Instanceable, InstanceableParameters, InstanceableType} from "@jstls/types/core";
 
 /**
  * Calls a function with the specified this context and arguments.
@@ -29,8 +29,6 @@ export function call<F extends (...args: any) => any>(fn: F, thisArg: ThisParame
  * @returns The result of the function call.
  */
 export function call<F extends Instanceable>(fn: F, thisArg: InstanceableType<F>, ...args: InstanceableParameters<F>): InstanceableType<F>;
-export function call<F extends Callable>(fn: F,): any;
-export function call<F extends Callable>(fn: F, thisArg: any, ...args: any[]): any;
 export function call<F extends (...args: any) => any>(fn: F, thisArg?: ThisParameterType<F>): ReturnType<F> {
   return fn.apply(thisArg, slice(arguments, 2));
 }

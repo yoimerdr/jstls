@@ -25,7 +25,7 @@ export function findLast<V, T = any, A extends ArrayLike<V> = ArrayLike<V>>(this
 export function findLast<V, T>(this: ArrayLike<V>, predicate: ArrayLikeEach<V, T | void, ArrayLike<V>, boolean>, thisArg?: T): Maybe<V> {
   predicate = bind(predicate, thisArg);
   const $this = this,
-    index = apply(findLastIndex, $this, [predicate, thisArg]);
+    index = apply(findLastIndex<V>, $this, [predicate, thisArg]);
   return index !== -1 ? $this[index] : indefinite;
 }
 
@@ -38,7 +38,7 @@ export function toSpliced<T>(this: ArrayLike<T>, start: number, deleteCount?: nu
 export function toSpliced<T>(this: ArrayLike<T>, start: number, deleteCount?: number, ...items: T[]): T[];
 export function toSpliced<T>(this: ArrayLike<T>, start: number, deleteCount?: number): T[] {
   const copy = slice(this);
-  apply(copy.splice, copy, concat([start, deleteCount!], slice(arguments, 2)));
+  apply(copy.splice, copy, <any> concat([start, deleteCount!], slice(arguments, 2)));
   return copy;
 }
 

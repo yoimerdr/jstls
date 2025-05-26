@@ -174,6 +174,9 @@ export interface Entry<V = any, K = PropertyKey> extends EntryLike<V> {
   key: K,
 }
 
+export type ThisTypeOf<T> = T extends (this: infer T, ...args: any) => any ? T : Nullables;
+export type ParametersOf<T> = T extends (...args: infer A) => any ? (A extends [] ? never : A) : never;
+export type ReturnTypeOf<T> = T extends (...args: any) => infer R ? R : unknown;
 
 export type SafeParameters<T> = T extends (...args: any[]) => any ? Parameters<T> : never;
 

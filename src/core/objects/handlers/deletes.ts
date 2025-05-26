@@ -51,7 +51,7 @@ export function deletes<T>(object: T, key: PropertyKey, key2: PropertyKey, ...ke
 export function deletes(object: KeyableObject, key: PropertyKey): any {
   const args = arguments, lt = len(args);
   if (lt > 2) {
-    object = apply(get, indefinite, slice(args, 0, lt - 1))
+    object = apply(get, indefinite, <any> slice(args, 0, lt - 1))
     key = args[lt - 1];
   }
 

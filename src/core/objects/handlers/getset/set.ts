@@ -44,7 +44,7 @@ export function set<T, K extends Keys<T>>(object: T & KeyableObject, key: K | Pr
 export function set<T, K extends Keys<T>>(object: T & KeyableObject, key: K | PropertyKey, key2: PropertyKey, ...keysOrValue: PropertyKey[]): any {
   const args = arguments, lt = len(args), value = args[lt - 1];
   if (lt > 3) {
-    object = apply(get, indefinite, slice(args, 0, lt - 2))
+    object = apply(get, indefinite, <any>slice(args, 0, lt - 2))
     key = args[lt - 2];
   }
 

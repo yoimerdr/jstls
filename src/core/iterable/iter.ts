@@ -34,7 +34,7 @@ export function iterEachOrFindIndex<T, R>($this: Iter<T>,
     if (matchFn && matchFn(current, index))
       return index;
     else if (eachFn)
-      apply(eachFn, thisArg, includeAdvance ? [current, advance, index] : [current, index])
+      apply(eachFn, thisArg!, (includeAdvance ? [current, advance, index] : [current, index]))
   }
 
   if (startIndex !== $this.index())

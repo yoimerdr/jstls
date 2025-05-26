@@ -37,10 +37,10 @@ export function emitter(): Emitter {
     emit(name, thisArg) {
       const callbacks = get(listeners, name),
         values = slice(arguments, 2);
-      callbacks && forEach(callbacks, (value) => apply(value, thisArg, values));
+      callbacks && forEach(callbacks, (value) => apply(<any> value, thisArg, values));
     },
     dispose() {
-      apply(deletes, indefinite, concat([listeners], slice(arguments)));
+      apply(deletes, indefinite, <any> concat([listeners], slice(arguments)));
     },
     disposes() {
       deletesAll(listeners);

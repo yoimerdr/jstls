@@ -50,10 +50,10 @@ export const Mixer: MixerConstructor = funclass2({
   },
   prototype: <FunctionClassSimpleStatics<Mixer<any>>>{
     super(cls, key, ...args) {
-      return apply(mixerSuper, nullable, concat([this.target, cls, key,], slice(arguments, 2)))
+      return apply(mixerSuper, nullable, <any> concat([this.target, cls, key,], slice(arguments, 2)))
     },
     init(cls, ...args) {
-      return apply(mixerInit, nullable, concat([this.target, cls], slice(arguments, 2)))
+      return apply(mixerInit, nullable, <any> concat([this.target, cls], slice(arguments, 2)))
     }
   }
 })

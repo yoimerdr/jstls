@@ -130,7 +130,7 @@ export const Path: PathConstructor = funclass2({
       return fromNormalizedParts(parts);
     },
     join() {
-      return apply(pathOf, nullable, concat(this.parts, slice(arguments)));
+      return apply(pathOf, nullable, <any> concat(this.parts, slice(arguments)));
     },
     toString() {
       return this.path!;
@@ -225,7 +225,7 @@ export function join(): string {
 export function pathOf(path: Object, ...paths: Object[]): Path;
 export function pathOf(): Path {
   return fromNormalizedParts(
-    apply(join, nullable, slice(arguments))
+    apply(join, nullable, <any> slice(arguments))
       .split(sep)
   )
 }

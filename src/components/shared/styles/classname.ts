@@ -52,7 +52,7 @@ export function hasClass<T extends WithClassName>(el: T, ...token: string[]) {
  */
 export function removeClass<T extends WithClassName>(el: T, ...token: string[]) {
   const list = getClasses(el);
-  apply(remove, indefinite, concat([list], slice(arguments, 1)))
+  apply(remove, indefinite, <any>concat([list], slice(arguments, 1)))
   el.className = join(list, " ")
 }
 

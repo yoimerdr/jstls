@@ -3,7 +3,7 @@ import {Maybe} from "@jstls/types/core";
 import {readonlys2} from "@jstls/core/definer";
 import {isDefined} from "@jstls/core/objects/types";
 import {apply} from "@jstls/core/functions/apply";
-import {WithPrototype} from "@jstls/types/core/objects";
+import {KeyableObject, WithPrototype} from "@jstls/types/core/objects";
 import {funclass2} from "@jstls/core/definer/classes/funclass";
 import {call} from "@jstls/core/functions/call";
 import {FunctionClassSimpleStatics} from "@jstls/types/core/definer";
@@ -87,7 +87,7 @@ export const Optional: OptionalConstructor = funclass2({
     ifPresent(fn) {
       requireFunction(fn, "fn");
       const $this = this;
-      $this.isPresent && call(fn!, $this, $this.get());
+      $this.isPresent && call(fn!, $this, $this.get() as KeyableObject);
       return $this;
     },
   }

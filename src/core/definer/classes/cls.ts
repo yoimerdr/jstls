@@ -11,9 +11,9 @@ export function functionConstructor(constructor: FunctionClassConstructorFunctio
   return function FunClass(this: InstanceableType<Instanceable>, ...params: InstanceableParameters<Instanceable>): any {
     const args = slice(arguments);
     if (!isDefined(this)) {
-      return new (apply(FunClass.bind, FunClass, concat([indefinite], args)))()
+      return new (apply(FunClass.bind as any as Instanceable, FunClass, concat([indefinite], args)))()
     } else {
-      const $this = (parent && apply(parent as any, this, args)) || this;
+      const $this = (parent && apply(parent as Instanceable, this, args)) || this;
       apply(constructor, $this, args);
       return $this;
     }
@@ -24,10 +24,10 @@ export function functionParent(constructor: FunctionClassConstructorFunction<Ins
   return function FunClass(this: InstanceableType<Instanceable>, ...params: InstanceableParameters<Instanceable>): any {
     const args = slice(arguments);
     if (!isDefined(this)) {
-      return new (apply(FunClass.bind, FunClass, concat([indefinite], args)))()
+      return new (apply(FunClass.bind as any as Instanceable, FunClass, concat([indefinite], args)))()
     } else {
       const $this = apply(constructor, this, args) || this;
-      parent && apply(parent as any, $this, args);
+      parent && apply(parent as Instanceable, $this, args);
       return $this;
     }
   };

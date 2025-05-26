@@ -59,7 +59,7 @@ export function method<T extends Object, K extends MethodKeys<T>>(target: T, key
       let args: SafeParameters<T[K]> = slice(arguments) as any,
         $this = this;
       if (replace)
-        return apply(replace, $this, concat([met], args));
+        return apply(replace, $this, <any> concat([met], args));
 
       modifyParameters && (args = apply(modifyParameters, $this, args))
       beforeCall && apply(beforeCall, $this, args)
@@ -68,7 +68,7 @@ export function method<T extends Object, K extends MethodKeys<T>>(target: T, key
       if (!afterCall)
         return res
 
-      return apply(afterCall, $this, concat([res], args))
+      return apply(afterCall, $this, <any> concat([res], args))
     } as T[K]
   }
 }

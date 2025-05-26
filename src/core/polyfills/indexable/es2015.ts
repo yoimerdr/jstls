@@ -24,7 +24,7 @@ export function findIndex<V, T>(this: V[], predicate: ArrayEach<V, T | void, boo
 export function find<V, T = any, A extends ArrayLike<V> = ArrayLike<V>>(this: A, predicate: ArrayLikeEach<V, T, A, boolean>, thisArg?: T): Maybe<V>;
 export function find<V, T>(this: V[], predicate: ArrayEach<V, T, boolean>, thisArg?: T): Maybe<V> {
   const $this = this,
-    index = apply(findIndex, $this, [predicate, thisArg]);
+    index = apply(findIndex<V>, $this, <any> [predicate, thisArg]);
   return index === -1 ? indefinite : $this[index];
 }
 

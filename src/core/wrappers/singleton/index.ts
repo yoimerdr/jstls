@@ -55,7 +55,7 @@ export const Singleton: SingletonConstructor = funclass2({
     getInstance() {
       const $this = this;
       if (!getInstance($this))
-        checkSingleton(new (apply($this.bind, $this, concat([<any>nullable], slice(arguments))))());
+        checkSingleton(new (apply($this.bind as any as Instanceable, $this, concat([<any>nullable], slice(arguments))))());
       return getInstance($this);
     },
     hasInstance() {
