@@ -4,6 +4,7 @@ import {requireFunction} from "@jstls/core/objects/validators";
 import {self} from "@jstls/core/utils";
 import {bind} from "@jstls/core/functions/bind";
 import {each} from "@jstls/core/iterable/each";
+import {slice} from "@jstls/core/iterable";
 
 export function arrayFrom<T>(iterable: IterableLike<T>): T[];
 export function arrayFrom<T, U, R>(iterable: IterableLike<T>, mapfn: (this: R, value: T, index: number) => U, thisArg?: any): U[];
@@ -20,8 +21,12 @@ export function arrayFrom<T, U, R>(iterable: IterableLike<T>, mapfn?: (this: R |
   return result;
 }
 
+export function entries<T>(this: T[]): [number, T][] {
+  return this.map((value, index) => [index, value]);
+}
+
 export function arrayOf<T>(...args: T[]): T[];
 export function arrayOf(...args: any[]): any[];
 export function arrayOf(...args: any[]): any[] {
-  return args;
+  return slice(arguments);
 }

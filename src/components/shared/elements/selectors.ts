@@ -1,4 +1,5 @@
 import {doc} from "@jstls/components/shared/constants";
+import {slice} from "@jstls/core/iterable";
 
 /**
  * Finds the first element matching a selector within a parent node
@@ -23,4 +24,16 @@ export function selectorAll<K extends keyof HTMLElementDeprecatedTagNameMap, T e
 export function selectorAll<T extends ParentNode = ParentNode>(selectors: string, context?: T): NodeListOf<Element>;
 export function selectorAll<T extends ParentNode = ParentNode>(selectors: string, context?: T): NodeListOf<Element> {
   return (context || doc).querySelectorAll(selectors);
+}
+
+export function siblings<T extends ParentNode>(context: T): Array<Element>;
+export function siblings<T extends ParentNode, K extends keyof HTMLElementTagNameMap>(context: T, selector: K): Array<HTMLElementTagNameMap[K]>;
+export function siblings<T extends ParentNode, K extends keyof SVGElementTagNameMap>(context: T, selector: K): Array<SVGElementTagNameMap[K]>;
+export function siblings<T extends ParentNode>(context: T, selector: string): Array<Element>;
+export function siblings<T extends ParentNode>(context: T, selector?: string): Array<Element> {
+  if (!context || !context.parentNode)
+    return [];
+
+  return slice(context.parentNode.children)
+    .filter(el => (el !== context as any) && (!selector || el.matches(selector)))
 }
