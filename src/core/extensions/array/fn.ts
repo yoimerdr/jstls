@@ -16,7 +16,7 @@ export function remove<R, T extends RemoveArray<R> = R[]>(source: T, value: R, .
   const size = len(source);
   forEach(slice(arguments, 1), value => {
     const index = source.indexOf(value)
-    value > -1 && source.splice(index, 1);
+    index > -1 && source.splice(index, 1);
   });
   return size !== len(source);
 }
