@@ -1,10 +1,9 @@
 import {Keys} from "@jstls/types/core";
-import {keys} from "@jstls/core/shortcuts/object";
-import {forEach} from "@jstls/core/shortcuts/array";
 import {PropertyDescriptor} from "@jstls/types/core/objects/definer";
+import {keach} from "@jstls/core/iterable/each";
 
 export function multiple<T, D>(target: T, descriptors: D, definer: (target: T, key: Keys<D>, descriptor: NonNullable<D[Keys<D>]>) => void) {
-  forEach(keys(descriptors), key => definer(target, key, descriptors[key]!))
+  keach(descriptors, (descriptor, key) => definer(target, key, descriptor!));
 }
 
 export function descriptor<T = any, K extends Keys<T> = any>(value?: T[K], writable?: boolean, configurable?: boolean,

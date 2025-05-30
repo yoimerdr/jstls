@@ -4,14 +4,13 @@ import {IllegalAccessError} from "@jstls/core/exceptions/illegal-access";
 import {Keys, Maybe, MaybeKeyType} from "@jstls/types/core";
 import {KeyableObject, MaybeKeyObjectType, WithPrototype} from "@jstls/types/core/objects";
 import {isDefined, isFunction, isObject} from "@jstls/core/objects/types";
-import {keys} from "@jstls/core/shortcuts/object";
 import {apply} from "@jstls/core/functions/apply";
-import {forEach} from "@jstls/core/shortcuts/array";
 import {concat} from "@jstls/core/shortcuts/string";
 import {funclass2} from "@jstls/core/definer/classes/funclass";
 import {call} from "@jstls/core/functions/call";
 import {FunctionClassSimpleStatics} from "@jstls/types/core/definer";
 import {indefinite} from "@jstls/core/utils/types";
+import {keach} from "@jstls/core/iterable/each";
 
 function checkObjectAccess(optional: OptionalProperties<any>) {
   const present = optional.isPresent;
@@ -90,7 +89,7 @@ export const OptionalProperties: OptionalPropertiesConstructor = funclass2({
       const $this = this,
         value = $this.value;
       if (checkObjectAccess($this) && isFunction(fn)) {
-        forEach(keys(value), (key) => call(fn!, value as KeyableObject, key))
+        keach(value, key => call(fn!, value as KeyableObject, key));
       }
       return $this;
     },

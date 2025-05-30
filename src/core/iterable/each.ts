@@ -1,7 +1,7 @@
 import {ArrayLike, ArrayLikeEach, ArrayLikeEachNext, ArrayLikeEachPrevious} from "@jstls/types/core/array";
-import {Foreachable, ForeachableEach, IterableLike, IterableLikeEach} from "@jstls/types/core/iterable";
+import {Foreachable, ForeachableEach, IterableLike, IterableLikeEach, ObjectEach} from "@jstls/types/core/iterable";
 import {KeyableObject} from "@jstls/types/core/objects";
-import {isFunction} from "@jstls/core/objects/types";
+import {isFunction, isPlainObject} from "@jstls/core/objects/types";
 import {bind} from "@jstls/core/functions/bind";
 import {protoapply} from "@jstls/core/functions/prototype/apply";
 import {len} from "@jstls/core/shortcuts/indexable";
@@ -10,15 +10,27 @@ import {forEach} from "@jstls/core/shortcuts/array";
 export function each<T, I extends ArrayLike<T>, R = void>(source: I, each: ArrayLikeEach<T, R, I>, thisArg?: R): void;
 export function each<T, I extends Foreachable<T>, R = void>(source: I, each: ForeachableEach<T, R, I>, thisArg?: R): void;
 export function each<T, R = void>(source: IterableLike<T> & KeyableObject, each: IterableLikeEach<T, R>, thisArg?: R): void;
-export function each<T, R>(source: IterableLike<T> & KeyableObject, callbackfn: IterableLikeEach<T, R | void>, thisArg?: R): void {
+export function each<T, R = void>(source: T, each: ObjectEach<T, R>, thisArg?: R): void;
+export function each<T, R>(source: IterableLike<T> & KeyableObject | KeyableObject, callbackfn: IterableLikeEach<T, R | void> | ObjectEach<T, R | void>, thisArg?: R): void {
   if (isFunction(source['forEach'])) {
     callbackfn = bind(callbackfn, thisArg);
     let index = 0;
     forEach(source as any, (value: T) => {
-      callbackfn(value, index, source);
+      (callbackfn as IterableLikeEach<T, R | void>)(value, index, <any>source);
       index++;
     })
-  } else protoapply(Array<any>, "forEach", <any> source, [<any> callbackfn, thisArg])
+  } else if (isPlainObject(source)) {
+    keach(source, <any>callbackfn, thisArg);
+  } else protoapply(Array<any>, "forEach", <any>source, [<any>callbackfn, thisArg])
+}
+
+export function keach<T, R = void>(source: T, each: ObjectEach<T, R>, thisArg?: R): void {
+  each = bind(each, thisArg!);
+  let index = 0;
+  for (const key in source) {
+    (each as ObjectEach<T, void>)(source[key], key, index,);
+    index++;
+  }
 }
 
 export function reach<T, I extends ArrayLike<T>, R = void>(source: I, each: ArrayLikeEach<T, R, I>, thisArg?: R): void;
