@@ -21,6 +21,10 @@ export function onEvent(el: EventTarget, type: string | string[], listener: Even
     el.addEventListener(type[i], listener, options);
 }
 
+export function onClick<T extends EventTarget>(el: T, listener: (this: T, event: MouseEvent) => void, options?: boolean | AddEventListenerOptions) {
+  onEvent(el, "click", <any>listener, options);
+}
+
 export function offEvent<T extends MediaQueryList, K extends keyof MediaQueryListEventMap>(el: T, type: K | K[], listener: (this: T, ev: MediaQueryListEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
 export function offEvent<T extends Document, K extends keyof DocumentEventMap>(el: T, type: K | K[], listener: (this: T, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
 export function offEvent<T extends Window, K extends keyof WindowEventMap>(el: T, type: K | K[], listener: (this: T, ev: WindowEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;

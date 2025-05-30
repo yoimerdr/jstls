@@ -16,6 +16,12 @@ export function append<T extends Node>(target: Node, child: T, ...children: Elem
   }, indefinite);
 }
 
+export function prepend<T extends Node>(target: Node, child: T, ...children: Element[]): Maybe<T> {
+  return reduce(slice(arguments, 1), (_, value) => {
+    return target.insertBefore(value, target.firstChild);
+  }, indefinite);
+}
+
 export function remove<T extends Node>(target: Node, child: Node, ...children: Node[]): Maybe<T>;
 export function remove<T extends Node>(target: Node): Maybe<T>;
 export function remove<T extends Node>(target: Node, ...children: Node[]): Maybe<T> {
