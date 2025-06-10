@@ -1,14 +1,15 @@
-import {Instanceable, Maybe, Typeof} from "@jstls/types/core";
+import {Instanceable, Maybe, Typeof, ValidateValue} from "@jstls/types/core";
 import {isArray} from "@jstls/core/shortcuts/array";
 import {indefinite, nullable} from "@jstls/core/utils/types";
+import {bind} from "@jstls/core/functions/bind";
 
 /**
  * Checks if the value is of the specified type or types.
- * @param value The value to check.
  * @param type The type or types to check for.
+ * @param value The value to check.
  * @returns True if the value is of the specified type or types, false otherwise.
  */
-export function typeIs<T>(value: T, type: Typeof | Typeof[]): boolean {
+export function typeIs<T>(type: Typeof | Typeof[], value: T): boolean {
   const typeOf = typeof value;
   return (isArray(type) ? type : [type])
     .every(type => typeOf === type);
@@ -30,7 +31,7 @@ export function isDefined(value: any) {
  * @returns True if the value is an object, false otherwise.
  */
 export function isObject(value: any) {
-  return isDefined(value) && typeIs(value, "object")
+  return isDefined(value) && typeIs("object", value)
 }
 
 
@@ -48,37 +49,28 @@ export function isPlainObject(value: any) {
  * @param value The value to check.
  * @returns True if the value is a function, false otherwise.
  */
-export function isFunction(value: any) {
-  return typeIs(value, "function")
-}
-
+export const isFunction = bind<any>(typeIs, indefinite, "function") as ValidateValue;
 
 /**
  * Checks if the value is a boolean.
  * @param value The value to check.
  * @returns True if the value is a boolean, false otherwise.
  */
-export function isBoolean(value: any) {
-  return typeIs(value, "boolean");
-}
+export const isBoolean = bind<any>(typeIs, indefinite, "boolean") as ValidateValue;
 
 /**
  * Checks if the value is a number.
  * @param value The value to check.
  * @returns True if the value is a number, false otherwise.
  */
-export function isNumber(value: any) {
-  return typeIs(value, "number") && !isNaN(value);
-}
+export const isNumber = bind<any>(typeIs, indefinite, "number") as ValidateValue;
 
 /**
  * Checks if the value is a string.
  * @param value The value to check.
  * @returns True if the value is a string, false otherwise.
  */
-export function isString(value: any) {
-  return typeIs(value, "string")
-}
+export const isString = bind<any>(typeIs, indefinite, "string") as ValidateValue;
 
 export function isinstance(instance: Maybe<Object>, constructor: Instanceable) {
   return instance instanceof constructor;

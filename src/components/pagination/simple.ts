@@ -20,10 +20,10 @@ import {assign, deepAssign} from "@jstls/core/objects/factory";
 import {bind} from "@jstls/core/functions/bind";
 import {floor, max, min} from "@jstls/core/shortcuts/math";
 import {requireObject} from "@jstls/core/objects/validators";
-import {actEl, ellipsisEl, pageEl} from "./simple-elements";
+import {actEl, ellipsisEl, pageEl, withPrefix} from "./simple-elements";
 import {forEach} from "@jstls/core/shortcuts/array";
-import {concat} from "@jstls/core/shortcuts/indexable";
-import {addClass, append, create, onEvent, selector, toggleClass} from "@jstls/components/shared";
+import {concat, len} from "@jstls/core/shortcuts/indexable";
+import {append, attribute, create, onEvent, selector, toggleClass} from "@jstls/components/shared";
 import {descriptor2} from "@jstls/core/definer/shared";
 import {FunctionClassSimpleStatics} from "@jstls/types/core/definer";
 import {apply} from "@jstls/core/functions/apply";
@@ -34,6 +34,8 @@ import {PaginationOnElements} from "@jstls/types/components/pagination/shared";
 import {emitter} from "@jstls/core/emitter";
 import {win} from "@jstls/components/shared/constants";
 import {dataAttribute} from "@jstls/components/shared/elements/attributes";
+import {innerHTML} from "@jstls/components/shared/elements/builders";
+import {ascsort} from "@jstls/core/utils/sorts/fn";
 
 /**
  * A handler for creates a pagination component.
@@ -208,10 +210,10 @@ function init($this: Pagination<any>) {
   let responsive = get2($this, metaResponsive);
 
   // clears the container
-  container.innerHTML = "";
+  innerHTML(container, "")
 
   const el = create("div");
-  addClass(el, "pagination");
+  attribute(el, "class", "pagination")
 
   const options = $this.cfg as RequiredAll<PaginationConfig>;
 
@@ -254,7 +256,7 @@ function init($this: Pagination<any>) {
   append(el, act("previous"));
 
   const div = create('div');
-  div.className = "pagination-pages";
+  attribute(div, "class", withPrefix("pages"));
 
   // assign the active options
   set2($this, metaActive, {
@@ -294,7 +296,7 @@ const metaPagination = uid("p"),
   metaFirsts = uid("mF"),
   metaLasts = uid("mL"),
   metaFirst = uid("mF"),
-  disabledClass = 'pagination-disabled',
+  disabledClass = withPrefix("disabled"),
   {on, emit, off} = emitter();
 
 function getContainer(target: HTMLElement | string): HTMLElement {
@@ -312,7 +314,7 @@ function getContainer(target: HTMLElement | string): HTMLElement {
  */
 export function remove(target: HTMLElement | string) {
   target = getContainer(target);
-  target.innerHTML = "";
+  innerHTML(target, "")
   deletes(target, metaPagination);
 }
 
@@ -351,7 +353,7 @@ export const Pagination: PaginationConstructor = funclass2({
     // add responsive listeners
     const responsive = $this.responsives,
       win = window;
-    if (win && responsive.length) {
+    if (win && len(responsive)) {
       let target: MaybeNumber = nullable;
       eachprv(responsive, function (current, previous) {
         const act = current.key,
@@ -440,18 +442,16 @@ export const Pagination: PaginationConstructor = funclass2({
         if (!get2($this, metaActive))
           return;
 
-        const config = $this.cfg;
-        // unpack active pages parameters
-        const {container, pinedPages, pages, showEllipsis} = get2($this, metaActive) as PaginationActivePages,
+        const config = $this.cfg,
+          // unpack active pages parameters
+          {container, pinedPages, pages, showEllipsis} = get2($this, metaActive) as PaginationActivePages,
           {pages: totalPages, current} = paginator,
-          elements = config.elements;
-
-        const page = bind(elements.page, $this),
-          ellipsis = bind(elements.ellipsis, $this),
-          ellipsisText = config.ellipsisText!;
+          {elements, ellipsisText} = config,
+          page = bind(elements.page, $this),
+          ellipsis = bind(elements.ellipsis, $this);
 
         // clear container
-        container.innerHTML = "";
+        innerHTML(container, "");
 
         // Add pined pages at start
         for (let i = 1; i <= pinedPages; i++)
@@ -471,7 +471,7 @@ export const Pagination: PaginationConstructor = funclass2({
 
         // Add ellipsis if there's a gap after pined pages
         if (showEllipsis && start > pinedPages + 1)
-          append(container, ellipsis(ellipsisText));
+          append(container, ellipsis(ellipsisText!));
 
         // Add pages in the calculated range
         for (let i = start; i <= end; i++)
@@ -479,10 +479,10 @@ export const Pagination: PaginationConstructor = funclass2({
 
         // Add ellipsis if there's a gap before end pined pages
         if (showEllipsis && end < totalPages - pinedPages)
-          append(container, ellipsis(ellipsisText));
+          append(container, ellipsis(ellipsisText!));
 
         // Add pined pages at end
-        for (let i = Math.max(end + 1, totalPages - pinedPages + 1); i <= totalPages; i++)
+        for (let i = max(end + 1, totalPages - pinedPages + 1); i <= totalPages; i++)
           append(container, page(i));
       } else {
         init($this);
@@ -512,7 +512,7 @@ export const Pagination: PaginationConstructor = funclass2({
             return nullable!;
           })
           .filter(isDefined)
-          .sort((a, b) => a.key - b.key)
+          .sort(ascsort("key"))
       })
     }
 })

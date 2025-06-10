@@ -2,7 +2,7 @@ import {Keys} from "@jstls/types/core";
 import {PropertyDescriptor} from "@jstls/types/core/objects/definer";
 import {keach} from "@jstls/core/iterable/each";
 
-export function multiple<T, D>(target: T, descriptors: D, definer: (target: T, key: Keys<D>, descriptor: NonNullable<D[Keys<D>]>) => void) {
+export function multiple<T, D>(definer: (target: T, key: Keys<D>, descriptor: NonNullable<D[Keys<D>]>) => void, target: T, descriptors: D,) {
   keach(descriptors, (descriptor, key) => definer(target, key, descriptor!));
 }
 

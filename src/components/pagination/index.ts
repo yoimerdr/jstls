@@ -4,12 +4,13 @@ import {Instanceable} from "@jstls/types/core";
 import {requireObject} from "@jstls/core/objects/validators";
 import {PagePagination, PagePaginationOptions} from "./page";
 import {wasFirstLoad, Pagination, PaginationOptions} from "./simple";
+import {isinstance} from "@jstls/core/objects/types";
 
 
 function create<T, P extends Pagination<T>>(options: PaginationOptions<T>, cls: Instanceable<P>): P {
   requireObject(options, "options");
   let {paginator: pgr, source, total, perPage} = options;
-  if (!(pgr instanceof Paginator))
+  if (!(isinstance(pgr, Paginator)))
     pgr = paginator(source || total || 1, perPage);
   const pagination = new cls(options, pgr);
   wasFirstLoad(pagination) || pagination.paginate("full");

@@ -2,6 +2,8 @@ import {prop} from "@jstls/core/definer/props";
 import {descriptor2, multiple} from "@jstls/core/definer/shared";
 import {MethodKeys} from "@jstls/types/core";
 import {DefinePropertyGetter, DefinePropertyGetters} from "@jstls/types/core/objects/definer";
+import {bind} from "@jstls/core/functions/bind";
+import {indefinite} from "@jstls/core/utils/types";
 
 /**
  * A shortcut for define a new property according to key and getter fn.
@@ -31,6 +33,4 @@ export function getter<T, K extends MethodKeys<T> | PropertyKey = PropertyKey>(t
  * @param getters The property keys and getter fns.
  * @see {getter}
  */
-export function getters<T>(target: T, getters: DefinePropertyGetters<T>) {
-  multiple(target, getters, getter)
-}
+export const getters = bind<any>(multiple, indefinite, getter) as <T>(target: T, getters: DefinePropertyGetters<T>) => void;

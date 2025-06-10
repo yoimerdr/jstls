@@ -1,5 +1,5 @@
 import {KeyableObject, WithPrototype} from "@jstls/types/core/objects";
-import {get, set, setTo} from "@jstls/core/objects/handlers/getset";
+import {get2, set2, setTo} from "@jstls/core/objects/handlers/getset";
 import {isFunction} from "@jstls/core/objects/types";
 import {concat} from "@jstls/core/shortcuts/string";
 import {propertyNames} from "@jstls/core/shortcuts/object";
@@ -7,9 +7,9 @@ import {nullable} from "@jstls/core/utils/types";
 
 export function statics<T extends WithPrototype>(target: T, base: WithPrototype): T {
   (
-    get(Object, 'setPrototypeOf') ||
+    get2(Object, 'setPrototypeOf') ||
     ({__proto__: []} instanceof Array && function (target: KeyableObject, base: KeyableObject) {
-      set(target, "__proto__", base);
+      set2(target, "__proto__", base);
     }) ||
     ((target: T, base: WithPrototype) => setTo(base, propertyNames(base), target))
   )(target, base);

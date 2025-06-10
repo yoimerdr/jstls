@@ -1,9 +1,10 @@
 import {PaginationActLabel} from "@jstls/types/components/pagination";
 import {call} from "@jstls/core/functions/call";
 import {createActElement, createPageElement} from "./simple-elements";
-import {onEvent} from "@jstls/components/shared/events";
+import {onClick, preventDefault} from "@jstls/components/shared/events";
 import {indefinite, nullable} from "@jstls/core/utils/types";
 import {PagePaginationOnElements} from "@jstls/types/components/pagination/shared";
+import {apply} from "@jstls/core/functions/apply";
 
 /**
  * Creates a clickable action (next, first, previous, last) element for page pagination.
@@ -15,26 +16,26 @@ export function actEl<T = any>(this: PagePaginationOnElements<T>, label: Paginat
     el = createActElement($this, "a", label),
     paginator = $this.paginator;
 
-  let onClick: any = nullable, page;
+  let action: any = nullable, page;
   if (label === "first") {
     page = 1;
-    onClick = $this.toFirst;
+    action = $this.toFirst;
   } else if (label === "last") {
     page = paginator.pages;
-    onClick = $this.toLast;
+    action = $this.toLast;
   } else if (label === "previous") {
     page = paginator.current - 1;
-    onClick = $this.previous;
+    action = $this.previous;
   } else if (label === "next") {
     page = paginator.current + 1;
-    onClick = $this.next;
+    action = $this.next;
   }
 
   const url = page && page <= paginator.pages ? $this.url(page) : indefinite;
-  onClick && onEvent(el, "click", (ev) => {
+  action && onClick(el, (ev) => {
     if (!$this.cfg.reload) {
-      ev.preventDefault();
-      call(onClick, $this)
+      apply(preventDefault, indefinite, [ev]);
+      call(action, $this)
     }
   })
 
@@ -54,9 +55,9 @@ export function pageEl<T = any>(this: PagePaginationOnElements<T>, page: number 
 
   el.href = $this.url(page);
 
-  onEvent(el, "click", (ev) => {
+  onClick(el, (ev) => {
     if (!$this.cfg.reload) {
-      ev.preventDefault();
+      apply(preventDefault, indefinite, [ev])
       $this.goto(page);
     }
   })

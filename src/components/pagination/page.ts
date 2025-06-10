@@ -19,9 +19,10 @@ import {PaginationActLabel} from "@jstls/types/components/pagination";
 import {Paginator} from "@jstls/core/geometry/paginator";
 import {PagePaginationOnElements} from "@jstls/types/components/pagination/shared";
 import {get2} from "@jstls/core/objects/handlers/getset";
-import {his} from "@jstls/components/shared/constants";
+import {his, loc} from "@jstls/components/shared/constants";
 import {concat} from "@jstls/core/shortcuts/string";
 import {protoapply} from "@jstls/core/functions/prototype/apply";
+import {string} from "@jstls/core/objects/handlers";
 
 /**
  * A handler for creates a page pagination component.
@@ -113,14 +114,14 @@ export const PagePagination: PagePaginationConstructor = funclass2<PagePaginatio
   prototype: <FunctionClassSimpleStatics<PagePagination<any>>>{
     url(page) {
       const $this = this,
-        url = new URL(location.href);
+        url = new URL(loc.href);
       url.searchParams.set($this.cfg.parameter!, page as string)
-      return url.toString();
+      return string(url);
     },
     goto(page, force) {
       const $this = this;
       if (wasFirstLoad($this) && $this.cfg.reload) {
-        location.href = $this.url(page);
+        loc.href = $this.url(page);
         return true;
       }
 
@@ -129,7 +130,7 @@ export const PagePagination: PagePaginationConstructor = funclass2<PagePaginatio
   },
   protodescriptor: {
     parameter: descriptor2(function (this: PagePagination<any>) {
-      const page = new URL(location.href)
+      const page = new URL(loc.href)
         .searchParams
         .get(this.cfg.parameter!)
 

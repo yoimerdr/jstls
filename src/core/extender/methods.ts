@@ -5,6 +5,8 @@ import {requiredWithType, requireFunction} from "@jstls/core/objects/validators"
 import {slice} from "@jstls/core/iterable";
 import {apply} from "@jstls/core/functions/apply";
 import {concat} from "@jstls/core/shortcuts/indexable";
+import {bind} from "@jstls/core/functions/bind";
+import {indefinite} from "@jstls/core/utils/types";
 
 /**
  * Extends a method to add additional functionality.
@@ -59,7 +61,7 @@ export function method<T extends Object, K extends MethodKeys<T>>(target: T, key
       let args: SafeParameters<T[K]> = slice(arguments) as any,
         $this = this;
       if (replace)
-        return apply(replace, $this, <any> concat([met], args));
+        return apply(replace, $this, <any>concat([met], args));
 
       modifyParameters && (args = apply(modifyParameters, $this, args))
       beforeCall && apply(beforeCall, $this, args)
@@ -68,7 +70,7 @@ export function method<T extends Object, K extends MethodKeys<T>>(target: T, key
       if (!afterCall)
         return res
 
-      return apply(afterCall, $this, <any> concat([res], args))
+      return apply(afterCall, $this, <any>concat([res], args))
     } as T[K]
   }
 }
@@ -79,7 +81,4 @@ export function method<T extends Object, K extends MethodKeys<T>>(target: T, key
  * @param descriptors The object keys and their builder extends options.
  * @see {method}
  */
-export function methods<T extends Object>(target: T, descriptors: ExtendMethodBuilders<T>) {
-  multiple(target, descriptors, method)
-}
-
+export const methods = bind<any>(multiple, indefinite, method) as <T extends Object>(target: T, descriptors: ExtendMethodBuilders<T>) => void;

@@ -9,17 +9,20 @@ import {apply} from "@jstls/core/functions/apply";
 import {startsWith} from "@jstls/core/polyfills/string/es2015";
 import {len} from "@jstls/core/shortcuts/indexable";
 import {set2} from "@jstls/core/objects/handlers/getset";
+import {bind} from "@jstls/core/functions/bind";
 
 function _toAttribute(name: string | KeyableObject<Object>, value?: Object) {
   return isPlainObject(name) ? name as KeyableObject<Object> : fromEntries([[name as string, value!]]);
 }
 
-function _mapAttribute(el: Element, attributes: KeyableObject<Object>, add: boolean, prefix?: string): string {
+function _mapAttribute(add: boolean, prefix: MaybeString, el: Element, attributes: string | KeyableObject<Object>, value?: Object): string {
+  attributes = _toAttribute(attributes, value);
+
   return reduce(
     keys(attributes),
     (value, key) => {
-      prefix && (key = prefix + (key as string));
       value = attributes[key as any] as string;
+      prefix && (key = prefix + (key as string));
       if (add) {
         if (isDefined(value))
           el.setAttribute(key as string, value as string);
@@ -35,31 +38,25 @@ function _mapAttribute(el: Element, attributes: KeyableObject<Object>, add: bool
   )
 }
 
-export function attribute(el: Element, name: string): MaybeString;
-/**
- * Sets an attribute on an element
- * @param el The target element
- * @param name The attribute name
- * @param value The attribute value
- * @see [MDN Reference](https://developer.mozilla.org/docs/Web/API/Element/setAttribute)
- */
-export function attribute(el: Element, name: string, value: Object): string;
-export function attribute(el: Element, attributes: KeyableObject<Object>): string;
-export function attribute(el: Element, name: string | KeyableObject<Object>, value?: Object): string {
-  return _mapAttribute(el, _toAttribute(name, value), true);
+export interface SetAttribute {
+  (el: Element, name: string): MaybeString;
+
+  (el: Element, name: string, value: Object): string;
+
+  (el: Element, attributes: KeyableObject<Object>): string;
 }
 
-export function dataAttribute(el: Element, name: string | KeyableObject<Object>, value?: Object): string {
-  return _mapAttribute(el, _toAttribute(name, value), true, "data-");
+export interface RemoveAttribute {
+  (el: Element, name: string | KeyableObject<Object>): string
 }
 
-export function removeAttribute(el: Element, name: string | KeyableObject<Object>): string {
-  return _mapAttribute(el, _toAttribute(name,), false) as string;
-}
+export const attribute = bind<any>(_mapAttribute, indefinite, true, indefinite) as SetAttribute;
 
-export function removeDataAttribute(el: Element, name: string | KeyableObject<Object>): string {
-  return _mapAttribute(el, _toAttribute(name), false, "data-") as string;
-}
+export const dataAttribute = bind<any>(_mapAttribute, indefinite, true, "data-") as SetAttribute;
+
+export const removeAttribute = bind<any>(_mapAttribute, indefinite, false, indefinite) as RemoveAttribute;
+
+export const removeDataAttribute = bind<any>(_mapAttribute, indefinite, false, indefinite, "data-") as RemoveAttribute;
 
 export function attributes(el: Element, prefix?: string): KeyableObject<string> {
   let names = el.getAttributeNames(),

@@ -2,6 +2,7 @@ import {reduce, slice} from "@jstls/core/iterable";
 import {indefinite} from "@jstls/core/utils/types";
 import {len} from "@jstls/core/shortcuts/indexable";
 import {Maybe} from "@jstls/types/core";
+import {applyFirstDefined} from "@jstls/core/objects/handlers";
 
 /**
  * Appends a child on an element
@@ -29,6 +30,6 @@ export function remove<T extends Node>(target: Node, ...children: Node[]): Maybe
   if (len(args) === 1)
     return remove(target.parentNode!, target)
   return reduce(slice(args, 1), (_, value) => {
-    return target.removeChild(value);
+    return applyFirstDefined(target, ["removeChild"], [value]);
   }, indefinite)
 }

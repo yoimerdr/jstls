@@ -3,6 +3,8 @@ import {Keys} from "@jstls/types/core";
 import {DefinePropertyDescriptor, DefinePropertyDescriptors} from "@jstls/types/core/objects/definer";
 import {defineProperty} from "@jstls/core/shortcuts/object";
 import {KeyableObject} from "@jstls/types/core/objects";
+import {bind} from "@jstls/core/functions/bind";
+import {indefinite} from "@jstls/core/utils/types";
 
 /**
  * Define a new property if it doesn't exist.
@@ -26,8 +28,7 @@ export function prop<T, K extends Keys<T> | PropertyKey = PropertyKey>(target: T
  *
  * @see {prop}
  */
-export function props<T>(target: T, descriptors: DefinePropertyDescriptors<T>): void;
-export function props<T>(target: T, descriptors: KeyableObject<PropertyDescriptor>): void;
-export function props<T>(target: T, descriptors: DefinePropertyDescriptors<T>) {
-  multiple(target, descriptors, prop)
+export const props = bind<any>(multiple, indefinite, prop) as {
+  <T>(target: T, descriptors: DefinePropertyDescriptors<T>): void;
+  <T>(target: T, descriptors: KeyableObject<PropertyDescriptor>): void;
 }

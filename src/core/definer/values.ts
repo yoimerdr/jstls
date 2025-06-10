@@ -4,6 +4,7 @@ import {Keys} from "@jstls/types/core";
 import {DefinePropertyValues} from "@jstls/types/core/objects/definer";
 import {MaybeKeyObjectType} from "@jstls/types/core/objects";
 import {indefinite} from "@jstls/core/utils/types";
+import {bind} from "@jstls/core/functions/bind";
 
 function _value<T, K extends Keys<T> | PropertyKey>(target: T, key: K, value: MaybeKeyObjectType<T, K>, writable?: boolean, numerable?: boolean) {
   prop(target, key, descriptor(value, writable, indefinite, numerable))
@@ -38,10 +39,7 @@ export function readonly<T, K extends Keys<T> | PropertyKey = PropertyKey>(targe
  * @param values The property keys and values.
  * @see {readonly}
  */
-export function readonlys<T>(target: T, values: DefinePropertyValues<T>): void;
-export function readonlys<T>(target: T, values: DefinePropertyValues<T>) {
-  multiple(target, values, readonly)
-}
+export const readonlys = bind<any>(multiple, indefinite, readonly) as <T>(target: T, values: DefinePropertyValues<T>) => void;
 
 /**
  * A shortcut for define a new property according to key and value.
@@ -72,10 +70,7 @@ export function readonly2<T, K extends Keys<T> | PropertyKey = PropertyKey>(targ
  * @param values The property keys and values.
  * @see {readonly2}
  */
-export function readonlys2<T>(target: T, values: DefinePropertyValues<T>) {
-  multiple(target, values, readonly2)
-}
-
+export const readonlys2 = bind<any>(multiple, indefinite, readonly) as <T>(target: T, values: DefinePropertyValues<T>) => void;
 
 /**
  * A shortcut for define a new property according to key and value.
@@ -106,15 +101,10 @@ export function writeable<T, K extends Keys<T> | PropertyKey = PropertyKey>(targ
  * @param values The property keys and values.
  * @see {writeable}
  */
-export function writeables<T>(target: T, values: DefinePropertyValues<T>) {
-  multiple(target, values, writeable)
-}
-
+export const writeables = bind<any>(multiple, indefinite, writeable) as <T>(target: T, values: DefinePropertyValues<T>) => void;
 
 export function configurable<T, K extends Keys<T> | PropertyKey = PropertyKey>(target: T, key: K, value: MaybeKeyObjectType<T, K>) {
   prop(target, key, descriptor(value, indefinite, true))
 }
 
-export function configurables<T>(target: T, values: DefinePropertyValues<T>) {
-  multiple(target, values, configurable)
-}
+export const configurables = bind<any>(multiple, indefinite, writeable) as <T>(target: T, values: DefinePropertyValues<T>) => void;

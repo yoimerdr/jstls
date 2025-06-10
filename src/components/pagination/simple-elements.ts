@@ -2,16 +2,16 @@ import {PaginationActLabel} from "@jstls/types/components/pagination";
 import {requireDefined} from "@jstls/core/objects/validators";
 import {IllegalArgumentError} from "@jstls/core/exceptions";
 import {concat} from "@jstls/core/shortcuts/indexable";
-import {attribute, create, onEvent} from "@jstls/components/shared";
-import {apply} from "@jstls/core/functions/apply";
-import {nullable} from "@jstls/core/utils/types";
+import {attribute, create} from "@jstls/components/shared";
+import {indefinite, nullable} from "@jstls/core/utils/types";
 import {PaginationOnElements} from "@jstls/types/components/pagination/shared";
 import {innerHTML} from "@jstls/components/shared/elements/builders";
 import {addClass} from "@jstls/components/shared/styles/classname";
+import {onClick} from "@jstls/components/shared/events";
+import {bind} from "@jstls/core/functions/bind";
+import {EmptyFunctionType} from "@jstls/types/core";
 
-export function withPrefix(name: Object): string {
-  return concat("pagination-", name);
-}
+export const withPrefix = bind(concat, indefinite, "pagination-") as (prefix: Object, ...prefixes: Object[]) => string;
 
 /**
  * Creates an action element for pagination
@@ -43,18 +43,18 @@ export function actEl<T = any>(this: PaginationOnElements<T>, label: PaginationA
   const $this = this,
     el = createActElement($this, 'button', label);
 
-  let onClick: any = nullable;
+  let click: any = nullable;
 
   if (label === "first")
-    onClick = $this.toFirst;
+    click = $this.toFirst;
   else if (label === "last")
-    onClick = $this.toLast;
+    click = $this.toLast;
   else if (label === "previous")
-    onClick = $this.previous;
+    click = $this.previous;
   else if (label === "next")
-    onClick = $this.next;
+    click = $this.next;
 
-  onClick && onEvent(el, "click", () => apply(onClick, $this));
+  click && onClick(el, bind(click, $this));
 
   return el;
 }
@@ -96,7 +96,7 @@ export function createPageElement<K extends keyof HTMLElementTagNameMap, T = any
 export function pageEl<T = any>(this: PaginationOnElements<T>, page: number | string): HTMLElement {
   const $this = this,
     el = createPageElement($this, "button", page);
-  onEvent(el, "click", () => $this.goto(page));
+  onClick(el, bind($this.goto, $this, page, false) as EmptyFunctionType<any, any>);
   return el;
 }
 
