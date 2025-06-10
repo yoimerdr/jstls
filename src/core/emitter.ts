@@ -1,5 +1,5 @@
 import {KeyableObject} from "@jstls/types/core/objects";
-import {get, set} from "./objects/handlers/getset";
+import {get2, set} from "./objects/handlers/getset";
 import {forEach} from "./shortcuts/array";
 import {slice} from "./iterable";
 import {apply} from "./functions/apply";
@@ -26,16 +26,16 @@ export function emitter(): Emitter {
   return {
     on(name, listener) {
       if (isFunction(listener)) {
-        (get(listeners, name) || set(listeners, name, []))
+        (get2(listeners, name) || set(listeners, name, []))
           .push(listener);
       }
     },
     off(name, listener) {
-      const callbacks = get(listeners, name);
+      const callbacks = get2(listeners, name);
       callbacks && callbacks.splice(callbacks.indexOf(listener), 1);
     },
     emit(name, thisArg) {
-      const callbacks = get(listeners, name),
+      const callbacks = get2(listeners, name),
         values = slice(arguments, 2);
       callbacks && forEach(callbacks, (value) => apply(<any> value, thisArg, values));
     },

@@ -1,14 +1,27 @@
 import {Keys, MethodKeys, PropertiesKeys} from "@jstls/types/core";
-import {call} from "@jstls/core/functions/call";
 import {isFunction} from "@jstls/core/objects/types";
 import {includes} from "@jstls/core/polyfills/indexable/es2016";
 import {filter} from "@jstls/core/iterable/filter";
 import {nreturns} from "@jstls/core/utils/fn";
-import {nullable} from "@jstls/core/utils/types";
+import {indefinite, nullable} from "@jstls/core/utils/types";
 import {PropertyDescriptors} from "@jstls/types/core/objects/definer";
 import {reduce} from "@jstls/core/iterable";
 import {descriptor, keys, propertyNames} from "@jstls/core/shortcuts/object";
 import {KeyableObject} from "@jstls/types/core/objects";
+import {bind} from "@jstls/core/functions/bind";
+import {apply} from "@jstls/core/functions/apply";
+
+export interface ObjectProperties {
+  <T>(object: T): PropertiesKeys<T>[];
+
+  <T>(object: T, filter: 'statics' | 'prototype'): PropertiesKeys<T>[];
+}
+
+export interface ObjectMethods {
+  <T>(object: T): MethodKeys<T>[];
+
+  <T>(object: T, filter: 'statics' | 'prototype'): MethodKeys<T>[];
+}
 
 export function descriptors<T>(object: T, mode?: 'keys' | 'names'): PropertyDescriptors<T> {
   return reduce((mode === 'names' ? propertyNames : keys)(object), (current, key) => {
@@ -26,33 +39,15 @@ function filterFromObject<T>(type: 'keys' | 'names', condition: (value: any) => 
     (mode === 'prototype' ? commonPrototype : nullable);
   const desc = descriptors(object, type);
   return filter(keys(desc), key => {
-    return !common || !call(includes, common, key) && condition(desc[key].value);
+    return (!common || !apply(includes, common, [key])) && condition(desc[key].value);
   });
 }
 
-export function simpleKeys<T>(object: T): PropertiesKeys<T>[];
-export function simpleKeys<T>(object: T, filter: 'statics' | 'prototype'): PropertiesKeys<T>[];
-export function simpleKeys<T>(object: T, mode?: 'statics' | 'prototype'): PropertiesKeys<T>[] {
-  return filterFromObject('keys', nreturns(isFunction), object, mode!) as PropertiesKeys<T>[];
-}
+export const simpleKeys = bind(filterFromObject, indefinite, 'keys', nreturns(isFunction)) as ObjectProperties,
+  methodKeys = bind(filterFromObject, indefinite, 'keys', isFunction) as ObjectMethods,
+  simpleProperties = bind(filterFromObject, indefinite, 'names', nreturns(isFunction),) as ObjectMethods,
+  methodProperties = bind(filterFromObject, indefinite, 'names', isFunction) as ObjectMethods;
 
-export function methodKeys<T>(object: T): MethodKeys<T>[];
-export function methodKeys<T>(object: T, filter: 'statics' | 'prototype'): MethodKeys<T>[];
-export function methodKeys<T>(object: T, mode?: 'statics' | 'prototype'): MethodKeys<T>[] {
-  return filterFromObject('keys', isFunction, object, mode!) as MethodKeys<T>[];
-}
-
-export function simpleProperties<T>(object: T): MethodKeys<T>[];
-export function simpleProperties<T>(object: T, filter: 'statics' | 'prototype'): MethodKeys<T>[];
-export function simpleProperties<T>(object: T, mode?: 'statics' | 'prototype'): MethodKeys<T>[] {
-  return filterFromObject('names', nreturns(isFunction), object, mode!) as MethodKeys<T>[];
-}
-
-export function methodProperties<T>(object: T): MethodKeys<T>[];
-export function methodProperties<T>(object: T, filter: 'statics' | 'prototype'): MethodKeys<T>[];
-export function methodProperties<T>(object: T, mode?: 'statics' | 'prototype'): MethodKeys<T>[] {
-  return filterFromObject('names', isFunction, object, mode!) as MethodKeys<T>[];
-}
 
 export function hasKey<T, K extends Keys<T>>(object: T, key: K): boolean;
 export function hasKey(object: KeyableObject, key: PropertyKey): boolean;

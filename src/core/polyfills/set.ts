@@ -9,7 +9,7 @@ import {len} from "@jstls/core/shortcuts/indexable";
 import {clear, forEach} from "@jstls/core/shortcuts/array";
 import {concat} from "@jstls/core/shortcuts/string";
 import {uid} from "./symbol";
-import {get, set} from "@jstls/core/objects/handlers/getset";
+import {get, get2, set} from "@jstls/core/objects/handlers/getset";
 import {funclass2} from "@jstls/core/definer/classes/funclass";
 import {FunctionClassSimpleStatics} from "@jstls/types/core/definer";
 import {deletes, deletesAll} from "@jstls/core/objects/handlers/deletes";
@@ -32,7 +32,7 @@ const setKey = uid("mK"),
 function item2source<T>($this: Set<T>, item: T): SetSource {
   let key = isObject(item) ? nullable : concat("", item as Object),
     already = false,
-    setKeySymbol = get($this, setKey),
+    setKeySymbol = get2($this, setKey),
     index: number;
 
   if (!key) {
@@ -91,8 +91,8 @@ export const Set: SetConstructor = funclass2({
     const $this = this,
       isSet = source instanceof Set;
 
-    readonly($this, setObjects, isSet ? slice(get(source, setObjects)) : []);
-    readonly($this, setPrimitives, isSet ? assign({}, get(source, setPrimitives)) : {});
+    readonly($this, setObjects, isSet ? slice(get2(source, setObjects)) : []);
+    readonly($this, setPrimitives, isSet ? assign({}, get2(source, setPrimitives)) : {});
     readonly($this, setKey, uid("mS"))
 
     !isSet && source && each(source, $this.add, $this);
@@ -112,7 +112,7 @@ export const Set: SetConstructor = funclass2({
     forEach(fn, thisArg) {
       fn = bind(fn, thisArg);
       const $this = this;
-      forEach(get($this, setObjects), (value) => fn(value, value, $this));
+      forEach(get2($this, setObjects), (value) => fn(value, value, $this));
     },
     has(value) {
       const $this = this,
@@ -126,7 +126,7 @@ export const Set: SetConstructor = funclass2({
 
       if (source.already) {
         source.isObject && deletes($this, setPrimitives, source.key!);
-        get($this, setObjects,).splice(source.index!, 1);
+        get2($this, setObjects,).splice(source.index!, 1);
 
         return true;
       }
@@ -135,8 +135,8 @@ export const Set: SetConstructor = funclass2({
     },
     clear() {
       const $this = this,
-        primitives = get($this, setPrimitives);
-      clear(get($this, setObjects));
+        primitives = get2($this, setPrimitives);
+      clear(get2($this, setObjects));
       deletesAll(primitives);
     }
   },

@@ -8,6 +8,7 @@ import {protocall} from "@jstls/core/functions/prototype/call";
 import {isDefined} from "@jstls/core/objects/types";
 import {toInt} from "@jstls/core/extensions/string";
 import {nullable} from "@jstls/core/utils/types";
+import {partial} from "@jstls/core/functions/partial";
 
 export interface SizeInt extends Size {
   adjust(ratio: SizeArgument): SizeInt;
@@ -35,8 +36,6 @@ export const SizeInt: SizeIntConstructor = funclass2({
         height = round(toInt(nullable, height! as string)!);
       return protocall(Size, 'height', this, height);
     },
-    toString() {
-      return sizeToString(this, 'SizeInt')
-    }
+    toString: partial(sizeToString, 'SizeInt')
   }
 }, Size)

@@ -49,10 +49,10 @@ export const Mixer: MixerConstructor = funclass2({
     readonly2(this, "target", target);
   },
   prototype: <FunctionClassSimpleStatics<Mixer<any>>>{
-    super(cls, key, ...args) {
+    super(cls, key) {
       return apply(mixerSuper, nullable, <any> concat([this.target, cls, key,], slice(arguments, 2)))
     },
-    init(cls, ...args) {
+    init(cls) {
       return apply(mixerInit, nullable, <any> concat([this.target, cls], slice(arguments, 2)))
     }
   }

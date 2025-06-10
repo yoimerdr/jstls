@@ -8,7 +8,7 @@ import {WithPrototype} from "@jstls/types/core/objects";
 import {uid} from "@jstls/core/polyfills/symbol";
 import {funclass2} from "@jstls/core/definer/classes/funclass";
 import {FunctionClassSimpleStatics} from "@jstls/types/core/definer";
-import {get, set} from "@jstls/core/objects/handlers/getset";
+import {get2, set} from "@jstls/core/objects/handlers/getset";
 import {nullable} from "@jstls/core/utils/types";
 import {mapped} from "@jstls/core/definer/getters/builders";
 
@@ -26,14 +26,14 @@ function assignPrevNode<T>($this: BiNode<T>, args: IArguments,
     if (isBiNode(args[0])) {
       prev = args[0];
       if (args[1] && $this.hasPrev()) {
-        set(prev, metaPrev, get($this, metaPrev,));
+        set(prev, metaPrev, get2($this, metaPrev,));
         onPreserve && apply(onPreserve, $this, [prev!])
       }
     }
     set($this, metaPrev, prev);
   }
 
-  return get($this, metaPrev);
+  return get2($this, metaPrev);
 }
 
 export interface BiNode<T> extends Node<T> {
@@ -72,7 +72,7 @@ export const BiNode: BiNodeConstructor = funclass2<BiNodeConstructor>({
     prev() {
       return assignPrevNode(this, arguments, isBiNode, function (prev) {
         const $this = this;
-        $this.hasPrev() && get($this, metaPrev).next(prev);
+        $this.hasPrev() && get2($this, metaPrev).next(prev);
         prev.next($this)
       });
     },

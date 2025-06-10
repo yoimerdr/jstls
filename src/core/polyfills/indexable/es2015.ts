@@ -1,4 +1,4 @@
-import {isDefined} from "@jstls/core/objects/types";
+import {isDefined} from "@jstls/core/objects/types/fn";
 import {requireFunction} from "@jstls/core/objects/validators";
 import {ArrayEach, ArrayLike, ArrayLikeEach} from "@jstls/types/core/array";
 import {Maybe} from "@jstls/types/core";

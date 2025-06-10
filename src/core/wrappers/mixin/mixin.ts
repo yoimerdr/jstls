@@ -10,7 +10,7 @@ import {IllegalAccessError} from "@jstls/core/exceptions/illegal-access";
 import {RequiredArgumentError} from "@jstls/core/exceptions/required-argument";
 import {hasOwn} from "@jstls/core/polyfills/objects/es2022";
 import {is} from "@jstls/core/polyfills/objects/es2015";
-import {get} from "@jstls/core/objects/handlers/getset";
+import {get2} from "@jstls/core/objects/handlers/getset";
 import {forEach} from "@jstls/core/shortcuts/array";
 import {includes} from "@jstls/core/polyfills/indexable/es2016";
 import {call} from "@jstls/core/functions/call";
@@ -20,7 +20,7 @@ import {funclass2} from "@jstls/core/definer/classes/funclass";
 const mixinKey = uid("mC");
 
 export function getMixinBases(instance: Object) {
-  return get(instance.constructor, mixinKey);
+  return get2(instance.constructor, mixinKey);
 }
 
 /**
@@ -213,7 +213,7 @@ export function mixinPrototype<T extends Instanceable[]>(target: Instanceable, b
     if (!isDefined(statics) || statics) {
       // static methods
       forEach(propertyNames(cons), (name) => {
-        if (!call(includes, commonStatics, name) && (!isDefined(get(target, name)) || force)) {
+        if (!call(includes, commonStatics, name) && (!isDefined(get2(target, name)) || force)) {
           try {
             // safe assign for get/set functions
             (target as KeyableObject)[name] = (cons as KeyableObject)[name];

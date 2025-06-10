@@ -10,6 +10,8 @@ interface DuoShortcut {
   (x: number, y: number): number;
 }
 
+const M = Math;
+
 /**
  * Returns the larger of a set of supplied numeric expressions.
  *
@@ -17,7 +19,7 @@ interface DuoShortcut {
  * @param values Numeric expressions to be evaluated.
  * @see {Math.max}
  */
-export const max: RangeShortcut = Math.max;
+export const max: RangeShortcut = M.max,
 
 /**
  * Returns the smaller of a set of supplied numeric expressions.
@@ -26,7 +28,7 @@ export const max: RangeShortcut = Math.max;
  * @param values Numeric expressions to be evaluated.
  * @see {Math.min}
  */
-export const min: RangeShortcut = Math.min;
+min: RangeShortcut = M.min,
 
 /**
  * Returns the greatest integer less than or equal to its numeric argument.
@@ -35,7 +37,7 @@ export const min: RangeShortcut = Math.min;
  * @param x A numeric expression.
  * @see {Math.floor}
  */
-export const floor: SingleShortcut = Math.floor;
+floor: SingleShortcut = M.floor,
 
 /**
  * Returns the smallest integer greater than or equal to its numeric argument.
@@ -44,7 +46,7 @@ export const floor: SingleShortcut = Math.floor;
  * @param x A numeric expression.
  * @see {Math.ceil}
  */
-export const ceil: SingleShortcut = Math.ceil;
+ceil: SingleShortcut = M.ceil,
 /**
  * Returns a supplied numeric expression rounded to the nearest integer.
  *
@@ -52,7 +54,7 @@ export const ceil: SingleShortcut = Math.ceil;
  * @param x The value to be rounded to the nearest integer.
  * @see {Math.round}
  */
-export const round: SingleShortcut = Math.round;
+round: SingleShortcut = M.round,
 /**
  * Returns the square root of a number.
  *
@@ -60,7 +62,7 @@ export const round: SingleShortcut = Math.round;
  * @param x A numeric expression.
  * @see {Math.sqrt}
  */
-export const sqrt: SingleShortcut = Math.sqrt;
+sqrt: SingleShortcut = M.sqrt,
 /**
  * Returns the value of a base expression taken to a specified power.
  *
@@ -69,11 +71,11 @@ export const sqrt: SingleShortcut = Math.sqrt;
  * @param y The exponent value of the expression.
  * @see {Math.pow}
  */
-export const pow: DuoShortcut = Math.pow;
+pow: DuoShortcut = M.pow,
 /**
  * Returns a pseudorandom number between 0 and 1.
  *
  * This is a short for {@link Math.random}.
  * @see {Math.random}
  */
-export const random = Math.random;
+random = M.random;

@@ -4,7 +4,7 @@ import {isNotEmpty} from "@jstls/core/extensions/shared/iterables";
 import {isDefined} from "@jstls/core/objects/types";
 import {apply} from "@jstls/core/functions/apply";
 import {uid} from "@jstls/core/polyfills/symbol";
-import {get, set} from "@jstls/core/objects/handlers/getset";
+import {get2, set} from "@jstls/core/objects/handlers/getset";
 import {WithPrototype} from "@jstls/types/core/objects";
 import {funclass2} from "@jstls/core/definer/classes/funclass";
 import {FunctionClassSimpleStatics} from "@jstls/types/core/definer";
@@ -25,13 +25,13 @@ export function assignNextNode<T, >($this: Node<T>, args: IArguments,
       next = args[0];
 
       if (args[1] && $this.hasNext()) {
-        set(next, metaNext, get($this, metaNext,));
+        set(next, metaNext, get2($this, metaNext,));
         onPreserve && apply(onPreserve, $this, [next]);
       }
     }
     set($this, metaNext, next);
   }
-  return get($this, metaNext);
+  return get2($this, metaNext);
 }
 
 const metaValue = uid("mV"),
@@ -66,13 +66,13 @@ export const Node: NodeConstructor = funclass2({
     value(value) {
       const $this = this;
       isNotEmpty(arguments) && set($this, metaValue, value);
-      return get($this, metaValue);
+      return get2($this, metaValue);
     },
     next() {
       return assignNextNode(this, arguments, isNode);
     },
     hasNext() {
-      return isDefined(get(this, metaNext))
+      return isDefined(get2(this, metaNext))
     }
   }
 })

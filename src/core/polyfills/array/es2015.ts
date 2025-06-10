@@ -1,5 +1,5 @@
 import {IterableLike} from "@jstls/types/core/iterable";
-import {isDefined} from "@jstls/core/objects/types";
+import {isDefined} from "@jstls/core/objects/types/fn";
 import {requireFunction} from "@jstls/core/objects/validators";
 import {self} from "@jstls/core/utils";
 import {bind} from "@jstls/core/functions/bind";
@@ -27,6 +27,6 @@ export function entries<T>(this: T[]): [number, T][] {
 
 export function arrayOf<T>(...args: T[]): T[];
 export function arrayOf(...args: any[]): any[];
-export function arrayOf(...args: any[]): any[] {
+export function arrayOf(): any[] {
   return slice(arguments);
 }

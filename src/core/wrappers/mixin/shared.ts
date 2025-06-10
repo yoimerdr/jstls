@@ -33,7 +33,8 @@ function checkMixer(instance: Object, cls: any) {
  * @param key The property name (method).
  * @param args The method args.
  */
-export function mixerSuper<I extends Instanceable, P extends InstanceMethodKeys<I>>(target: Object, cls: I, key: P, ...args: InstanceMethodParameters<I, P>): InstanceMethodReturn<I, P> {
+export function mixerSuper<I extends Instanceable, P extends InstanceMethodKeys<I>>(target: Object, cls: I, key: P, ...args: InstanceMethodParameters<I, P>): InstanceMethodReturn<I, P>;
+export function mixerSuper<I extends Instanceable, P extends InstanceMethodKeys<I>>(target: Object, cls: I, key: P): InstanceMethodReturn<I, P> {
   checkMixer(target, cls);
   return protoapply(<any>cls, key, target, slice(arguments, 3));
 }
@@ -44,7 +45,8 @@ export function mixerSuper<I extends Instanceable, P extends InstanceMethodKeys<
  * @param target The target mixed class instance.
  * @param args The constructor args.
  */
-export function mixerInit<I extends Instanceable>(target: Object, cls: I, ...args: InstanceableParameters<I>): SafeReturnType<InstanceableType<I>> {
+export function mixerInit<I extends Instanceable>(target: Object, cls: I, ...args: InstanceableParameters<I>): SafeReturnType<InstanceableType<I>>;
+export function mixerInit<I extends Instanceable>(target: Object, cls: I): SafeReturnType<InstanceableType<I>> {
   checkMixer(target, cls);
   return protoapply(<any>cls, "constructor", target, slice(arguments, 2));
 }

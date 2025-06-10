@@ -12,7 +12,8 @@ import {len} from "@jstls/core/shortcuts/indexable";
 import {forEach} from "@jstls/core/shortcuts/array";
 import {CountsCompareFn, Pushable} from "@jstls/types/core/extensions/array";
 
-export function remove<R, T extends RemoveArray<R> = R[]>(source: T, value: R, ...values: R[]): boolean {
+export function remove<R, T extends RemoveArray<R> = R[]>(source: T, value: R, ...values: R[]): boolean;
+export function remove<R, T extends RemoveArray<R> = R[]>(source: T, value: R,): boolean {
   const size = len(source);
   forEach(slice(arguments, 1), value => {
     const index = source.indexOf(value)

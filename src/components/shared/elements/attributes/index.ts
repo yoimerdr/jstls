@@ -1,6 +1,6 @@
 import {MaybeString} from "@jstls/types/core";
 import {KeyableObject} from "@jstls/types/core/objects";
-import {isDefined, isPlainObject} from "@jstls/core/objects/types";
+import {isDefined, isPlainObject} from "@jstls/core/objects/types/fn";
 import {reduce} from "@jstls/core/iterable";
 import {keys} from "@jstls/core/shortcuts/object";
 import {indefinite} from "@jstls/core/utils/types";
@@ -10,6 +10,7 @@ import {startsWith} from "@jstls/core/polyfills/string/es2015";
 import {len} from "@jstls/core/shortcuts/indexable";
 import {set2} from "@jstls/core/objects/handlers/getset";
 import {bind} from "@jstls/core/functions/bind";
+import {deleteAttribute, getAttribute, setAttribute} from "./simple";
 
 function _toAttribute(name: string | KeyableObject<Object>, value?: Object) {
   return isPlainObject(name) ? name as KeyableObject<Object> : fromEntries([[name as string, value!]]);
@@ -25,11 +26,11 @@ function _mapAttribute(add: boolean, prefix: MaybeString, el: Element, attribute
       prefix && (key = prefix + (key as string));
       if (add) {
         if (isDefined(value))
-          el.setAttribute(key as string, value as string);
-        else value = el.getAttribute(key as string)!;
+          setAttribute(el, key as string, value);
+        else value = getAttribute(el, key as string)!;
       } else {
-        value = el.getAttribute(key as string)!;
-        el.removeAttribute(key as string);
+        value = getAttribute(el, key as string)!;
+        deleteAttribute(el, key as string);
       }
 
       return value;
@@ -50,13 +51,10 @@ export interface RemoveAttribute {
   (el: Element, name: string | KeyableObject<Object>): string
 }
 
-export const attribute = bind<any>(_mapAttribute, indefinite, true, indefinite) as SetAttribute;
-
-export const dataAttribute = bind<any>(_mapAttribute, indefinite, true, "data-") as SetAttribute;
-
-export const removeAttribute = bind<any>(_mapAttribute, indefinite, false, indefinite) as RemoveAttribute;
-
-export const removeDataAttribute = bind<any>(_mapAttribute, indefinite, false, indefinite, "data-") as RemoveAttribute;
+export const attribute = bind(_mapAttribute, indefinite, true, indefinite) as SetAttribute,
+  dataAttribute = bind(_mapAttribute, indefinite, true, "data-") as SetAttribute,
+  removeAttribute = bind(_mapAttribute, indefinite, false, indefinite) as RemoveAttribute,
+  removeDataAttribute = bind(_mapAttribute, indefinite, false, "data-") as RemoveAttribute;
 
 export function attributes(el: Element, prefix?: string): KeyableObject<string> {
   let names = el.getAttributeNames(),

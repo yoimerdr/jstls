@@ -1,10 +1,11 @@
 import {Iter} from "./iter";
 import {WithPrototype} from "@jstls/types/core/objects";
 import {funclass2} from "@jstls/core/definer/classes/funclass";
-import {call} from "@jstls/core/functions/call";
 import {FunctionClassSimpleStatics} from "@jstls/types/core/definer";
 import {protocall} from "@jstls/core/functions/prototype/call";
 import {indefinite} from "@jstls/core/utils/types";
+import {isinstance} from "@jstls/core/objects/types";
+import {apply} from "@jstls/core/functions/apply";
 
 export interface IterRange extends Iter<number> {
 }
@@ -15,12 +16,12 @@ export interface IterRangeConstructor extends WithPrototype<IterRange> {
 
 export const IterRange: IterRangeConstructor = funclass2({
   cls: (_, parent) => function (length, start, step) {
-    if (length instanceof Iter) {
-      start = length.startIndex;
-      step = length.step;
-      length = length.length();
+    if (isinstance(length, Iter)) {
+      start = (length as Iter<any>).startIndex;
+      step = (length as Iter<any>).step;
+      length = (length as Iter<any>).length();
     }
-    call(parent, this, {length}, start, indefinite, step);
+    apply(parent, this, [{length}, start, indefinite, step] as any);
   },
   prototype: <FunctionClassSimpleStatics<IterRange>>{
     next() {

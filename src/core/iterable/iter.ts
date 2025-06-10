@@ -8,13 +8,14 @@ import {IllegalAccessError} from "@jstls/core/exceptions/illegal-access";
 import {ArrayLike} from "@jstls/types/core/array";
 import {apply} from "@jstls/core/functions/apply";
 import {uid} from "@jstls/core/polyfills/symbol";
-import {get, set} from "@jstls/core/objects/handlers/getset";
+import {get2, set} from "@jstls/core/objects/handlers/getset";
 import {freeze} from "@jstls/core/shortcuts/object";
 import {len} from "@jstls/core/shortcuts/indexable";
 import {concat} from "@jstls/core/shortcuts/string";
 import {funclass2} from "@jstls/core/definer/classes/funclass";
 import {FunctionClassSimpleStatics} from "@jstls/types/core/definer";
 import {indefinite} from "@jstls/core/utils/types";
+import {partial} from "@jstls/core/functions/partial";
 
 export function iterEachOrFindIndex<T, R>($this: Iter<T>,
                                           restartFn: (this: Iter<T>) => any,
@@ -64,7 +65,8 @@ export function iterMap<T, R, A, I extends Iter<A>>($this: Iter<T>,
 }
 
 
-export function iterRepresentation($this: Iter<any>, name: string): string {
+export function iterRepresentation(this: Iter<any>, name: string): string {
+  const $this = this;
   return concat(
     "[", $this.length(), "] ",
     name, " { start: ", $this.startIndex, ", end: ", $this.endIndex, ", current: ", $this.index()
@@ -285,7 +287,7 @@ export const Iter: IterConstructor = funclass2({
   },
   prototype: <FunctionClassSimpleStatics<Iter<unknown>>>{
     index() {
-      return get(this, iterIndex);
+      return get2(this, iterIndex);
     },
     length() {
       return len(this.source);
@@ -382,9 +384,7 @@ export const Iter: IterConstructor = funclass2({
       this.each(value => result.push(value),);
       return result;
     },
-    toString() {
-      return iterRepresentation(this, 'Iter')
-    }
+    toString: partial(iterRepresentation, 'Iter')
   }
 })
 

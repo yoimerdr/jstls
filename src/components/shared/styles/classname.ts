@@ -6,7 +6,7 @@ import {WithClassName} from "@jstls/types/core";
 import {remove} from "@jstls/core/extensions/array/fn";
 import {indefinite} from "@jstls/core/utils/types";
 import {concat} from "@jstls/core/shortcuts/indexable";
-import {isDefined} from "@jstls/core/objects/types";
+import {isDefined} from "@jstls/core/objects/types/fn";
 import {set2} from "@jstls/core/objects/handlers/getset";
 import {KeyableObject} from "@jstls/types/core/objects";
 import {keys} from "@jstls/core/shortcuts/object";
@@ -38,7 +38,8 @@ export function addClass<T extends WithClassName>(el: T, ...token: string[]) {
   setClasses(el, list);
 }
 
-export function hasClass<T extends WithClassName>(el: T, ...token: string[]) {
+export function hasClass<T extends WithClassName>(el: T, ...token: string[]): boolean;
+export function hasClass<T extends WithClassName>(el: T,): boolean {
   const list = getClasses(el);
   return slice(arguments, 1)
     .every(el => apply(includes, list, [el]));

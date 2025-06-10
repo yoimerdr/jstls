@@ -34,7 +34,7 @@ export function get<T>(object: T, key: PropertyKey): any;
  * @return The last property value, or undefined if is not present or some object not is an object.
  */
 export function get<T, K extends Keys<T>>(object: T & KeyableObject, key: K | PropertyKey, key2: PropertyKey, ...keys: PropertyKey[]): any;
-export function get<T, K extends Keys<T>>(object: T & KeyableObject, key: K | PropertyKey, ...keys: PropertyKey[]): Maybe<T[K]> {
+export function get<T, K extends Keys<T>>(object: T & KeyableObject, key: K | PropertyKey,): Maybe<T[K]> {
   let args = arguments, i = 1;
   if (len(args) <= 2)
     return object ? object[key] : indefinite;

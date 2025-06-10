@@ -41,7 +41,7 @@ export function set<T, K extends Keys<T>, R = any>(object: T, key: PropertyKey, 
  * @param keysOrValue The new value or other keys.
  */
 export function set<T, K extends Keys<T>>(object: T & KeyableObject, key: K | PropertyKey, key2: any, ...keysOrValue: any[]): any;
-export function set<T, K extends Keys<T>>(object: T & KeyableObject, key: K | PropertyKey, key2: PropertyKey, ...keysOrValue: PropertyKey[]): any {
+export function set<T, K extends Keys<T>>(object: T & KeyableObject, key: K | PropertyKey,): any {
   const args = arguments, lt = len(args), value = args[lt - 1];
   if (lt > 3) {
     object = apply(get, indefinite, <any>slice(args, 0, lt - 2))

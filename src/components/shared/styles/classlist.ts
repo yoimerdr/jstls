@@ -22,7 +22,8 @@ export function toggleClass<T extends WithClasses>(el: T, token: string, force?:
  * @param token The class names to add
  * @see [MDN Reference](https://developer.mozilla.org/docs/Web/API/DOMTokenList/add)
  */
-export function addClass<T extends WithClasses>(el: T, ...token: string[]) {
+export function addClass<T extends WithClasses>(el: T, ...token: string[]): void;
+export function addClass<T extends WithClasses>(el: T): void {
   const list = el.classList;
   apply(list.add, list, slice(arguments, 1))
 }

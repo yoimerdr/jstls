@@ -34,7 +34,8 @@ export function nreturns<T extends (...args: any[]) => boolean>(fn: T) {
  * A no-operation function that does nothing.
  * @param args - Any arguments (which will be ignored).
  */
-export function noact(...args: any) {
+export function noact(...args: any[]): void
+export function noact() {
 }
 
 /**

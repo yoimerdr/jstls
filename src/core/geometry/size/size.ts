@@ -1,11 +1,10 @@
 import {coerceAtLeast} from "../../extensions/number";
 import {toFloat} from "@jstls/core/extensions/string";
 import {writeable} from "@jstls/core/definer";
-import {isDefined, isNumber} from "@jstls/core/objects/types";
+import {isDefined, isinstance, isNumber} from "@jstls/core/objects/types";
 import {uid} from "@jstls/core/polyfills/symbol";
 import {KeyableObject, WithPrototype} from "@jstls/types/core/objects";
 import {string} from "@jstls/core/objects/handlers";
-import {len} from "@jstls/core/shortcuts/indexable";
 import {concat} from "@jstls/core/shortcuts/string";
 import {funclass2} from "@jstls/core/definer/classes/funclass";
 import {FunctionClassSimpleStatics} from "@jstls/types/core/definer";
@@ -13,17 +12,20 @@ import {indefinite, nullable} from "@jstls/core/utils/types";
 import {Maybe} from "@jstls/types/core";
 import {requiredWithType} from "@jstls/core/objects/validators";
 import {parseSize} from "./shared";
+import {partial} from "@jstls/core/functions/partial";
+import {get2} from "@jstls/core/objects/handlers/getset";
 
 export type SizeArgument = Size | string | number;
 
 export type MaybeSizeArgument = Maybe<SizeArgument>;
 
 export function isSize(value: any): boolean {
-  return value instanceof Size;
+  return isinstance(value, Size);
 }
 
-export function scaleOrAdjustSize<R extends Size>($this: R, target: SizeArgument, adjust?: boolean): R {
-  const ratio = $this.ratio(),
+export function scaleOrAdjustSize<R extends Size>(this: R, adjust: boolean, target: SizeArgument,): R {
+  const $this = this,
+    ratio = $this.ratio(),
     constructor = $this.constructor as SizeConstructor;
 
   let width = $this.getWidth(),
@@ -55,10 +57,11 @@ export function scaleOrAdjustSize<R extends Size>($this: R, target: SizeArgument
 }
 
 
-function setSizeProperty($this: Size & KeyableObject, args: IArguments, property: string,): number {
+function setSizeProperty(this: Size & KeyableObject, property: string, measure: MaybeSizeArgument,): number {
+  const $this = this;
   property = property === 'w' ? sizeWidth : sizeHeight;
-  if (len(args) > 0 && isDefined(args[0])) {
-    let value = (isSize(args[0])) ? args[0][property] : args[0]
+  if (isDefined(measure)) {
+    let value = (isSize(measure)) ? get2(measure as Size, property) : measure;
     value = requiredWithType(toFloat(value), 'number',);
     $this[property] = coerceAtLeast(0, value);
   }
@@ -74,13 +77,15 @@ function withSize<R extends Size>(constructor: SizeConstructor,
   return parseSize(constructor, isSize, concat(string(width), ":", string(height)), ratio)
 }
 
-export function equalsSize($this: Size, size: SizeArgument,): boolean {
+export function equalsSize(this: Size, size: SizeArgument,): boolean {
+  const $this = this;
   const constructor = $this.constructor as SizeConstructor;
   size = isSize(size) ? size as Size : constructor.parse(size as string);
   return size.getWidth() === $this.getWidth() && $this.getHeight() === size.getHeight();
 }
 
-export function sizeToString($this: Size, name: string): string {
+export function sizeToString(this: Size, name: string): string {
+  const $this = this;
   return concat(name, "{ width: ", $this.getWidth(), ", height: ", $this.getHeight(), " }");
 }
 
@@ -163,7 +168,7 @@ export interface Size {
    * @param size - The size to compare with.
    * @returns True if the sizes are equal, false otherwise.
    */
-  equals(size: SizeArgument): void;
+  equals(size: SizeArgument): boolean;
 
   /**
    * Checks if the current size is empty (both width and height are zero).
@@ -237,12 +242,8 @@ export const Size: SizeConstructor = funclass2({
     }
   },
   prototype: <FunctionClassSimpleStatics<Size>>{
-    width() {
-      return setSizeProperty(this, arguments, 'w')
-    },
-    height() {
-      return setSizeProperty(this, arguments, 'h')
-    },
+    width: partial(setSizeProperty, 'w'),
+    height: partial(setSizeProperty, 'h'),
     getWidth() {
       return this.width();
     },
@@ -261,15 +262,9 @@ export const Size: SizeConstructor = funclass2({
 
       return height === 0 ? 0 : $this.getWidth() / height;
     },
-    scale(target) {
-      return scaleOrAdjustSize(this, target,);
-    },
-    adjust(ratio) {
-      return scaleOrAdjustSize(this, ratio, true);
-    },
-    equals(size) {
-      return equalsSize(this, size,);
-    },
+    scale: partial(scaleOrAdjustSize, false),
+    adjust: partial(scaleOrAdjustSize, true),
+    equals: partial(equalsSize),
     isEmpty() {
       const $this = this;
       return $this.getWidth() === 0 && $this.getHeight() === 0;
@@ -278,9 +273,7 @@ export const Size: SizeConstructor = funclass2({
       const $this = this;
       return concat("", $this.getWidth(), ":", $this.getHeight());
     },
-    toString() {
-      return sizeToString(this, 'Size');
-    }
+    toString: partial(sizeToString, 'Size')
   }
 })
 

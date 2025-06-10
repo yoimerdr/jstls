@@ -1,5 +1,7 @@
 import {Keys} from "@jstls/types/core";
 import {PropertyDescriptor} from "@jstls/types/core/objects/definer";
+import {PrototypeType, WithPrototype} from "@jstls/types/core/objects";
+import {caller, property} from "@jstls/core/objects/handlers/builder";
 
 interface CreateShortcut {
   /**
@@ -85,6 +87,8 @@ interface DescriptorShortcut {
   (object: any, key: PropertyKey): PropertyDescriptor | undefined;
 }
 
+const O = Object;
+
 /**
  * Returns the names of the enumerable properties and methods of an object.
  *
@@ -92,7 +96,7 @@ interface DescriptorShortcut {
  * @param object The target object.
  * @see {Object.keys}
  */
-export const keys: KeysShortcut = Object.keys;
+export const keys: KeysShortcut = O.keys,
 
 /**
  * Returns the names of the all (including non-enumerable) properties and methods of an object.
@@ -102,19 +106,18 @@ export const keys: KeysShortcut = Object.keys;
  * @param object The target object.
  * @see {Object.getOwnPropertyNames}
  */
-export const propertyNames: KeysShortcut = Object.getOwnPropertyNames;
+propertyNames: KeysShortcut = O.getOwnPropertyNames,
 
-export const descriptor: DescriptorShortcut = Object.getOwnPropertyDescriptor as any;
+descriptor: DescriptorShortcut = O.getOwnPropertyDescriptor as any,
 
-export const create: CreateShortcut = Object.create;
+create: CreateShortcut = O.create,
 
-export const defineProperty: DefinePropertyShortcut = Object.defineProperty;
+defineProperty: DefinePropertyShortcut = O.defineProperty,
 
-export const defineProperties: DefinePropertiesShortcut = Object.defineProperties;
+defineProperties: DefinePropertiesShortcut = O.defineProperties,
 
-export const freeze: FreezeShortcut = Object.freeze;
+freeze: FreezeShortcut = O.freeze,
 
-export function valueOf<T extends { valueOf(): any }, >(object: T): ReturnType<T["valueOf"]> {
-  return object.valueOf();
-}
+valueOf = caller<Object>("valueOf") as <T extends { valueOf(): any }, >(object: T) => ReturnType<T["valueOf"]>,
 
+prototype = property<WithPrototype>("prototype") as <T extends WithPrototype>(object: T) => PrototypeType<T>;

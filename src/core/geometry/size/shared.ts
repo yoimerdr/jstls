@@ -4,7 +4,7 @@ import {string} from "@jstls/core/objects/handlers";
 import {toFloat} from "@jstls/core/extensions/string";
 import {IllegalArgumentError} from "@jstls/core/exceptions/illegal-argument";
 import {concat} from "@jstls/core/shortcuts/indexable";
-import {get} from "@jstls/core/objects/handlers/getset";
+import {get2} from "@jstls/core/objects/handlers/getset";
 
 export interface ParseableSize {
   /**
@@ -61,12 +61,12 @@ export function parseSize<R extends ParseableSize>(constructor: any,
                                                    ratio?: string | number | R): R {
   let aspectRatio: number = 1;
   if (!isDefined(ratio))
-    aspectRatio = parseSize(constructor, isSize, format, 1).ratio()
+    aspectRatio = parseSize(constructor, isSize, format, 0).ratio()
   else if (isNumber(ratio))
     aspectRatio = ratio as number;
   else if (!isSize(ratio as R))
-    aspectRatio = parseSize(constructor, isSize, ratio as any, 1).ratio();
-  else if (isFunction(get(ratio, "ratio")))
+    aspectRatio = parseSize(constructor, isSize, ratio as any, 0).ratio();
+  else if (isFunction(get2(ratio as any, "ratio")))
     aspectRatio = (ratio as R).ratio()
 
   const match = string(format)
@@ -76,13 +76,13 @@ export function parseSize<R extends ParseableSize>(constructor: any,
   let width = toFloat(match[0])!,
     height = toFloat(match[1])!;
 
-  if (isDefined(width) && isDefined(height))
+  if (isDefined(width) && isDefined(height)) {
     return new constructor(width, height)
       .adjust(aspectRatio);
-  else if (isDefined(width))
-    height = width / aspectRatio;
+  } else if (isDefined(width))
+    height = width / (aspectRatio || 1);
   else if (isDefined(height))
-    width = height * aspectRatio;
+    width = height * (aspectRatio || 1);
   else throw new IllegalArgumentError(concat("The format ", format, " is not valid."));
 
   return new constructor(width, height);

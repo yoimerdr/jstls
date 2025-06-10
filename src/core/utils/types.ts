@@ -1,2 +1,2 @@
-export const nullable = null;
-export const indefinite = undefined;
+export const nullable = null,
+  indefinite = undefined;

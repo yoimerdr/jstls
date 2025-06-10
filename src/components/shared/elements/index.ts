@@ -3,6 +3,7 @@ import {indefinite} from "@jstls/core/utils/types";
 import {len} from "@jstls/core/shortcuts/indexable";
 import {Maybe} from "@jstls/types/core";
 import {applyFirstDefined} from "@jstls/core/objects/handlers";
+import {bind} from "@jstls/core/functions/bind";
 
 /**
  * Appends a child on an element
@@ -33,3 +34,13 @@ export function remove<T extends Node>(target: Node, ...children: Node[]): Maybe
     return applyFirstDefined(target, ["removeChild"], [value]);
   }, indefinite)
 }
+
+function removeEl(first: boolean, el: Node): Maybe<Node> {
+  const target = first ? el.firstChild : el.lastChild;
+  applyFirstDefined(el, ["removeChild"], [target]);
+  return target;
+}
+
+
+export const removeFirst = bind(removeEl, indefinite, true) as <T extends Node>(target: Node) => Maybe<T>,
+  removeLast = bind(removeEl, indefinite, false) as <T extends Node>(target: Node) => Maybe<T>;

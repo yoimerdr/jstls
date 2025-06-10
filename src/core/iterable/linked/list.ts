@@ -8,7 +8,7 @@ import {uid} from "@jstls/core/polyfills/symbol";
 import {WithPrototype} from "@jstls/types/core/objects";
 import {funclass2} from "@jstls/core/definer/classes/funclass";
 import {descriptor2} from "@jstls/core/definer/shared";
-import {get, set} from "@jstls/core/objects/handlers/getset";
+import {get2, set} from "@jstls/core/objects/handlers/getset";
 import {FunctionClassSimpleStatics} from "@jstls/types/core/definer";
 import {isDefined} from "@jstls/core/objects/types";
 import {returns} from "@jstls/core/utils";
@@ -19,12 +19,12 @@ import {simple} from "@jstls/core/definer/getters/builders";
 export function linkedAdd<T, N extends Node<T>>($this: LinkedList<T>, constructor: Instanceable<N, [value: T]>, value: T, index?: number) {
   const node = new constructor(value);
   index = getDefined(index, returns($this.size));
-  let target: MaybeNode<T> = get($this, metaHead);
+  let target: MaybeNode<T> = get2($this, metaHead);
   if ($this.isEmpty()) {
     set($this, metaHead, node);
     set($this, metaTail, node);
   } else if (index >= $this.size)
-    target = get($this, metaTail);
+    target = get2($this, metaTail);
 
   return {
     target,
@@ -37,7 +37,7 @@ export function linkedPop<T>($this: LinkedList<T>, index?: number) {
 
   index = (isDefined(index) ? index! : $this.size - 1) - 1;
 
-  let target: MaybeNode<T> = get($this, metaHead),
+  let target: MaybeNode<T> = get2($this, metaHead),
     value: Maybe<T> = nullable;
 
   if (index === -1 && $this.isNotEmpty()) {
@@ -63,7 +63,7 @@ export function linkedAddedNode<T>($this: LinkedList<T>, source: any) {
   const target = source.target;
   if (target) {
     target.next(source.node, true);
-    target === get($this, metaTail) && set($this, metaTail, target.next());
+    target === get2($this, metaTail) && set($this, metaTail, target.next());
   }
   set($this, metaSize, $this.size + 1)
 }
@@ -73,7 +73,7 @@ export function linkedRemovedNode<T>($this: LinkedList<T>, source: any) {
     next = target.next();
 
   source.value = (source.index > 0 ? next! : target).value();
-  next === get($this, metaTail) && set($this, metaTail, target)
+  next === get2($this, metaTail) && set($this, metaTail, target)
   next && target.next(next.next());
   set($this, metaSize, $this.size - 1);
 }
@@ -148,7 +148,7 @@ export const LinkedList: LinkedListConstructor = funclass2({
     },
     forEach(callback, thisArg) {
       let index = 0,
-        target = get(this, metaHead);
+        target = get2(this, metaHead);
 
       while (target) {
         apply(callback, thisArg, [target.value(), index]);
@@ -163,10 +163,10 @@ export const LinkedList: LinkedListConstructor = funclass2({
       set($this, metaSize, 0);
     },
     head() {
-      return get(this, metaHead)
+      return get2(this, metaHead)
     },
     tail() {
-      return get(this, metaTail)
+      return get2(this, metaTail)
     },
 
   }

@@ -33,4 +33,4 @@ export function getter<T, K extends MethodKeys<T> | PropertyKey = PropertyKey>(t
  * @param getters The property keys and getter fns.
  * @see {getter}
  */
-export const getters = bind<any>(multiple, indefinite, getter) as <T>(target: T, getters: DefinePropertyGetters<T>) => void;
+export const getters = bind(multiple, indefinite, getter) as <T>(target: T, getters: DefinePropertyGetters<T>) => void;

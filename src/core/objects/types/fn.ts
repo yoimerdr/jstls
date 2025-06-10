@@ -1,4 +1,4 @@
-import {Typeof} from "@jstls/types/core";
+import {Instanceable, Maybe, Typeof} from "@jstls/types/core";
 import {isArray} from "@jstls/core/shortcuts/array";
 import {indefinite, nullable} from "@jstls/core/utils/types";
 
@@ -21,4 +21,27 @@ export function typeIs<T>(type: Typeof | Typeof[], value: T): boolean {
  */
 export function isDefined(value: any) {
   return value !== indefinite && value !== nullable
+}
+
+/**
+ * Checks if the value is an object.
+ * @param value The value to check.
+ * @returns True if the value is an object, false otherwise.
+ */
+export function isObject(value: any) {
+  return isDefined(value) && typeIs("object", value)
+}
+
+
+/**
+ * Checks if the value is a plain object.
+ * @param value The value to check.
+ * @returns True if the value is a plain object, false otherwise.
+ */
+export function isPlainObject(value: any) {
+  return isDefined(value) && value.constructor === {}.constructor;
+}
+
+export function isinstance(instance: Maybe<Object>, constructor: Instanceable) {
+  return instance instanceof constructor;
 }

@@ -9,7 +9,6 @@ import {innerHTML} from "@jstls/components/shared/elements/builders";
 import {addClass} from "@jstls/components/shared/styles/classname";
 import {onClick} from "@jstls/components/shared/events";
 import {bind} from "@jstls/core/functions/bind";
-import {EmptyFunctionType} from "@jstls/types/core";
 
 export const withPrefix = bind(concat, indefinite, "pagination-") as (prefix: Object, ...prefixes: Object[]) => string;
 
@@ -96,7 +95,7 @@ export function createPageElement<K extends keyof HTMLElementTagNameMap, T = any
 export function pageEl<T = any>(this: PaginationOnElements<T>, page: number | string): HTMLElement {
   const $this = this,
     el = createPageElement($this, "button", page);
-  onClick(el, bind($this.goto, $this, page, false) as EmptyFunctionType<any, any>);
+  onClick(el, bind($this.goto, $this, page, false));
   return el;
 }
 

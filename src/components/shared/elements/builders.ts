@@ -8,7 +8,7 @@ export const create = bind(doc.createElement, doc),
   text = bind(doc.createTextNode, doc);
 
 
-export const createSVG = bind<any>(createNS, indefinite!, "http://www.w3.org/2000/svg") as {
+export const createSVG = bind(createNS, indefinite!, "http://www.w3.org/2000/svg") as {
   <K extends keyof SVGElementTagNameMap>(name: K): SVGElementTagNameMap[K];
   (name: string): SVGElement;
 };

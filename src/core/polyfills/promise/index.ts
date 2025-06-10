@@ -5,24 +5,26 @@ import {isFunction} from "@jstls/core/objects/types";
 import {uid} from "@jstls/core/polyfills/symbol";
 import {hasOwn} from "@jstls/core/polyfills/objects/es2022";
 import {bind} from "@jstls/core/functions/bind";
-import {get, set} from "@jstls/core/objects/handlers/getset";
+import {get2, set} from "@jstls/core/objects/handlers/getset";
 import {concat, len} from "@jstls/core/shortcuts/indexable";
 import {funclass2} from "@jstls/core/definer/classes/funclass";
 import {forEach} from "@jstls/core/shortcuts/array";
 import {FunctionClassSimpleStatics} from "@jstls/types/core/definer";
 import {nullable} from "@jstls/core/utils/types";
+import {partial} from "@jstls/core/functions/partial";
 
 const promiseState = uid("mS"),
   promiseResult = uid("mR"),
   promiseCalls = uid("mC");
 
-function resolveOrReject($this: Promise<any>, state: PromiseState, value: any, index: number) {
+function resolveOrReject(this: Promise<any>, state: PromiseState, index: number, value: any,) {
 
-  if (get($this, promiseState) !== "pending")
+  const $this = this;
+  if (get2($this, promiseState) !== "pending")
     return;
   if (value && isFunction(value.then)) {
-    const rej = bind(reject, $this);
-    const res = bind(resolve, $this);
+    const rej = bind(reject, $this),
+      res = bind(resolve, $this);
     if (value === $this)
       rej(new TypeError("Chaining cycle detected for promise."))
     else value.then(res, rej)
@@ -33,19 +35,14 @@ function resolveOrReject($this: Promise<any>, state: PromiseState, value: any, i
 
   if (!hasOwn($this, promiseCalls))
     return;
-  const calls: Function[] = get($this, promiseCalls);
+  const calls: Function[] = get2($this, promiseCalls);
   if (len(calls) === 1)
     calls[0](value)
   else calls[index](value)
 }
 
-function resolve(this: Promise<any>, value: any) {
-  resolveOrReject(this, "fulfilled", value, 0)
-}
-
-function reject(this: Promise<any>, reason: any) {
-  resolveOrReject(this, "rejected", reason, 1)
-}
+const resolve = partial<any>(resolveOrReject, "fulfilled", 0) as (this: Promise<any>, value: any) => void,
+  reject = partial<any>(resolveOrReject, "rejected", 1) as (this: Promise<any>, reason: any) => void;
 
 function resolverPromise(resolve: Function, reject: Function, resolver: any) {
   return (result: any) => {
@@ -137,7 +134,7 @@ export const Promise: PromiseConstructor = funclass2({
     finally(onFinally) {
       const $this = this;
       return new Promise((resolve, reject) => {
-        switch (get($this, promiseState) as PromiseState) {
+        switch (get2($this, promiseState) as PromiseState) {
           case "pending":
             set($this, promiseCalls, [finallyPromise($this, resolve, reject, onFinally)]);
             break;
@@ -156,9 +153,9 @@ export const Promise: PromiseConstructor = funclass2({
       return new Promise((resolve, reject) => {
         const res = resolverPromise(resolve, reject, onfulfilled),
           rej = resolverPromise(reject, reject, onrejected),
-          result = get($this, promiseResult);
+          result = get2($this, promiseResult);
 
-        switch (get($this, promiseState) as PromiseState) {
+        switch (get2($this, promiseState) as PromiseState) {
           case "pending":
             set($this, promiseCalls, [res, rej]);
             break;
@@ -172,7 +169,7 @@ export const Promise: PromiseConstructor = funclass2({
       })
     },
     toString() {
-      return concat<string>("Promise { <", get(this, promiseState), "> }",)
+      return concat<string>("Promise { <", get2(this, promiseState), "> }",)
     }
   }
 })

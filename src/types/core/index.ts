@@ -51,6 +51,10 @@ export interface WithClassName {
  */
 export type IncludeThisParameter<T, This = any, Not = unknown> = T extends (...args: any) => any ? (this: This, ...args: Parameters<T>) => ReturnType<T> : Not;
 
+export type FunctionBound<T extends FunctionType<any, any[], any>> = (...args: any[]) => ReturnType<T>;
+
+export type FunctionPartial<T extends FunctionType<any, any[], any>> = FunctionType<ThisParameterType<T>, any[], ReturnType<T>>;
+
 export type FunctionType<T, A extends any[] = any[], R = void> = (this: T, ...args: A) => R;
 
 export type EmptyFunctionType<T, R = void> = (this: T,) => R;
@@ -187,3 +191,5 @@ export type SafeThisParameterType<T> = ThisParameterType<T> extends Object ? Thi
 export interface ValidateValue {
   (value: any): boolean;
 }
+
+export type Parameter<T extends (...any: any[]) => any, I extends number = 0> = Parameters<T>[I];
