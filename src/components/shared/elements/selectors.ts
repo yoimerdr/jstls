@@ -26,6 +26,10 @@ export function selectorAll<T extends ParentNode = ParentNode>(selectors: string
   return (context || doc).querySelectorAll(selectors);
 }
 
+export function byId<T extends Element>(elementId: string, context?: NonElementParentNode): T | null {
+  return (context! || doc).getElementById(elementId) as T;
+}
+
 export function siblings<T extends ParentNode>(context: T): Array<Element>;
 export function siblings<T extends ParentNode, K extends keyof HTMLElementTagNameMap>(context: T, selector: K): Array<HTMLElementTagNameMap[K]>;
 export function siblings<T extends ParentNode, K extends keyof SVGElementTagNameMap>(context: T, selector: K): Array<SVGElementTagNameMap[K]>;

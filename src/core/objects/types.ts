@@ -1,4 +1,4 @@
-import {Typeof} from "@jstls/types/core";
+import {Instanceable, Maybe, Typeof} from "@jstls/types/core";
 import {isArray} from "@jstls/core/shortcuts/array";
 import {indefinite, nullable} from "@jstls/core/utils/types";
 
@@ -69,7 +69,7 @@ export function isBoolean(value: any) {
  */
 export function isNumber(value: any) {
   return typeIs(value, "number") && !isNaN(value);
-  }
+}
 
 /**
  * Checks if the value is a string.
@@ -78,4 +78,8 @@ export function isNumber(value: any) {
  */
 export function isString(value: any) {
   return typeIs(value, "string")
+}
+
+export function isinstance(instance: Maybe<Object>, constructor: Instanceable) {
+  return instance instanceof constructor;
 }

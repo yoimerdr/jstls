@@ -1,6 +1,7 @@
 import {isArray} from "@jstls/core/shortcuts/array";
 import {Keys} from "@jstls/types/core";
 import {len} from "@jstls/core/shortcuts/indexable";
+import {apply} from "@jstls/core/functions/apply";
 
 /**
  * Adds an event listener to an element or media query
@@ -23,6 +24,26 @@ export function onEvent(el: EventTarget, type: string | string[], listener: Even
 
 export function onClick<T extends EventTarget>(el: T, listener: (this: T, event: MouseEvent) => void, options?: boolean | AddEventListenerOptions) {
   onEvent(el, "click", <any>listener, options);
+}
+
+export function onClickOutside<T extends Element>(el: T, listener: (this: T, event: MouseEvent) => void, options?: boolean | AddEventListenerOptions) {
+  function handleClick(event: MouseEvent) {
+    const target = event.target as T;
+    el.contains(target) && apply(listener, target, [event]);
+  }
+
+  const doc = document;
+  onClick(doc, handleClick, options);
+
+  return () => offEvent(doc, "click", handleClick);
+}
+
+export function stopPropagation(event: Event) {
+  event.stopPropagation();
+}
+
+export function preventDefault(event: Event) {
+  event.preventDefault();
 }
 
 export function offEvent<T extends MediaQueryList, K extends keyof MediaQueryListEventMap>(el: T, type: K | K[], listener: (this: T, ev: MediaQueryListEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
