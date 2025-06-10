@@ -1,5 +1,5 @@
 import {ArrayLike} from "@jstls/types/core/array";
-import {isDefined} from "@jstls/core/objects/types";
+import {isDefined} from "@jstls/core/objects/types/fn";
 import {Maybe, MaybeNumber} from "@jstls/types/core";
 import {Concat, IndexableType} from "@jstls/types/core/objects";
 import {apply} from "@jstls/core/functions/apply";

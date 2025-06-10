@@ -1,28 +1,7 @@
-import {Instanceable, Maybe, Typeof, ValidateValue} from "@jstls/types/core";
-import {isArray} from "@jstls/core/shortcuts/array";
-import {indefinite, nullable} from "@jstls/core/utils/types";
+import {Instanceable, Maybe, ValidateValue} from "@jstls/types/core";
+import {indefinite} from "@jstls/core/utils/types";
 import {bind} from "@jstls/core/functions/bind";
-
-/**
- * Checks if the value is of the specified type or types.
- * @param type The type or types to check for.
- * @param value The value to check.
- * @returns True if the value is of the specified type or types, false otherwise.
- */
-export function typeIs<T>(type: Typeof | Typeof[], value: T): boolean {
-  const typeOf = typeof value;
-  return (isArray(type) ? type : [type])
-    .every(type => typeOf === type);
-}
-
-/**
- * Checks if the value is defined (not undefined or null).
- * @param value The value to check.
- * @returns True if the value is defined, false otherwise.
- */
-export function isDefined(value: any) {
-  return value !== indefinite && value !== nullable
-}
+import {isDefined, typeIs} from "./fn";
 
 
 /**
@@ -49,7 +28,7 @@ export function isPlainObject(value: any) {
  * @param value The value to check.
  * @returns True if the value is a function, false otherwise.
  */
-export const isFunction = bind<any>(typeIs, indefinite, "function") as ValidateValue;
+export const isFunction = bind<any>(typeIs, 1, "function") as ValidateValue;
 
 /**
  * Checks if the value is a boolean.
