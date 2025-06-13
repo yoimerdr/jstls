@@ -48,7 +48,7 @@ export function mixin<T extends Instanceable[]>(options: T | MixinOptions<T>) {
     options = {
       bases: options
     } as MixinOptions<T>;
-  return function <R>(constructor: Instanceable<R>, context: ClassDecoratorContext) {
+  return function <R>(constructor: Instanceable<R>,) {
     mixinPrototype(constructor, (options as MixinOptions<T>).bases, (options as MixinOptions<T>).statics, (options as MixinOptions<T>).force)
   }
 }

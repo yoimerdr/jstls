@@ -4,7 +4,6 @@ import {concat} from "@jstls/core/shortcuts/indexable";
 import {get2} from "@jstls/core/objects/handlers/getset";
 import {bind} from "@jstls/core/functions/bind";
 import {indefinite} from "@jstls/core/utils/types";
-import {caller} from "@jstls/core/objects/handlers/builder";
 import {children, parent} from "@jstls/components/shared/elements/shortcuts";
 import {apply} from "@jstls/core/functions/apply";
 

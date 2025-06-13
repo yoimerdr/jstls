@@ -1,4 +1,4 @@
-import {Instanceable, InstanceableParameters, InstanceableType, Maybe, MethodKeys} from "@jstls/types/core";
+import {Instanceable, InstanceableType, Maybe, MethodKeys} from "@jstls/types/core";
 import {reduce, slice} from "@jstls/core/iterable";
 import {apply} from "@jstls/core/functions/apply";
 import {FunctionClassConstructorFunction, FunctionClassSuper} from "@jstls/types/core/definer";
