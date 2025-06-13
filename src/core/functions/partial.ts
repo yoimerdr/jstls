@@ -10,9 +10,10 @@ export function partial<F extends FunctionType<any, any[], any>>(fn: F, arg1: Pa
 export function partial<F extends FunctionType<any, any[], any>>(fn: F, arg1: Parameter<F>, arg2: Parameter<F, 1>, arg3: Parameter<F, 2>): FunctionPartial<F>;
 export function partial<F extends FunctionType<any, any[], any>>(fn: F, arg1: Parameter<F>, arg2: Parameter<F, 1>, arg3: Parameter<F, 2>, arg4: Parameter<F, 3>): FunctionPartial<F>;
 export function partial<F extends FunctionType<any, any[], any>>(fn: F, ...args: Parameters<F>): FunctionPartial<F>;
-export function partial<F extends FunctionType<any, any[], any>>(fn: F, ...args: Parameters<F>) {
+/*@__NO_SIDE_EFFECTS__*/
+export function partial<F extends FunctionType<any, any[], any>>(fn: F) {
   const source = slice(arguments, 1);
-  return function (this: ThisParameterType<F>, ...args: any[]): any {
+  return function (this: ThisParameterType<F>): any {
     return apply<any>(fn, this, concat(source, slice(arguments)))
   }
 }

@@ -38,7 +38,8 @@ export function es5class<I extends Instanceable, T = InstanceableType<I>>(callab
  * @param options The class options.
  * @deprecated A more complete version of this action is available at {@link funclass} and {@link funclass2}
  */
-export function es5class<T>(callable: Function, options: ES5ClassOptions<T>): Instanceable<T>
+export function es5class<T>(callable: Function, options: ES5ClassOptions<T>): Instanceable<T>;
+/*@__NO_SIDE_EFFECTS__*/
 export function es5class<T>(callable: Function, options: ES5ClassOptions<T>): Instanceable<T> {
   requireObject(options, "options");
   const funPrototype = callable.prototype;

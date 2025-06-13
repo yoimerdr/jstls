@@ -11,6 +11,7 @@ export function bind<F extends FunctionType<any, any[], any>>(fn: F, thisArg: Th
 export function bind<F extends FunctionType<any, any[], any>>(fn: F, thisArg: ThisParameterType<F>, arg1: Parameter<F>, arg2: Parameter<F, 1>, arg3: Parameter<F, 2>): FunctionBound<F>;
 export function bind<F extends FunctionType<any, any[], any>>(fn: F, thisArg: ThisParameterType<F>, arg1: Parameter<F>, arg2: Parameter<F, 1>, arg3: Parameter<F, 2>, arg4: Parameter<F, 3>): FunctionBound<F>;
 export function bind<F extends FunctionType<any, any[], any>>(fn: F, thisArg: ThisParameterType<F>, ...args: Parameters<F>): FunctionBound<F>;
-export function bind<F extends (...args: any[]) => any>(fn: F, thisArg?: ThisParameterType<F>, ...args: Parameters<F>): FunctionBound<F> {
+/*@__NO_SIDE_EFFECTS__*/
+export function bind<F extends (...args: any[]) => any>(fn: F, thisArg?: ThisParameterType<F>,): FunctionBound<F> {
   return apply(fn.bind, fn, concat([thisArg], slice(arguments, 2)) as any) as FunctionBound<F>;
 }

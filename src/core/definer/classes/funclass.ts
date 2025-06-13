@@ -99,6 +99,7 @@ export function funclass<I extends Instanceable, >(builder: FunctionClassSimpleB
  */
 export function funclass<I extends Instanceable, P extends WithPrototype>(builder: FunctionClassSimpleBuilder<I>, parent: P, withoutSupers: true): I;
 export function funclass<I extends Instanceable, P extends WithPrototype>(builder: FunctionClassBuilder<I, P>, parent: P, withoutSupers: false): I;
+/*@__NO_SIDE_EFFECTS__*/
 export function funclass<I extends Instanceable, P extends WithPrototype>(builder: KeyableObject | (() => KeyableObject),
                                                                           parent?: P, withoutSupers?: boolean): I {
   let options: FunctionClassOptions<I, P>;
@@ -155,7 +156,7 @@ export function funclass2<I extends Instanceable>(options: FunctionClassOptions<
  * @returns The constructor function
  */
 export function funclass2<I extends Instanceable>(options: FunctionClassOptions<I, IndeterminatePrototype>, parent: WithPrototype): I;
-
+/*@__NO_SIDE_EFFECTS__*/
 export function funclass2<I extends Instanceable, P extends WithPrototype>(options: KeyableObject,
                                                                            parent?: P): I {
   // build options and unpack
