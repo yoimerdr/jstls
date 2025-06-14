@@ -7,7 +7,7 @@ import {indefinite} from "@jstls/core/utils/types";
 import {fromEntries} from "@jstls/core/polyfills/objects/es2019";
 import {apply} from "@jstls/core/functions/apply";
 import {startsWith} from "@jstls/core/polyfills/string/es2015";
-import {len} from "@jstls/core/shortcuts/indexable";
+import {concat, len} from "@jstls/core/shortcuts/indexable";
 import {set2} from "@jstls/core/objects/handlers/getset";
 import {bind} from "@jstls/core/functions/bind";
 import {deleteAttribute, getAttribute, setAttribute} from "./simple";
@@ -51,10 +51,16 @@ export interface RemoveAttribute {
   (el: Element, name: string | KeyableObject<Object>): string
 }
 
-export const attribute = bind(_mapAttribute, indefinite, true, indefinite) as SetAttribute,
-  dataAttribute = bind(_mapAttribute, indefinite, true, "data-") as SetAttribute,
+export interface ConcatString {
+  (name: Object, ...names: Object[]): string;
+}
+
+export const withData = bind(concat, indefinite, "data-") as ConcatString,
+  withAria = bind(concat, "aria-") as ConcatString,
+  attribute = bind(_mapAttribute, indefinite, true, indefinite) as SetAttribute,
+  dataAttribute = bind(_mapAttribute, indefinite, true, /*@__PURE__*/ withData('')) as SetAttribute,
   removeAttribute = bind(_mapAttribute, indefinite, false, indefinite) as RemoveAttribute,
-  removeDataAttribute = bind(_mapAttribute, indefinite, false, "data-") as RemoveAttribute;
+  removeDataAttribute = bind(_mapAttribute, indefinite, false, /*@__PURE__*/ withData('')) as RemoveAttribute;
 
 export function attributes(el: Element, prefix?: string): KeyableObject<string> {
   let names = el.getAttributeNames(),

@@ -34,6 +34,7 @@ export function len(iterable: Maybe<ArrayLike>): MaybeNumber {
 export function concat(source: string, ...others: Object[]): string;
 export function concat<T extends Array<R>, R = any>(source: T, ...others: (R | ConcatArray<R>)[]): T;
 export function concat<T extends Concat>(source: T, ...others: IndexableType<T>[]): T;
+/*@__NO_SIDE_EFFECTS__*/
 export function concat<T extends Concat>(source: T,): T {
   return apply(source.concat, source, slice(arguments, 1));
 }

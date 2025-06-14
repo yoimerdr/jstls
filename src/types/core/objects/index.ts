@@ -1,4 +1,11 @@
-import {IncludeThisParameter, Indeterminate, Keys, MethodKeys, SafeReturnType} from "@jstls/types/core";
+import {
+  IncludeThisParameter,
+  Indeterminate,
+  Keys,
+  MethodKeys,
+  PropertyFunctionReturn,
+  SafeReturnType
+} from "@jstls/types/core";
 
 export type KeyableObject<R = any> = Record<PropertyKey, R> & Object;
 
@@ -55,7 +62,7 @@ export type KeyObjectType<T, K extends Keys<T>> = IncludeThisParameter<T[K], T, 
 
 export type MaybeKeyObjectType<T, K> = K extends Keys<T> ? KeyObjectType<T, K> : any;
 
-export type MaybeKeyReturnType<T, K> = K extends Keys<T> ? SafeReturnType<T[K]> : any;
+export type MaybeKeyReturnType<T, K> = K extends Keys<T> ? PropertyFunctionReturn<T[K]> : any;
 
 export type ThisObjectKeys<T> = {
   [P in Keys<T>]: KeyObjectType<T, P>;

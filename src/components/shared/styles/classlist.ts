@@ -34,13 +34,15 @@ export function addClass<T extends WithClasses>(el: T): void {
  * @param token The class names to remove
  * @see [MDN Reference](https://developer.mozilla.org/docs/Web/API/DOMTokenList/remove)
  */
-export function removeClass<T extends WithClasses>(el: T, ...token: string[]) {
+export function removeClass<T extends WithClasses>(el: T, ...token: string[]): void;
+export function removeClass<T extends WithClasses>(el: T,) {
   const list = el.classList;
   apply(list.remove, list, slice(arguments, 1))
 }
 
 
-export function hasClass<T extends WithClasses>(el: T, ...token: string[]) {
+export function hasClass<T extends WithClasses>(el: T, ...token: string[]): boolean;
+export function hasClass<T extends WithClasses>(el: T) {
   const list = el.classList;
   return slice(arguments, 1)
     .every(list.contains, list);

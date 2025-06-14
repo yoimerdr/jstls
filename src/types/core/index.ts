@@ -186,6 +186,8 @@ export type SafeParameters<T> = T extends (...args: any[]) => any ? Parameters<T
 
 export type SafeReturnType<T> = T extends (...args: any[]) => any ? ReturnType<T> : never;
 
+export type PropertyFunctionReturn<T> = T extends (...args: any[]) => any ? ReturnType<T> : T;
+
 export type SafeThisParameterType<T> = ThisParameterType<T> extends Object ? ThisParameterType<T> : void | null;
 
 export interface ValidateValue {

@@ -10,6 +10,7 @@ import {isDefined} from "@jstls/core/objects/types/fn";
 import {set2} from "@jstls/core/objects/handlers/getset";
 import {KeyableObject} from "@jstls/types/core/objects";
 import {keys} from "@jstls/core/shortcuts/object";
+import {isNotEmpty} from "@jstls/core/extensions/shared/iterables";
 
 export function getClasses<T extends WithClassName>(el: T): string[] {
   const name = el && el.className || "";
@@ -19,7 +20,7 @@ export function getClasses<T extends WithClassName>(el: T): string[] {
 
 export function setClasses<T extends WithClassName>(el: T, classes: string[]) {
   const map = reduce(classes, (map, it) => {
-    set2(map, it, indefinite)
+    isNotEmpty(it) && set2(map, it, indefinite)
     return map;
   }, {} as KeyableObject);
 
@@ -32,7 +33,8 @@ export function setClasses<T extends WithClassName>(el: T, classes: string[]) {
  * @param token The class names to add
  * @see [MDN Reference](https://developer.mozilla.org/docs/Web/API/DOMTokenList/add)
  */
-export function addClass<T extends WithClassName>(el: T, ...token: string[]) {
+export function addClass<T extends WithClassName>(el: T, ...token: string[]): void;
+export function addClass<T extends WithClassName>(el: T) {
   const list = getClasses(el);
   apply(list.push, list, slice(arguments, 1))
   setClasses(el, list);
@@ -51,6 +53,7 @@ export function hasClass<T extends WithClassName>(el: T,): boolean {
  * @param token The class names to remove
  * @see [MDN Reference](https://developer.mozilla.org/docs/Web/API/DOMTokenList/remove)
  */
+export function removeClass<T extends WithClassName>(el: T, ...token: string[]): void;
 export function removeClass<T extends WithClassName>(el: T, ...token: string[]) {
   const list = getClasses(el);
   apply(remove, indefinite, <any>concat([list], slice(arguments, 1)))
