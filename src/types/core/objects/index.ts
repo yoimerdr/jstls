@@ -4,7 +4,6 @@ import {
   Keys,
   MethodKeys,
   PropertyFunctionReturn,
-  SafeReturnType
 } from "@jstls/types/core";
 
 export type KeyableObject<R = any> = Record<PropertyKey, R> & Object;

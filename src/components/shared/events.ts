@@ -3,6 +3,8 @@ import {Keys} from "@jstls/types/core";
 import {len} from "@jstls/core/shortcuts/indexable";
 import {apply} from "@jstls/core/functions/apply";
 import {caller} from "@jstls/core/objects/handlers/builder";
+import {get2} from "@jstls/core/objects/handlers/getset";
+import {isDefined} from "@jstls/core/objects/types";
 
 /**
  * Adds an event listener to an element or media query
@@ -51,4 +53,18 @@ export function offEvent(el: EventTarget, type: string | string[], listener: Eve
   type = isArray(type) ? type : [type];
   for (let i = 0; i < len(type); i++)
     el.removeEventListener(type[i], listener, options);
+}
+
+export function getEventPosition(ev: MouseEvent | TouchEvent): [number, number] {
+  let pageX = get2(ev, "pageX"),
+    pageY = get2(ev, "pageY");
+
+  if (!isDefined(pageX) || !isDefined(pageY)) {
+    const touch = get2(get2(ev, "touches"), 0);
+
+    pageX = get2(touch, "clientX");
+    pageY = get2(touch, "clientY");
+  }
+
+  return [pageX, pageY];
 }
