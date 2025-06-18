@@ -10,7 +10,7 @@ import {WithPrototype} from "@jstls/types/core/objects";
 import {concat} from "@jstls/core/shortcuts/indexable";
 import {checkSingleton, getInstance, hasInstance} from "@jstls/core/wrappers/singleton/fn";
 
-export {getInstance, hasInstance, removeInstance, singleton} from "@jstls/core/wrappers/singleton/fn";
+export {getInstance, hasInstance, removeInstance, singleton} from "./fn";
 
 
 export interface Singleton<S extends Singleton<S>> {

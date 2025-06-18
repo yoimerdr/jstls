@@ -6,6 +6,7 @@ import {requireFunction} from "@jstls/core/objects/validators";
 import {funclass2} from "@jstls/core/definer/classes/funclass";
 import {WithPrototype} from "@jstls/types/core/objects";
 import {FunctionClassSimpleStatics} from "@jstls/types/core/definer";
+import {simple} from "@jstls/core/definer/getters/builders";
 
 export interface Wrapper<T> {
   /**
@@ -89,9 +90,7 @@ export const Wrapper: WrapperConstructor = funclass2({
     readonly2(this, "value", value);
   },
   prototype: <FunctionClassSimpleStatics<Wrapper<unknown>>>{
-    get() {
-      return this.value;
-    },
+    get: simple('value'),
     apply(fn) {
       const $this = this;
       isFunction(fn) && apply(fn!, $this.get())

@@ -57,6 +57,8 @@ export type FunctionPartial<T extends FunctionType<any, any[], any>> = FunctionT
 
 export type FunctionType<T, A extends any[] = any[], R = void> = (this: T, ...args: A) => R;
 
+export type AnyFunctionType = FunctionType<any, any[], any>;
+
 export type EmptyFunctionType<T, R = void> = (this: T,) => R;
 
 /**

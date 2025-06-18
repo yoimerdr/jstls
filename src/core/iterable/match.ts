@@ -117,7 +117,7 @@ export const IterMatch: IterMatchConstructor = funclass2({
       );
     }
   }
-})
+}, Iter)
 
 
 /**

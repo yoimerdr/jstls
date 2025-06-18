@@ -7,10 +7,22 @@ import {indefinite} from "@jstls/core/utils/types";
 import {fromEntries} from "@jstls/core/polyfills/objects/es2019";
 import {apply} from "@jstls/core/functions/apply";
 import {startsWith} from "@jstls/core/polyfills/string/es2015";
-import {concat, len} from "@jstls/core/shortcuts/indexable";
+import {concat, ConcatString, len} from "@jstls/core/shortcuts/indexable";
 import {set2} from "@jstls/core/objects/handlers/getset";
 import {bind} from "@jstls/core/functions/bind";
 import {deleteAttribute, getAttribute, setAttribute} from "./simple";
+
+export interface SetAttribute {
+  (el: Element, name: string): MaybeString;
+
+  (el: Element, name: string, value: Object): string;
+
+  (el: Element, attributes: KeyableObject<Object>): string;
+}
+
+export interface RemoveAttribute {
+  (el: Element, name: string | KeyableObject<Object>): string
+}
 
 function _toAttribute(name: string | KeyableObject<Object>, value?: Object) {
   return isPlainObject(name) ? name as KeyableObject<Object> : fromEntries([[name as string, value!]]);
@@ -37,22 +49,6 @@ function _mapAttribute(add: boolean, prefix: MaybeString, el: Element, attribute
     },
     indefinite! as string,
   )
-}
-
-export interface SetAttribute {
-  (el: Element, name: string): MaybeString;
-
-  (el: Element, name: string, value: Object): string;
-
-  (el: Element, attributes: KeyableObject<Object>): string;
-}
-
-export interface RemoveAttribute {
-  (el: Element, name: string | KeyableObject<Object>): string
-}
-
-export interface ConcatString {
-  (name: Object, ...names: Object[]): string;
 }
 
 export const withData = bind(concat, indefinite, "data-") as ConcatString,

@@ -11,7 +11,9 @@ export const create = bind(doc.createElement, doc),
   (name: string): SVGElement;
 };
 
-export function innerHTML(el: Element, html: Object) {
+export function innerHTML(el: Element): string;
+export function innerHTML(el: Element, html: Object): string;
+export function innerHTML(el: Element, html?: Object) {
   isDefined(html) && (el.innerHTML = html as string);
   return el.innerHTML;
 }

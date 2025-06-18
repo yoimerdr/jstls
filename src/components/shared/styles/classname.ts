@@ -11,6 +11,7 @@ import {set2} from "@jstls/core/objects/handlers/getset";
 import {KeyableObject} from "@jstls/types/core/objects";
 import {keys} from "@jstls/core/shortcuts/object";
 import {isNotEmpty} from "@jstls/core/extensions/shared/iterables";
+import {bind} from "@jstls/core/functions/bind";
 
 export function getClasses<T extends WithClassName>(el: T): string[] {
   const name = el && el.className || "";
@@ -44,7 +45,7 @@ export function hasClass<T extends WithClassName>(el: T, ...token: string[]): bo
 export function hasClass<T extends WithClassName>(el: T,): boolean {
   const list = getClasses(el);
   return slice(arguments, 1)
-    .every(el => apply(includes, list, [el]));
+    .every(bind(includes, list));
 }
 
 /**

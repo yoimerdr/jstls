@@ -36,6 +36,8 @@ import {win} from "@jstls/components/shared/constants";
 import {dataAttribute} from "@jstls/components/shared/elements/attributes";
 import {innerHTML} from "@jstls/components/shared/elements/builders";
 import {ascsort} from "@jstls/core/utils/sorts/fn";
+import {addClass} from "@jstls/components/shared/styles/classname";
+import {partial} from "@jstls/core/functions/partial";
 
 /**
  * A handler for creates a pagination component.
@@ -242,6 +244,8 @@ function init($this: Pagination<any>) {
       target = [];
 
     dataAttribute(el, "action", label);
+    addClass(el, withPrefix(label));
+
     if (label === "first" || label === "previous")
       target = get2($this, metaFirsts);
     else if (label === "last" || label === "next")
@@ -319,80 +323,110 @@ export function remove(target: HTMLElement | string) {
 }
 
 function disableActions($this: Pagination<any>, page: number) {
-  forEach(get2($this, metaFirsts), (el: HTMLElement) => toggleClass(el, disabledClass, page === 1))
-  forEach(get2($this, metaLasts), (el: HTMLElement) => toggleClass(el, disabledClass, page === $this.paginator.pages));
+  forEach<HTMLElement>(get2($this, metaFirsts), el => toggleClass(el, disabledClass, page === 1))
+  forEach<HTMLElement>(get2($this, metaLasts), el => toggleClass(el, disabledClass, page === $this.paginator.pages));
+}
+
+function paginationConstructor<T, C extends PaginationConfig<T> = PaginationConfig<T>>(this: Pagination<any>, config: C, paginator: Paginator) {
+  const $this = this;
+
+  writeable($this, metaResponsive, indefinite)
+  writeable($this, metaFirst, false)
+  writeable($this, metaActive, indefinite)
+  writeable($this, metaFirsts, [])
+  writeable($this, metaLasts, [])
+
+  // checks already created pagination
+  const container = getContainer(config.container),
+    current = get2(container, metaPagination);
+  if (current)
+    return current;
+
+  config = paginationConfig(config);
+
+  readonlys($this, {
+    paginator,
+    container: container as HTMLElement,
+    cfg: config,
+    _ev_change: uid('c'),
+  });
+
+  configurable(container, metaPagination, $this)
+
+  // add responsive listeners
+  const responsive = $this.responsives,
+    win = window;
+  if (win && len(responsive)) {
+    let target: MaybeNumber = nullable;
+    eachprv(responsive, function (current, previous) {
+      const act = current.key,
+        prev = previous.key
+      // gets the first valid large value according to window width
+      if (!target) {
+        const width = win.innerWidth;
+        if (width >= act)
+          target = act;
+        else if (width >= prev)
+          target = prev;
+      }
+
+      addMediaQuery($this, act, prev)
+    })
+
+    // check last responsive value
+    let width = responsive[0].key;
+    addMediaQuery($this, width);
+    if (!target) {
+      width = last(responsive).key;
+      if (win.innerWidth >= width)
+        target = width;
+    }
+
+    target && writeable($this, metaResponsive, $this.cfg.responsive![target]);
+  }
+
+  on(get2($this, '_ev_change'), ($this: Pagination<any>, page: number) => {
+    get2($this, metaFirst) && $this.paginate('pages');
+
+    // disable elements
+    disableActions($this, page);
+  });
+}
+
+function goto(this: Pagination<any>, page: number, force?: boolean) {
+  const $this = this,
+    {paginator, cfg} = $this;
+  let current = paginator.current;
+
+  paginator.goto(page);
+
+  if (get2($this, metaFirst) && current === paginator.current && !force)
+    return false;
+
+  if (win && cfg.scroll)
+    win.scroll({
+      top: 0,
+      behavior: "smooth"
+    })
+
+  current = paginator.current;
+
+  const items = cfg.source ? paginator.items(cfg.source) : indefinite;
+
+  const res = apply(cfg.onPageChange!, $this, [current, items!]),
+    change = get2($this, '_ev_change');
+  if (res && isFunction(get2(res, "then"))) {
+    (res as PromiseLike<any>)
+      .then(() => emit(change, $this, $this, current))
+  } else emit(change, $this, $this, current);
+
+  return true;
 }
 
 export const Pagination: PaginationConstructor = funclass2({
-  construct: function (config, paginator) {
-    const $this = this;
-
-    writeable($this, metaResponsive, indefinite)
-    writeable($this, metaFirst, false)
-    writeable($this, metaActive, indefinite)
-    writeable($this, metaFirsts, [])
-    writeable($this, metaLasts, [])
-
-    // checks already created pagination
-    const container = getContainer(config.container),
-      current = get2(container, metaPagination);
-    if (current)
-      return current;
-
-    config = paginationConfig(config);
-
-    readonlys($this, {
-      paginator,
-      container: container as HTMLElement,
-      cfg: config,
-      _ev_change: uid('c'),
-    });
-
-    configurable(container, metaPagination, $this)
-
-    // add responsive listeners
-    const responsive = $this.responsives,
-      win = window;
-    if (win && len(responsive)) {
-      let target: MaybeNumber = nullable;
-      eachprv(responsive, function (current, previous) {
-        const act = current.key,
-          prev = previous.key
-        // gets the first valid large value according to window width
-        if (!target) {
-          const width = win.innerWidth;
-          if (width >= act)
-            target = act;
-          else if (width >= prev)
-            target = prev;
-        }
-
-        addMediaQuery($this, act, prev)
-      })
-
-      // check last responsive value
-      let width = responsive[0].key;
-      addMediaQuery($this, width);
-      if (!target) {
-        width = last(responsive).key;
-        if (win.innerWidth >= width)
-          target = width;
-      }
-
-      target && writeable($this, metaResponsive, $this.cfg.responsive![target]);
-    }
-
-    on(get2($this, '_ev_change'), ($this: Pagination<any>, page: number) => {
-      get2($this, metaFirst) && $this.paginate('pages');
-
-      // disable elements
-      disableActions($this, page);
-    });
-  },
+  construct: paginationConstructor,
   prototype: <FunctionClassSimpleStatics<Pagination<any>> & ThisType<Pagination<any>>>{
-    toFirst(force) {
-      return this.goto(1, force);
-    },
+    toFirst: partial(goto, 1),
     toLast(force) {
       const $this = this;
       return $this.goto($this.paginator.pages, force);
@@ -405,35 +439,7 @@ export const Pagination: PaginationConstructor = funclass2({
       const $this = this;
       return $this.goto($this.paginator.current - 1, force);
     },
-    goto(page, force) {
-      const $this = this,
-        {paginator, cfg} = $this;
-      let current = paginator.current;
-
-      paginator.goto(page);
-
-      if (get2($this, metaFirst) && current === paginator.current && !force)
-        return false;
-
-      if (win && cfg.scroll)
-        win.scroll({
-          top: 0,
-          behavior: "smooth"
-        })
-
-      current = paginator.current;
-
-      const items = cfg.source ? paginator.items(cfg.source) : indefinite;
-
-      const res = apply(cfg.onPageChange!, $this, [current, items!]),
-        change = get2($this, '_ev_change');
-      if (res && isFunction(get2(res, "then"))) {
-        (res as PromiseLike<any>)
-          .then(() => emit(change, $this, $this, current))
-      } else emit(change, $this, $this, current);
-
-      return true;
-    },
+    goto,
     paginate(target) {
       const $this = this,
         paginator = $this.paginator;

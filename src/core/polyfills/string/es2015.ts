@@ -17,19 +17,21 @@ export function startsWith(this: string, searchString: string, position?: number
 
 export function repeat(this: string, count: number): string {
   count = count >> 0;
-  const $this = this;
+  const $this = this,
+    Exception = RangeError;
+
   if(len($this) === 0 || count === 0)
     return '';
   if(count === 1)
     return $this;
   if (count < 0)
-    throw new RangeError("Repeat count must be non-negative")
+    throw new Exception("Repeat count must be non-negative")
   else if (count === Infinity)
-    throw new RangeError('Repeat count must be less than infinity');
+    throw new Exception('Repeat count must be less than infinity');
   count = floor(count)
 
   if (len($this) * count >= 1 << 28)
-    throw new RangeError('Repeat count must not overflow maximum string size');
+    throw new Exception('Repeat count must not overflow maximum string size');
 
   let str = $this;
   --count;

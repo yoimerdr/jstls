@@ -12,6 +12,7 @@ import {forEach} from "@jstls/core/shortcuts/array";
 import {FunctionClassSimpleStatics} from "@jstls/types/core/definer";
 import {nullable} from "@jstls/core/utils/types";
 import {partial} from "@jstls/core/functions/partial";
+import {reject, resolve} from "./fn";
 
 const promiseState = uid("mS"),
   promiseResult = uid("mR"),
@@ -23,8 +24,8 @@ function resolveOrReject(this: Promise<any>, state: PromiseState, index: number,
   if (get2($this, promiseState) !== "pending")
     return;
   if (value && isFunction(value.then)) {
-    const rej = bind(reject, $this),
-      res = bind(resolve, $this);
+    const rej = bind(rejectHelper, $this),
+      res = bind(resolveHelper, $this);
     if (value === $this)
       rej(new TypeError("Chaining cycle detected for promise."))
     else value.then(res, rej)
@@ -41,8 +42,8 @@ function resolveOrReject(this: Promise<any>, state: PromiseState, index: number,
   else calls[index](value)
 }
 
-const resolve = partial<any>(resolveOrReject, "fulfilled", 0) as (this: Promise<any>, value: any) => void,
-  reject = partial<any>(resolveOrReject, "rejected", 1) as (this: Promise<any>, reason: any) => void;
+const resolveHelper = partial<any>(resolveOrReject, "fulfilled", 0) as (this: Promise<any>, value: any) => void,
+  rejectHelper = partial<any>(resolveOrReject, "rejected", 1) as (this: Promise<any>, reason: any) => void;
 
 function resolverPromise(resolve: Function, reject: Function, resolver: any) {
   return (result: any) => {
@@ -95,22 +96,18 @@ export const Promise: PromiseConstructor = funclass2({
   construct: function (executor) {
     requireFunction(executor);
     const $this = this,
-      rej = bind(reject, $this);
+      rej = bind(rejectHelper, $this);
 
     writeable($this, promiseState, 'pending');
     try {
-      executor(bind(resolve, $this), rej)
+      executor(bind(resolveHelper, $this), rej)
     } catch (e) {
       rej(e)
     }
   },
   statics: {
-    resolve(value) {
-      return new Promise((res) => res(value));
-    },
-    reject(reason) {
-      return new Promise((_, reject) => reject(reason));
-    },
+    resolve,
+    reject,
     all(values) {
       return new Promise((resolve, reject) => {
         let count = 0;

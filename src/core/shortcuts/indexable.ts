@@ -6,6 +6,10 @@ import {apply} from "@jstls/core/functions/apply";
 import {slice} from "@jstls/core/iterable";
 import {nullable} from "@jstls/core/utils/types";
 
+export interface ConcatString {
+  (name: Object, ...names: Object[]): string;
+}
+
 /**
  * Return the length of the array like object.
  *

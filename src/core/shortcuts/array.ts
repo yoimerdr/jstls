@@ -1,12 +1,18 @@
-import {Foreachable, ForeachableEach} from "@jstls/types/core/iterable";
-import {ArrayLike} from "@jstls/types/core/array";
+import {ArrayLike, ArrayLikeEach} from "@jstls/types/core/array";
+import {binds} from "@jstls/core/functions/bind";
+import {prototype} from "@jstls/core/shortcuts/object";
 
-export const isArray = Array.isArray;
-
-export function forEach<T, This = void>(array: Foreachable<T>, callback: ForeachableEach<T, This>, thisArg?: This) {
-  array.forEach(callback as any, thisArg);
-}
+const A = Array,
+  isArray = A.isArray,
+  forEach = binds(prototype(A).forEach) as {
+    <T, T2 = any, I extends ArrayLike<T> = ArrayLike<T>>(source: I, callback: ArrayLikeEach<T, T2, I>, thisArg?: T2): void;
+  };
 
 export function clear(arr: ArrayLike) {
   arr && (arr.length = 0)
+}
+
+export {
+  isArray,
+  forEach
 }

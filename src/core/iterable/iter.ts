@@ -8,7 +8,7 @@ import {IllegalAccessError} from "@jstls/core/exceptions/illegal-access";
 import {ArrayLike} from "@jstls/types/core/array";
 import {apply} from "@jstls/core/functions/apply";
 import {uid} from "@jstls/core/polyfills/symbol";
-import {get2, set} from "@jstls/core/objects/handlers/getset";
+import {set} from "@jstls/core/objects/handlers/getset";
 import {freeze} from "@jstls/core/shortcuts/object";
 import {len} from "@jstls/core/shortcuts/indexable";
 import {concat} from "@jstls/core/shortcuts/string";
@@ -16,6 +16,8 @@ import {funclass2} from "@jstls/core/definer/classes/funclass";
 import {FunctionClassSimpleStatics} from "@jstls/types/core/definer";
 import {indefinite} from "@jstls/core/utils/types";
 import {partial} from "@jstls/core/functions/partial";
+import {isinstance} from "@jstls/core/objects/types";
+import {mapped, simple} from "@jstls/core/definer/getters/builders";
 
 export function iterEachOrFindIndex<T, R>($this: Iter<T>,
                                           restartFn: (this: Iter<T>) => any,
@@ -257,14 +259,14 @@ export interface IterConstructor extends WithPrototype<Iter<any>> {
  */
 export const Iter: IterConstructor = funclass2({
   construct: function (source, start, end, step) {
-    if (source instanceof Iter) {
-      start = source.startIndex;
-      end = source.endIndex;
-      step = source.step;
-      source = source.source;
-    } else if (len(source) > 0) {
+    if (isinstance(source, Iter)) {
+      start = (source as Iter<any>).startIndex;
+      end = (source as Iter<any>).endIndex;
+      step = (source as Iter<any>).step;
+      source = (source as Iter<any>).source;
+    } else if (len(source as ArrayLike) > 0) {
       step = coerceAtLeast(1, step || 0);
-      const size = len(source);
+      const size = len(source as ArrayLike);
       if (step! > size)
         throw new IllegalAccessError("The step cannot be greater than the source length");
       start = coerceAtMost(size, start || 0,);
@@ -280,18 +282,14 @@ export const Iter: IterConstructor = funclass2({
       startIndex: start,
       endIndex: end,
       step,
-      source
+      source: source as ArrayLike
     });
 
     writeable($this, iterIndex, start);
   },
   prototype: <FunctionClassSimpleStatics<Iter<unknown>>>{
-    index() {
-      return get2(this, iterIndex);
-    },
-    length() {
-      return len(this.source);
-    },
+    index: simple(iterIndex),
+    length: mapped("source", len),
     current() {
       const $this = this;
       return $this.isOutBounds() ? indefinite! : $this.at($this.index());
@@ -340,9 +338,7 @@ export const Iter: IterConstructor = funclass2({
     isInBounds() {
       return !this.isOutBounds();
     },
-    isEmpty() {
-      return isEmpty(this.source);
-    },
+    isEmpty: mapped('source', isEmpty),
     isNotEmpty() {
       return !this.isEmpty();
     },

@@ -34,14 +34,6 @@ export function readonly<T, K extends Keys<T> | PropertyKey = PropertyKey>(targe
 }
 
 /**
- * A shortcut for define new properties according to keys and values.
- * @param target The target value.
- * @param values The property keys and values.
- * @see {readonly}
- */
-export const readonlys = bind<any>(multiple, indefinite, readonly) as <T>(target: T, values: DefinePropertyValues<T>) => void;
-
-/**
  * A shortcut for define a new property according to key and value.
  * @example
  * // the call:
@@ -63,14 +55,6 @@ export const readonlys = bind<any>(multiple, indefinite, readonly) as <T>(target
 export function readonly2<T, K extends Keys<T> | PropertyKey = PropertyKey>(target: T, key: K, value: MaybeKeyObjectType<T, K>) {
   _value(target, key, value, indefinite, true);
 }
-
-/**
- * A shortcut for define new properties according to keys and values.
- * @param target The target value.
- * @param values The property keys and values.
- * @see {readonly2}
- */
-export const readonlys2 = bind<any>(multiple, indefinite, readonly) as <T>(target: T, values: DefinePropertyValues<T>) => void;
 
 /**
  * A shortcut for define a new property according to key and value.
@@ -95,16 +79,31 @@ export function writeable<T, K extends Keys<T> | PropertyKey = PropertyKey>(targ
   _value(target, key, value, true)
 }
 
-/**
- * A shortcut for define new properties according to keys and values.
- * @param target The target value.
- * @param values The property keys and values.
- * @see {writeable}
- */
-export const writeables = bind<any>(multiple, indefinite, writeable) as <T>(target: T, values: DefinePropertyValues<T>) => void;
-
 export function configurable<T, K extends Keys<T> | PropertyKey = PropertyKey>(target: T, key: K, value: MaybeKeyObjectType<T, K>) {
   prop(target, key, descriptor(value, indefinite, true))
 }
 
-export const configurables = bind<any>(multiple, indefinite, writeable) as <T>(target: T, values: DefinePropertyValues<T>) => void;
+/**
+ * A shortcut for define new properties according to keys and values.
+ * @param target The target value.
+ * @param values The property keys and values.
+ * @see {readonly}
+ */
+export const readonlys = bind(multiple, indefinite, readonly) as <T>(target: T, values: DefinePropertyValues<T>) => void,
+
+  /**
+   * A shortcut for define new properties according to keys and values.
+   * @param target The target value.
+   * @param values The property keys and values.
+   * @see {readonly2}
+   */
+  readonlys2 = bind(multiple, indefinite, readonly) as <T>(target: T, values: DefinePropertyValues<T>) => void,
+  /**
+   * A shortcut for define new properties according to keys and values.
+   * @param target The target value.
+   * @param values The property keys and values.
+   * @see {writeable}
+   */
+  writeables = bind(multiple, indefinite, writeable) as <T>(target: T, values: DefinePropertyValues<T>) => void,
+
+  configurables = bind(multiple, indefinite, writeable) as <T>(target: T, values: DefinePropertyValues<T>) => void;

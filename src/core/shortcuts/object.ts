@@ -87,7 +87,7 @@ interface DescriptorShortcut {
   (object: any, key: PropertyKey): PropertyDescriptor | undefined;
 }
 
-const O = Object;
+const O = Object,
 
 /**
  * Returns the names of the enumerable properties and methods of an object.
@@ -96,7 +96,7 @@ const O = Object;
  * @param object The target object.
  * @see {Object.keys}
  */
-export const keys: KeysShortcut = O.keys,
+keys: KeysShortcut = O.keys,
 
 /**
  * Returns the names of the all (including non-enumerable) properties and methods of an object.
@@ -121,3 +121,16 @@ freeze: FreezeShortcut = O.freeze,
 valueOf = caller<Object>("valueOf") as <T extends { valueOf(): any }, >(object: T) => ReturnType<T["valueOf"]>,
 
 prototype = property<WithPrototype>("prototype") as <T extends WithPrototype>(object: T) => PrototypeType<T>;
+
+
+export {
+  keys,
+  propertyNames,
+  descriptor,
+  create,
+  defineProperty,
+  defineProperties,
+  freeze,
+  valueOf,
+  prototype,
+}

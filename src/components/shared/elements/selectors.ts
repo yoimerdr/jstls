@@ -50,5 +50,20 @@ function attrSelector(name: 'querySelector' | 'querySelectorAll', attr: string, 
   return selection(name, concat("[", attr, value ? '="' + value + '"' : '', "]"), context);
 }
 
-export const attributeSelector = bind(attrSelector, indefinite, 'querySelector') as <E extends Element = Element>(name: string, context?: ParentNode, value?: Object) => E | null,
-  attributeSelectorAll = bind(attrSelector, indefinite, 'querySelectorAll') as (name: string, context?: ParentNode, value?: Object) => NodeListOf<Element>;
+function clsSelector(name: 'querySelector' | 'querySelectorAll', cls: string, context?: ParentNode) {
+  return selection(name, "." + cls, context)
+}
+
+const qs = 'querySelector',
+  qsa = 'querySelectorAll',
+  attributeSelector = bind(attrSelector, indefinite, qs) as <E extends Element = Element>(name: string, context?: ParentNode, value?: Object) => E | null,
+  attributeSelectorAll = bind(attrSelector, indefinite, qsa) as (name: string, context?: ParentNode, value?: Object) => NodeListOf<Element>,
+  classSelector = bind(clsSelector, indefinite, qs) as <E extends Element = Element>(name: string, context?: ParentNode) => E | null,
+  classSelectorAll = bind(clsSelector, indefinite, qsa) as (name: string, context?: ParentNode) => NodeListOf<Element>;
+
+export {
+  attributeSelector,
+  attributeSelectorAll,
+  classSelector,
+  classSelectorAll
+}

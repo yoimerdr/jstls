@@ -1,9 +1,9 @@
 import {ArrayLike, ArrayLikeEach, ArrayLikeType} from "@jstls/types/core/array";
-import {protoapply} from "@jstls/core/functions/prototype/apply";
+import {binds} from "@jstls/core/functions/bind";
+import {prototype} from "@jstls/core/shortcuts/object";
 
-export function filter<T, A extends ArrayLike<T> = ArrayLike<T>, R = void>(source: A, predicate: ArrayLikeEach<T, R, A, boolean>, thisArg?: R): ArrayLikeType<A>[];
-export function filter<T, R = void>(source: ArrayLike<T>, predicate: ArrayLikeEach<T, R, ArrayLike<T>, boolean>, thisArg?: R): ArrayLikeType<ArrayLike<T>>[];
-export function filter<T extends any, R = void>(source: ArrayLike<T>, predicate: ArrayLikeEach<T, R, ArrayLike<T>, unknown>, thisArg?: R): T[] {
-  return protoapply(Array<any>, "filter", source, [predicate, thisArg]);
+export const filter = binds(prototype(Array).filter) as {
+  <T, A extends ArrayLike<T> = ArrayLike<T>, R = void>(source: A, predicate: ArrayLikeEach<T, R, A, boolean>, thisArg?: R): ArrayLikeType<A>[];
+  <T, R = void>(source: ArrayLike<T>, predicate: ArrayLikeEach<T, R, ArrayLike<T>, boolean>, thisArg?: R): ArrayLikeType<ArrayLike<T>>[];
 }
 

@@ -10,7 +10,7 @@ interface DuoShortcut {
   (x: number, y: number): number;
 }
 
-const M = Math;
+const M = Math,
 
 /**
  * Returns the larger of a set of supplied numeric expressions.
@@ -19,7 +19,7 @@ const M = Math;
  * @param values Numeric expressions to be evaluated.
  * @see {Math.max}
  */
-export const max: RangeShortcut = M.max,
+max: RangeShortcut = M.max,
 
 /**
  * Returns the smaller of a set of supplied numeric expressions.
@@ -78,4 +78,17 @@ pow: DuoShortcut = M.pow,
  * This is a short for {@link Math.random}.
  * @see {Math.random}
  */
-random = M.random;
+random = M.random,
+abs = M.abs;
+
+export {
+  max,
+  min,
+  floor,
+  ceil,
+  round,
+  sqrt,
+  pow,
+  random,
+  abs
+}

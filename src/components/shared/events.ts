@@ -32,7 +32,7 @@ export function onClick<T extends EventTarget>(el: T, listener: (this: T, event:
 export function onClickOutside<T extends Element>(el: T, listener: (this: T, event: MouseEvent) => void, options?: boolean | AddEventListenerOptions) {
   function handleClick(event: MouseEvent) {
     const target = event.target as T;
-    el.contains(target) && apply(listener, target, [event]);
+    !el.contains(target) && apply(listener, target, [event]);
   }
 
   const doc = document;

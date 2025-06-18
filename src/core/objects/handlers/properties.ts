@@ -43,10 +43,12 @@ function filterFromObject<T>(type: 'keys' | 'names', condition: (value: any) => 
   });
 }
 
-export const simpleKeys = bind(filterFromObject, indefinite, 'keys', nreturns(isFunction)) as ObjectProperties,
-  methodKeys = bind(filterFromObject, indefinite, 'keys', isFunction) as ObjectMethods,
-  simpleProperties = bind(filterFromObject, indefinite, 'names', nreturns(isFunction),) as ObjectMethods,
-  methodProperties = bind(filterFromObject, indefinite, 'names', isFunction) as ObjectMethods;
+const ks = 'keys',
+  ns = 'names',
+  simpleKeys = bind(filterFromObject, indefinite, ks, nreturns(isFunction)) as ObjectProperties,
+  methodKeys = bind(filterFromObject, indefinite, ks, isFunction) as ObjectMethods,
+  simpleProperties = bind(filterFromObject, indefinite, ns, nreturns(isFunction),) as ObjectMethods,
+  methodProperties = bind(filterFromObject, indefinite, ns, isFunction) as ObjectMethods;
 
 
 export function hasKey<T, K extends Keys<T>>(object: T, key: K): boolean;
@@ -59,3 +61,10 @@ export function hasKey(object: KeyableObject, key: PropertyKey) {
  * @deprecated exports
  */
 export {keys, propertyNames}
+
+export {
+  simpleKeys,
+  methodProperties,
+  methodKeys,
+  simpleProperties,
+}

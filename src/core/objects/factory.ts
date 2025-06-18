@@ -4,10 +4,19 @@ import {Entry, Maybe} from "@jstls/types/core";
 import {keys} from "@jstls/core/shortcuts/object";
 import {hasOwn} from "@jstls/core/polyfills/objects/es2022";
 import {len} from "@jstls/core/shortcuts/indexable";
-import {reduce} from "@jstls/core/iterable";
+import {reduce, slice} from "@jstls/core/iterable";
 import {get2, setTo} from "./handlers/getset";
+import {isEmpty} from "@jstls/core/extensions/shared/iterables";
+import {bind} from "@jstls/core/functions/bind";
+import {indefinite} from "@jstls/core/utils/types";
 
 type AssignNoObjectFn<T> = (target: T, source: T, mode: AssignMode) => void;
+
+export interface Assign {
+  <T extends Object>(target: T, source: Partial<T>, ...sources: Partial<T>[]): T;
+
+  <T extends Object>(target: T, source: KeyableObject, ...sources: KeyableObject[]): T;
+}
 
 function _assign<T extends Object>(target: T, source: T, mode: AssignMode, noObject?: AssignNoObjectFn<T>) {
   if (!isDefined(source))
@@ -19,8 +28,9 @@ function _assign<T extends Object>(target: T, source: T, mode: AssignMode, noObj
   }
   return reduce(keys(source), (source, key) => {
     if (mode === 'deep' && hasOwn(target, key)) {
-      const tp = get2(target, key) as T;
-      const ts = get2(source, key) as T;
+      const tp = get2(target, key) as T,
+        ts = get2(source, key) as T;
+
       if (isPlainObject(tp) && isObject(ts))
         _assign(tp, ts, mode)
       else setTo(source, key, target);
@@ -29,27 +39,18 @@ function _assign<T extends Object>(target: T, source: T, mode: AssignMode, noObj
   }, source)
 }
 
-function _assignItems<T extends Object>(mode: AssignMode, target: T, source: IArguments, noObject?: AssignNoObjectFn<T>): T {
-  if (!isDefined(target) || !isDefined(source))
+function _assignItems<T extends Object>(mode: AssignMode, noObject: Maybe<AssignNoObjectFn<T>>, target: T, ...sources: Object[]): T {
+  const source = slice(arguments, 3);
+  if (!isDefined(target) || isEmpty(source))
     return target;
 
   for (let i = 0; i < len(source); i++)
-    _assign(target, source[i], mode, noObject);
+    _assign(target, source[i], mode, noObject!);
 
   return target;
 }
 
-export function assign<T extends Object>(target: T, ...source: Partial<T>[]): T;
-export function assign<T extends Object>(target: T): T {
-  return _assignItems("simple", target, arguments);
-}
-
-export function deepAssign<T extends Object>(target: T, ...source: Partial<T>[]): T;
-export function deepAssign<T extends Object>(target: T): T {
-  return _assignItems("deep", target, arguments);
-}
-
-function _createNoObjectKey(target: KeyableObject, source: Object, mode: AssignMode) {
+function _createNoObjectKey(target: KeyableObject, source: Object, _: AssignMode) {
   target[source.toString()] = source;
 }
 
@@ -68,10 +69,9 @@ export function assign2<T extends Object>(target: T, source: Partial<T>): T {
   return isObject(source) ? setTo(source as T, keys(source), target) : target;
 }
 
-export function create(...args: Object[]): KeyableObject;
-export function create(): KeyableObject {
-  return _assignItems("simple", {}, arguments, _createNoObjectKey);
-}
+export const assign = bind(_assignItems, indefinite, "simple", indefinite) as Assign,
+  deepAssign = bind(_assignItems, indefinite, "deep", indefinite) as Assign,
+  create = bind(_assignItems, indefinite, "simple", _createNoObjectKey, {});
 
 export function entries(value: Maybe<KeyableObject>[]): Entry<PropertyKey>[][];
 export function entries(value: Maybe<KeyableObject>): Entry<PropertyKey>[];

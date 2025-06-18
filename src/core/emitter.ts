@@ -7,6 +7,7 @@ import {isFunction} from "./objects/types";
 import {deletes, deletesAll} from "./objects/handlers/deletes";
 import {indefinite} from "./utils/types";
 import {concat} from "./shortcuts/indexable";
+import {bind} from "@jstls/core/functions/bind";
 
 export interface Emitter {
   on(name: string, listener: Function): void;
@@ -42,9 +43,7 @@ export function emitter(): Emitter {
     dispose() {
       apply(deletes, indefinite, <any> concat([listeners], slice(arguments)));
     },
-    disposes() {
-      deletesAll(listeners);
-    }
+    disposes: bind(deletesAll, indefinite, listeners)
   }
 }
 

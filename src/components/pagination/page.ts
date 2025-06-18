@@ -11,7 +11,7 @@ import {funclass2} from "@jstls/core/definer/classes/funclass";
 import {descriptor2} from "@jstls/core/definer/shared";
 import {call} from "@jstls/core/functions/call";
 import {toInt} from "@jstls/core/extensions/string";
-import {attribute, selector} from "@jstls/components/shared";
+import {attribute} from "@jstls/components/shared";
 import {FunctionClassSimpleStatics} from "@jstls/types/core/definer";
 import {singleton} from "@jstls/core/wrappers/singleton/fn";
 import {nullable} from "@jstls/core/utils/types";
@@ -20,9 +20,10 @@ import {Paginator} from "@jstls/core/geometry/paginator";
 import {PagePaginationOnElements} from "@jstls/types/components/pagination/shared";
 import {get2} from "@jstls/core/objects/handlers/getset";
 import {his, loc} from "@jstls/components/shared/constants";
-import {concat} from "@jstls/core/shortcuts/string";
 import {protoapply} from "@jstls/core/functions/prototype/apply";
 import {string} from "@jstls/core/objects/handlers";
+import {classSelector} from "@jstls/components/shared/elements/selectors";
+import {withPrefix} from "@jstls/components/pagination/simple-elements";
 
 /**
  * A handler for creates a page pagination component.
@@ -146,9 +147,9 @@ export const PagePagination: PagePaginationConstructor = funclass2<PagePaginatio
         on(get2($this, '_ev_change'), ($this: PagePagination<any>, page: number) => {
           const container = $this.container;
           his.replaceState({}, "", $this.url(page));
-          const roleAttr = 'data-action',
-            prev = selector(concat('[', roleAttr, '="previous"]'), container),
-            next = selector(concat('[', roleAttr, '="next"]'), container),
+
+          const prev = classSelector(withPrefix("previous"), container),
+            next = classSelector(withPrefix("next"), container),
             paginator = $this.paginator,
             nxtPage = page + 1,
             prevPage = page - 1;

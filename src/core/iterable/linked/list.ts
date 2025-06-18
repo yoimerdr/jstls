@@ -162,12 +162,8 @@ export const LinkedList: LinkedListConstructor = funclass2({
       set($this, metaTail, nullable);
       set($this, metaSize, 0);
     },
-    head() {
-      return get2(this, metaHead)
-    },
-    tail() {
-      return get2(this, metaTail)
-    },
+    head: simple(metaHead),
+    tail: simple(metaTail),
 
   }
 })

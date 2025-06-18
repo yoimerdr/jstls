@@ -3,7 +3,6 @@ import {Foreachable, ForeachableEach, IterableLike, IterableLikeEach, ObjectEach
 import {KeyableObject} from "@jstls/types/core/objects";
 import {isFunction, isPlainObject} from "@jstls/core/objects/types";
 import {bind} from "@jstls/core/functions/bind";
-import {protoapply} from "@jstls/core/functions/prototype/apply";
 import {len} from "@jstls/core/shortcuts/indexable";
 import {forEach} from "@jstls/core/shortcuts/array";
 
@@ -15,13 +14,13 @@ export function each<T, R>(source: IterableLike<T> & KeyableObject | KeyableObje
   if (isFunction(source['forEach'])) {
     callbackfn = bind(callbackfn, thisArg);
     let index = 0;
-    forEach(source as any, (value: T) => {
+    forEach(source as ArrayLike<T>, (value: T) => {
       (callbackfn as IterableLikeEach<T, R | void>)(value, index, <any>source);
       index++;
     })
   } else if (isPlainObject(source)) {
     keach(source, <any>callbackfn, thisArg);
-  } else protoapply(Array<any>, "forEach", <any>source, [<any>callbackfn, thisArg])
+  } else forEach(source as ArrayLike<T>, <any> callbackfn, thisArg);
 }
 
 export function keach<T, R = void>(source: T, each: ObjectEach<T, R>, thisArg?: R): void {

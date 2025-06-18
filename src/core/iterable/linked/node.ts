@@ -9,6 +9,7 @@ import {WithPrototype} from "@jstls/types/core/objects";
 import {funclass2} from "@jstls/core/definer/classes/funclass";
 import {FunctionClassSimpleStatics} from "@jstls/types/core/definer";
 import {nullable} from "@jstls/core/utils/types";
+import {mapped} from "@jstls/core/definer/getters/builders";
 
 export type MaybeNode<T> = Maybe<Node<T>>;
 
@@ -71,9 +72,7 @@ export const Node: NodeConstructor = funclass2({
     next() {
       return assignNextNode(this, arguments, isNode);
     },
-    hasNext() {
-      return isDefined(get2(this, metaNext))
-    }
+    hasNext: mapped(metaNext, isDefined)
   }
 })
 

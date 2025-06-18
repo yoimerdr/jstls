@@ -17,7 +17,7 @@ import {len} from "@jstls/core/shortcuts/indexable";
 /**
  * Paginating through collections of items
  */
-export interface Paginator {
+interface Paginator {
   /**
    * Total number of items
    * */
@@ -97,12 +97,12 @@ export interface PaginatorConstructor extends WithPrototype<Paginator> {
 const metaCurrent = uid('mC'),
   metaPerPage = uid('mP'),
   metaPages = uid('mP'),
-  metaTotal = uid('mT');
+  metaTotal = uid('mT'),
 
 /**
  * Paginating through collections of items
  */
-export const Paginator: PaginatorConstructor = funclass2({
+Paginator: PaginatorConstructor = funclass2({
   construct: function (total, perPage, page) {
     const $this = this;
     writeable($this, metaTotal, indefinite);
@@ -186,4 +186,8 @@ export const Paginator: PaginatorConstructor = funclass2({
 export function paginator(total: number | ArrayLike, perPage?: number, page?: number): Paginator {
   total = isNumber(total) ? total as number : len(total as ArrayLike);
   return new Paginator(total, perPage, page);
+}
+
+export {
+  Paginator,
 }

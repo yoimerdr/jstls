@@ -11,7 +11,7 @@ import {uid} from "@jstls/core/polyfills/symbol";
 import {WithPrototype} from "@jstls/types/core/objects";
 import {set} from "@jstls/core/objects/handlers/getset";
 import {string} from "@jstls/core/objects/handlers";
-import {create} from "@jstls/core/shortcuts/object";
+import {create, prototype} from "@jstls/core/shortcuts/object";
 import {concat, len} from "@jstls/core/shortcuts/indexable";
 import {forEach} from "@jstls/core/shortcuts/array";
 import {funclass2} from "@jstls/core/definer/classes/funclass";
@@ -37,11 +37,12 @@ function pathSuffix($this: Path, start?: number): string {
 }
 
 function fromNormalizedParts(parts: string[], path?: Maybe<Path>): Path {
-  const root: Path = isDefined(path) ? path! : create(Path.prototype);
+  const p = prototype(Path),
+    root: Path = isDefined(path) ? path! : create(p);
   path = root;
   reach(parts, (value, index) => {
     writeable(path, pathName, value);
-    writeable(path, pathParent, index === 0 ? nullable : create(Path.prototype));
+    writeable(path, pathParent, index === 0 ? nullable : create(p));
     path = path!.parent
   })
 
@@ -132,9 +133,7 @@ export const Path: PathConstructor = funclass2({
     join() {
       return apply(pathOf, nullable, <any> concat(this.parts, slice(arguments)));
     },
-    toString() {
-      return this.path!;
-    }
+    toString: simple('path')
   },
   protodescriptor: <Partial<PropertyDescriptors<Path>>>{
     name: descriptor2<Path>(simple(pathName), function (name: string) {
