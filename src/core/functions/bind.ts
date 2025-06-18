@@ -17,8 +17,8 @@ export function bind<F extends (...args: any[]) => any>(fn: F, thisArg?: ThisPar
   return apply(fn.bind, fn, concat([thisArg], slice(arguments, 2)) as any) as FunctionBound<F>;
 }
 
-/*@__NO_SIDE_EFFECTS__*/
 export function binds<T extends (...args: any[]) => any>(fn: T): (source: ThisParameterType<T>, ...args: Parameters<T>) => ReturnType<T>;
+/*@__NO_SIDE_EFFECTS__*/
 export function binds<T extends (...args: any[]) => any>(fn: T): (source: ThisParameterType<T>,) => ReturnType<T> {
   return function (thisArg: ThisParameterType<T>, ) {
     return apply<any>(fn, thisArg, slice(arguments, 1))

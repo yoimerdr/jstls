@@ -28,7 +28,7 @@ export function prop<T, K extends Keys<T> | PropertyKey = PropertyKey>(target: T
  *
  * @see {prop}
  */
-export const props = bind<any>(multiple, indefinite, prop) as {
+export const props = bind(multiple, indefinite, prop) as {
   <T>(target: T, descriptors: DefinePropertyDescriptors<T>): void;
   <T>(target: T, descriptors: KeyableObject<PropertyDescriptor>): void;
 }
