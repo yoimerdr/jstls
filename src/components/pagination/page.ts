@@ -115,8 +115,11 @@ export const PagePagination: PagePaginationConstructor = funclass2<PagePaginatio
   prototype: <FunctionClassSimpleStatics<PagePagination<any>>>{
     url(page) {
       const $this = this,
-        url = new URL(loc.href);
-      url.searchParams.set($this.cfg.parameter!, page as string)
+        url = new URL(loc.href),
+        params = url.searchParams,
+        name = $this.cfg.parameter!;
+
+      page > 1 ? params.set(name, page as string) : params.delete(name);
       return string(url);
     },
     goto(page, force) {
