@@ -14,7 +14,7 @@ import {toInt} from "@jstls/core/extensions/string";
 import {attribute} from "@jstls/components/shared";
 import {FunctionClassSimpleStatics} from "@jstls/types/core/definer";
 import {singleton} from "@jstls/core/wrappers/singleton/fn";
-import {nullable} from "@jstls/core/utils/types";
+import {indefinite, nullable} from "@jstls/core/utils/types";
 import {PaginationActLabel} from "@jstls/types/components/pagination";
 import {Paginator} from "@jstls/core/geometry/paginator";
 import {PagePaginationOnElements} from "@jstls/types/components/pagination/shared";
@@ -119,7 +119,9 @@ export const PagePagination: PagePaginationConstructor = funclass2<PagePaginatio
         params = url.searchParams,
         name = $this.cfg.parameter!;
 
-      page > 1 ? params.set(name, page as string) : params.delete(name);
+      page = parseInt(indefinite!, page as any);
+
+      page && (page > 1 ? params.set(name, page as any) : params.delete(name));
       return string(url);
     },
     goto(page, force) {
@@ -143,7 +145,7 @@ export const PagePagination: PagePaginationConstructor = funclass2<PagePaginatio
   },
   cls: (_, parent) => {
     return function (config, paginator) {
-      return singleton(this, ($this) => {
+      return singleton(this as PagePagination<any>, ($this) => {
         config = pagePaginationConfig(config);
         call(parent, $this, config, paginator);
         paginator.goto($this.parameter);
