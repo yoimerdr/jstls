@@ -1,6 +1,7 @@
 import {concat} from "@jstls/core/shortcuts/indexable";
-import {slice} from "@jstls/core/iterable";
+import {slice} from "@jstls/core/iterable/slice";
 import {apply} from "@jstls/core/functions/apply";
+
 import {AnyFunctionType, FunctionBound, Parameter} from "@jstls/types/core";
 
 export function bind<F extends AnyFunctionType>(fn: F,): OmitThisParameter<F>;

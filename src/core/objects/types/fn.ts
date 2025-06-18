@@ -1,5 +1,5 @@
 import {Instanceable, Maybe, Typeof} from "@jstls/types/core";
-import {isArray} from "@jstls/core/shortcuts/array";
+import {isArray} from "@jstls/core/shortcuts/array/is";
 import {indefinite, nullable} from "@jstls/core/utils/types";
 
 /**

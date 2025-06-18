@@ -1,11 +1,7 @@
 import {ArrayLike, ArrayLikeReduce,} from "@jstls/types/core/array";
 import {prototype} from "@jstls/core/shortcuts/object";
 import {binds} from "@jstls/core/functions/bind";
-import {protoapply} from "@jstls/core/functions/prototype/apply";
-
-export function slice<T extends any>(source: ArrayLike<T>, startIndex?: number, endIndex?: number): T[] {
-  return protoapply(Array<any>, "slice", source, [startIndex, endIndex]);
-}
+export {slice} from "./slice";
 
 const A = prototype(Array),
   reduce = binds(A.reduce) as {

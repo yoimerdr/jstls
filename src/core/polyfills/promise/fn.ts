@@ -1,4 +1,4 @@
-import {PromiseConstructor} from "./index";
+import type {PromiseConstructor} from "./index";
 
 declare const Promise: PromiseConstructor;
 

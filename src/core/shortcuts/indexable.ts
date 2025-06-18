@@ -3,7 +3,7 @@ import {isDefined} from "@jstls/core/objects/types/fn";
 import {Maybe, MaybeNumber} from "@jstls/types/core";
 import {Concat, IndexableType} from "@jstls/types/core/objects";
 import {apply} from "@jstls/core/functions/apply";
-import {slice} from "@jstls/core/iterable";
+import {slice} from "@jstls/core/iterable/slice";
 import {nullable} from "@jstls/core/utils/types";
 
 export interface ConcatString {
