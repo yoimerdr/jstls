@@ -10,6 +10,7 @@ import {funclass2} from "@jstls/core/definer/classes/funclass";
 import {FunctionClassSimpleStatics} from "@jstls/types/core/definer";
 import {nullable} from "@jstls/core/utils/types";
 import {mapped} from "@jstls/core/definer/getters/builders";
+import {partial} from "@jstls/core/functions/partial";
 
 export type MaybeNode<T> = Maybe<Node<T>>;
 
@@ -72,7 +73,7 @@ export const Node: NodeConstructor = funclass2({
     next() {
       return assignNextNode(this, arguments, isNode);
     },
-    hasNext: mapped(metaNext, isDefined)
+    hasNext: partial(mapped<any>, metaNext, isDefined)
   }
 })
 

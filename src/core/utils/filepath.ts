@@ -19,6 +19,7 @@ import {descriptor2} from "@jstls/core/definer/shared";
 import {PropertyDescriptors} from "@jstls/types/core/objects/definer";
 import {mapped, simple} from "@jstls/core/definer/getters/builders";
 import {nullable} from "./types";
+import {partial} from "@jstls/core/functions/partial";
 
 /**
  * Path separator
@@ -133,16 +134,16 @@ export const Path: PathConstructor = funclass2({
     join() {
       return apply(pathOf, nullable, <any> concat(this.parts, slice(arguments)));
     },
-    toString: simple('path')
+    toString: partial(simple<Path>, 'path')
   },
   protodescriptor: <Partial<PropertyDescriptors<Path>>>{
-    name: descriptor2<Path>(simple(pathName), function (name: string) {
+    name: descriptor2<Path>(partial(simple, pathName), function (name: string) {
       name = string(name);
       if (isEmpty(name) || name === "." /*others path name validations*/)
         throw new IllegalArgumentError("Invalid path name.")
       set(this, pathName, name);
     }),
-    parent: descriptor2<Path>(simple(pathParent), function (parent) {
+    parent: descriptor2<Path>(partial(simple, pathParent), function (parent) {
       if (!parent || !(parent instanceof Path))
         throw new IllegalArgumentError("Invalid parent path");
 
@@ -155,7 +156,7 @@ export const Path: PathConstructor = funclass2({
       return this.parts
         .join(sep);
     }),
-    suffix: descriptor2<Path>(mapped(nullable, pathSuffix)),
+    suffix: descriptor2<Path>(partial(mapped<any>, nullable!, pathSuffix)),
     parts: descriptor2<Path>(function () {
       const $this = this,
         parts = [$this.name];

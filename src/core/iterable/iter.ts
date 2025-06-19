@@ -288,8 +288,8 @@ export const Iter: IterConstructor = funclass2({
     writeable($this, iterIndex, start);
   },
   prototype: <FunctionClassSimpleStatics<Iter<unknown>>>{
-    index: simple(iterIndex),
-    length: mapped("source", len),
+    index: partial(simple, iterIndex),
+    length: partial(mapped<any>, "source", len),
     current() {
       const $this = this;
       return $this.isOutBounds() ? indefinite! : $this.at($this.index());
@@ -338,7 +338,7 @@ export const Iter: IterConstructor = funclass2({
     isInBounds() {
       return !this.isOutBounds();
     },
-    isEmpty: mapped('source', isEmpty),
+    isEmpty: partial(mapped<any>,'source', isEmpty),
     isNotEmpty() {
       return !this.isEmpty();
     },

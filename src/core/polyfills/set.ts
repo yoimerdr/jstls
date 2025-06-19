@@ -17,6 +17,7 @@ import {descriptor2} from "@jstls/core/definer/shared";
 import {mapped} from "@jstls/core/definer/getters/builders";
 import {nullable} from "@jstls/core/utils/types";
 import {slice} from "@jstls/core/iterable";
+import {partial} from "@jstls/core/functions/partial";
 
 type SetSource = Readonly<{
   key: MaybeString,
@@ -141,6 +142,6 @@ export const Set: SetConstructor = funclass2({
     }
   },
   protodescriptor: {
-    size: descriptor2(mapped(setObjects, len))
+    size: descriptor2(partial(mapped<any>, setObjects, len))
   }
 })

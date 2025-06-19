@@ -1,25 +1,19 @@
-import {FunctionType, Maybe, Nullables} from "@jstls/types/core";
+import {FunctionType, Keys, Maybe} from "@jstls/types/core";
 import {isDefined} from "@jstls/core/objects/types/fn";
 
-export function self<T>(): (this: T) => T {
-  return function () {
-    return this;
-  }
+export function self<T>(this: T): T {
+  return this;
 }
 
-export function simple<T = any>(): (this: T) => T;
-export function simple<T = any, R = any>(key: PropertyKey): (this: T) => R;
-export function simple<T = any, R = any>(key?: PropertyKey): (this: T) => R | T {
-  return isDefined(key) ? function (this: any): R {
-    return this[key!];
-  } : self();
+export function simple<T, K extends Keys<T> = Keys<T>>(this: T, key: K): T[K];
+export function simple<T = any, R = any>(this: T, key: PropertyKey): R;
+export function simple(this: any, key: any): any {
+  return this[key];
 }
 
-export function mapped<T = any, R = any, R2 = any>(key: PropertyKey, mapper: FunctionType<void, [value: R], R2>): (this: T) => R2;
-export function mapped<T = any, R2 = any>(key: Nullables, mapper: FunctionType<void, [value: T], R2>): (this: T) => R2;
-export function mapped<T = any, R = any, R2 = any>(key?: Maybe<PropertyKey>, mapper?: FunctionType<void, [value: R], R2>): (this: T) => R2 | T {
-  return isDefined(key) ? function (this: any) {
-    const value = this[key!];
-    return mapper ? mapper(value) : value;
-  } : self();
+export function mapped<T, R = any>(this: T, key: PropertyKey, mapper: (value: any) => R): R;
+export function mapped<T, K extends Keys<T> = Keys<T>, R = T[K]>(this: T, key: K, mapper: (value: T[K]) => R): R;
+export function mapped(this: any, key: Maybe<PropertyKey>, mapper: Maybe<FunctionType<void>>) {
+  const value = isDefined(key) ? this[key!] : this;
+  return mapper ? mapper(value) : value;
 }

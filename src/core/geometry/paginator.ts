@@ -14,6 +14,7 @@ import {indefinite, nullable} from "@jstls/core/utils/types";
 import {WithPrototype} from "@jstls/types/core/objects";
 import {ArrayLike} from "@jstls/types/core/array";
 import {len} from "@jstls/core/shortcuts/indexable";
+import {partial} from "@jstls/core/functions/partial";
 /**
  * Paginating through collections of items
  */
@@ -141,9 +142,9 @@ Paginator: PaginatorConstructor = funclass2({
     }
   },
   protodescriptor: {
-    current: descriptor2(simple(metaCurrent)),
-    pages: descriptor2(simple(metaPages)),
-    total: descriptor2(simple(metaTotal), function (total: number) {
+    current: descriptor2(partial(simple<Paginator>, metaCurrent)),
+    pages: descriptor2(partial(simple<Paginator>, metaPages)),
+    total: descriptor2(partial(simple<Paginator>, metaTotal), function (total: number) {
       total = toInt(nullable, total)!
       requireIf(total, isDefined, "The total must be a parseable number.");
       const $this = this;
@@ -167,7 +168,7 @@ Paginator: PaginatorConstructor = funclass2({
       return start === 0 && total === 0 ? 0 : min(start + $this.perPage, total - 1);
     }),
     perPage: descriptor2<Paginator>(
-      simple(metaPerPage),
+      partial(simple<Paginator>, metaPerPage),
       function (value: number) {
         const $this = this;
         value = $this.norm(value);

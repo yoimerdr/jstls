@@ -16,7 +16,6 @@ import {descriptor} from "@jstls/core/definer/shared";
 import {isDefined, isFunction, isPlainObject} from "@jstls/core/objects/types";
 import {createSuper, parentFirst} from "./supers";
 import {indefinite} from "@jstls/core/utils/types";
-import {self} from "@jstls/core/definer/getters/builders";
 
 const acceptedTypes = ["object", "function"],
   Exception = TypeError
@@ -179,7 +178,9 @@ export function funclass2<I extends Instanceable, P extends WithPrototype>(optio
   if (isDefined(cls) && !isFunction(cls))
     throw Exception("The modified constructor must be a function.");
 
-  init = cls || init || self();
+  init = cls || init || function (this: any) {
+    return this;
+  };
 
   // assign parent methods/prototype first
   parent && prototype(init, parent);

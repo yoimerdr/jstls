@@ -11,6 +11,7 @@ import {FunctionClassSimpleStatics} from "@jstls/types/core/definer";
 import {get2, set} from "@jstls/core/objects/handlers/getset";
 import {nullable} from "@jstls/core/utils/types";
 import {mapped} from "@jstls/core/definer/getters/builders";
+import {partial} from "@jstls/core/functions/partial";
 
 export type MaybeBiNode<T> = Maybe<BiNode<T>>;
 
@@ -76,6 +77,6 @@ export const BiNode: BiNodeConstructor = funclass2<BiNodeConstructor>({
         prev.next($this)
       });
     },
-    hasPrev: mapped(metaPrev, isDefined)
+    hasPrev: partial<any>(mapped, metaPrev, isDefined)
   }
 }, Node)

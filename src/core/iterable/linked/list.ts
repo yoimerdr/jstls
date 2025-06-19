@@ -14,6 +14,7 @@ import {isDefined} from "@jstls/core/objects/types";
 import {returns} from "@jstls/core/utils";
 import {nullable} from "@jstls/core/utils/types";
 import {simple} from "@jstls/core/definer/getters/builders";
+import {partial} from "@jstls/core/functions/partial";
 
 
 export function linkedAdd<T, N extends Node<T>>($this: LinkedList<T>, constructor: Instanceable<N, [value: T]>, value: T, index?: number) {
@@ -118,7 +119,7 @@ export const LinkedList: LinkedListConstructor = funclass2({
     values && each(values, $this.add, $this);
   },
   protodescriptor: {
-    size: descriptor2(simple(metaSize))
+    size: descriptor2(partial(simple<LinkedList<any>>, metaSize))
   },
   prototype: <FunctionClassSimpleStatics<LinkedList<unknown>>>{
     isEmpty() {
@@ -162,8 +163,7 @@ export const LinkedList: LinkedListConstructor = funclass2({
       set($this, metaTail, nullable);
       set($this, metaSize, 0);
     },
-    head: simple(metaHead),
-    tail: simple(metaTail),
-
+    head: partial(simple, metaHead),
+    tail: partial(simple, metaTail),
   }
 })
