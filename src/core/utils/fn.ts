@@ -64,7 +64,7 @@ export function reduceText(text: string, length?: number, separator?: string | R
     if (!value)
       continue;
     value = concat(result, joiner, value);
-    if (length && len(value) > length)
+    if (length && len(value) > length + 1)
       break;
     result = value;
   }
