@@ -10,14 +10,14 @@ import {nullable} from "@jstls/core/utils/types";
 export function toInt(this: string | number, radix?: number): MaybeNumber;
 export function toInt(radix: MaybeNumber, $this: string | number): MaybeNumber;
 export function toInt(this: string | number, radix?: MaybeNumber, $this?: string | number): MaybeNumber {
-  const value = parseInt(<string>(getDefined(this, returns($this!))), radix!);
+  const value = parseInt(<string>(getDefined($this, returns(this))), radix!);
   return isNaN(value) ? nullable : value
 }
 
 export function toFloat(this: string | number): MaybeNumber;
 export function toFloat($this: string | number): MaybeNumber;
 export function toFloat(this: string | number, $this?: string | number): MaybeNumber {
-  const value = parseFloat(<string>(getDefined(this, returns($this!))));
+  const value = parseFloat(<string>(getDefined($this, returns(this))));
   return isNaN(value) ? nullable : value
 }
 

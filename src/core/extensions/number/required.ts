@@ -10,5 +10,5 @@ export function coerceIn(minimum: number, maximum: number, $this: number): numbe
 export function coerceIn(this: Number, minimum: number, maximum: number, $this?: number): number {
   if (minimum > maximum)
     throw new IllegalArgumentError(concat("Cannot coerce value to an empty range: maximum '", maximum, "' is less than minimum '", minimum, "'"))
-  return min(max(valueOf(getDefined(this, returns($this!))), minimum), maximum)
+  return min(max(valueOf(getDefined($this, returns(this))), minimum), maximum)
 }
