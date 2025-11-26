@@ -1,4 +1,4 @@
-import {getIf} from "@jstls/core/objects/validators/simple";
+import {getDefined, getIf} from "@jstls/core/objects/validators/simple";
 import {isDefined, isFunction} from "@jstls/core/objects/types";
 import {apply} from "@jstls/core/functions/apply";
 import {reduce, slice} from "@jstls/core/iterable";
@@ -29,14 +29,14 @@ export function counts<T, R = any, I extends ArrayLike<T> = ArrayLike<T>>(this: 
   if (!isDefined(value)) return 0;
   value = valueOf(value);
   compare = getIf(compare, isFunction, returns(is))
-  return reduce<T, number, I>(($this || this), (total, it, i, arr) => total + +apply(compare!, thisArg!, [value, it, i, arr]), 0);
+  $this = getDefined($this, returns(this))
+  return reduce<T, number, I>($this, (total, it, i, arr) => total + +apply(compare!, thisArg!, [value, it, i, arr]), 0);
 }
 
 export function extend<I, T extends Pushable<I> = Pushable<I>>(this: T, source: I[]): T;
 export function extend<I, T extends Pushable<I> = Pushable<I>>(source: I[], $this: T): T;
 export function extend<I, T extends Pushable<I> = Pushable<I>>(this: T, source: I[], $this?: T): T {
-
-  $this = $this || this;
+  $this = getDefined($this, returns(this));
   source && apply($this.push, $this, source);
   return $this;
 }
@@ -44,5 +44,5 @@ export function extend<I, T extends Pushable<I> = Pushable<I>>(this: T, source: 
 export function filterDefined<T>(this: T[]): NonNullable<T>[];
 export function filterDefined<T>($this: T[]): NonNullable<T>[];
 export function filterDefined<T>(this: T[], $this?: T[]): NonNullable<T>[] {
-  return ($this || this).filter(isDefined) as NonNullable<T>[];
+  return (getDefined($this, returns(this))).filter(isDefined) as NonNullable<T>[];
 }
