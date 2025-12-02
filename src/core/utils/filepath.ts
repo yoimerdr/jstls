@@ -38,7 +38,7 @@ function pathSuffix($this: Path, start?: number): string {
 }
 
 function fromNormalizedParts(parts: string[], path?: Maybe<Path>): Path {
-  const p = prototype(Path),
+  const p = path ? path :  prototype(Path),
     root: Path = isDefined(path) ? path! : create(p);
   path = root;
   reach(parts, (value, index) => {
