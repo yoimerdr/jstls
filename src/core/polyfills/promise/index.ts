@@ -106,8 +106,8 @@ export const Promise: PromiseConstructor = funclass2({
     }
   },
   statics: {
-    resolve,
-    reject,
+    resolve: (<any>resolve),
+    reject: (<any>reject),
     all(values) {
       return new Promise((resolve, reject) => {
         let count = 0;
