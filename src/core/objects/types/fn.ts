@@ -32,7 +32,6 @@ export function isObject(value: any) {
   return isDefined(value) && typeIs("object", value)
 }
 
-
 /**
  * Checks if the value is a plain object.
  * @param value The value to check.

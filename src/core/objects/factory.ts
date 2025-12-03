@@ -69,11 +69,57 @@ export function assign2<T extends Object>(target: T, source: Partial<T>): T {
   return isObject(source) ? setTo(source as T, keys(source), target) : target;
 }
 
+/**
+ * Assigns properties from source objects to the target object.
+ *
+ * @example
+ * const target = { a: 1 };
+ * assign(target, { b: 2 }); // { a: 1, b: 2 }
+ *
+ * @param target The target object.
+ * @param sources The source objects.
+ */
 export const assign = bind(_assignItems, indefinite, "simple", indefinite) as Assign,
+  /**
+   * Deeply assigns properties from source objects to the target object.
+   *
+   * @example
+   * const target = { a: { b: 1 } };
+   * deepAssign(target, { a: { c: 2 } }); // { a: { b: 1, c: 2 } }
+   *
+   * @param target The target object.
+   * @param sources The source objects.
+   */
   deepAssign = bind(_assignItems, indefinite, "deep", indefinite) as Assign,
+  /**
+   * Creates a new object with the given source objects assigned to it.
+   *
+   * @example
+   * const obj = create({ a: 1 }); // { a: 1 }
+   *
+   * @param sources The source objects.
+   */
   create = bind(_assignItems, indefinite, "simple", _createNoObjectKey, {});
 
+/**
+ * Returns an array of key/value pairs for the given object.
+ *
+ * @example
+ * const obj = { a: 1 };
+ * entries(obj); // [{ key: 'a', value: 1 }]
+ *
+ * @param value The object to get entries from.
+ */
 export function entries(value: Maybe<KeyableObject>[]): Entry<PropertyKey>[][];
+/**
+ * Returns an array of key/value pairs for the given object.
+ *
+ * @example
+ * const obj = { a: 1 };
+ * entries(obj); // [{ key: 'a', value: 1 }]
+ *
+ * @param value The object to get entries from.
+ */
 export function entries(value: Maybe<KeyableObject>): Entry<PropertyKey>[];
 export function entries(value: Maybe<KeyableObject>): Entry<PropertyKey>[] | Entry<PropertyKey>[][] {
   if (!isDefined(value))

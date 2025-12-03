@@ -23,6 +23,16 @@ export interface ObjectMethods {
   <T>(object: T, filter: 'statics' | 'prototype'): MethodKeys<T>[];
 }
 
+/**
+ * Returns the property descriptors of an object.
+ *
+ * @example
+ * const desc = descriptors({ a: 1 });
+ * // desc.a.value === 1
+ *
+ * @param object The object to get descriptors from.
+ * @param mode The mode to get keys (keys or names).
+ */
 export function descriptors<T>(object: T, mode?: 'keys' | 'names'): PropertyDescriptors<T> {
   return reduce((mode === 'names' ? propertyNames : keys)(object), (current, key) => {
     current[key] = descriptor(object, key)!;
@@ -45,13 +55,71 @@ function filterFromObject<T>(type: 'keys' | 'names', condition: (value: any) => 
 
 const ks = 'keys',
   ns = 'names',
+  /**
+   * Returns the non-function keys of an object.
+   *
+   * @example
+   * const obj = { a: 1, b: () => {} };
+   * simpleKeys(obj); // ['a']
+   *
+   * @param object The object to get keys from.
+   * @param mode Optional filter for 'statics' or 'prototype'.
+   */
   simpleKeys = bind(filterFromObject, indefinite, ks, nreturns(isFunction)) as ObjectProperties,
+  /**
+   * Returns the function keys (methods) of an object.
+   *
+   * @example
+   * const obj = { a: 1, b: () => {} };
+   * methodKeys(obj); // ['b']
+   *
+   * @param object The object to get keys from.
+   * @param mode Optional filter for 'statics' or 'prototype'.
+   */
   methodKeys = bind(filterFromObject, indefinite, ks, isFunction) as ObjectMethods,
+  /**
+   * Returns the non-function property names of an object.
+   *
+   * @example
+   * const obj = { a: 1, b: () => {} };
+   * simpleProperties(obj); // ['a']
+   *
+   * @param object The object to get properties from.
+   * @param mode Optional filter for 'statics' or 'prototype'.
+   */
   simpleProperties = bind(filterFromObject, indefinite, ns, nreturns(isFunction),) as ObjectMethods,
+  /**
+   * Returns the function property names (methods) of an object.
+   *
+   * @example
+   * const obj = { a: 1, b: () => {} };
+   * methodProperties(obj); // ['b']
+   *
+   * @param object The object to get properties from.
+   * @param mode Optional filter for 'statics' or 'prototype'.
+   */
   methodProperties = bind(filterFromObject, indefinite, ns, isFunction) as ObjectMethods;
 
 
+/**
+ * Checks if an object has a specific key.
+ *
+ * @example
+ * hasKey({ a: 1 }, 'a'); // true
+ *
+ * @param object The object to check.
+ * @param key The key to check for.
+ */
 export function hasKey<T, K extends Keys<T>>(object: T, key: K): boolean;
+/**
+ * Checks if an object has a specific key.
+ *
+ * @example
+ * hasKey({ a: 1 }, 'b'); // false
+ *
+ * @param object The object to check.
+ * @param key The key to check for.
+ */
 export function hasKey(object: KeyableObject, key: PropertyKey): boolean;
 export function hasKey(object: KeyableObject, key: PropertyKey) {
   return key in object;
@@ -60,7 +128,7 @@ export function hasKey(object: KeyableObject, key: PropertyKey) {
 /*
  * @deprecated exports
  */
-export {keys, propertyNames}
+export { keys, propertyNames }
 
 export {
   simpleKeys,
@@ -68,3 +136,5 @@ export {
   methodKeys,
   simpleProperties,
 }
+
+

@@ -13,9 +13,12 @@ import {get} from "./get";
 import {SetTransformDescriptor} from "@jstls/types/core/objects/getset";
 
 /**
- * Sets the given value as the `key` property in the target `object`, if this is defined.
+ * Sets the given value as the `key` property in the target `object`.
+ *
  * @example
- * set(object, 'key', value) // object['key'] = value;
+ * const obj = { a: 1 };
+ * set(obj, 'a', 2); // 2
+ *
  * @param object The target object.
  * @param key The property name.
  * @param value The property value.
@@ -23,18 +26,24 @@ import {SetTransformDescriptor} from "@jstls/types/core/objects/getset";
 export function set<T, K extends Keys<T>>(object: T, key: K, value: T[K]): T[K];
 
 /**
- * Sets the given value as the `key` property in the target `object`, if this is defined.
+ * Sets the given value as the `key` property in the target `object`.
+ *
  * @example
- * set(object, 'key', value) // object['key'] = value;
+ * const obj = { a: 1 };
+ * set(obj, 'b', 2); // 2
+ *
  * @param object The target object.
  * @param key The property name.
  * @param value The property value.
  */
 export function set<T, K extends Keys<T>, R = any>(object: T, key: PropertyKey, value: R): R;
 /**
- * Sets the given value (last argument) as the `key` (second last argument) property in the target `object`, if this is defined.
+ * Sets the given value (last argument) as the `key` (second last argument) property in the target `object`.
+ *
  * @example
- * set(object, 'key', 'key2', value) // object['key']['key2'] = value;
+ * const obj = { a: { b: 1 } };
+ * set(obj, 'a', 'b', 2); // 2
+ *
  * @param object The target object.
  * @param key The property name.
  * @param key2 The name of the property of the first get result.
@@ -55,8 +64,43 @@ export function set<T, K extends Keys<T>>(object: T & KeyableObject, key: K | Pr
   return object[key];
 }
 
+/**
+ * Sets the given value as the `key` property in the target `object`, creating nested objects if necessary.
+ *
+ * @example
+ * const obj = { a: 1 };
+ * setobj(obj, 'a', 2); // 2
+ *
+ * @param object The target object.
+ * @param key The property name.
+ * @param value The property value.
+ */
 export function setobj<T, K extends Keys<T>>(object: T, key: K, value: T[K]): T[K];
+/**
+ * Sets the given value as the `key` property in the target `object`, creating nested objects if necessary.
+ *
+ * @example
+ * const obj = {};
+ * setobj(obj, 'a', 1); // 1
+ *
+ * @param object The target object.
+ * @param key The property name.
+ * @param value The property value.
+ */
 export function setobj<T, K extends Keys<T>, R = any>(object: T, key: PropertyKey, value: R): R;
+/**
+ * Sets the given value (last argument) as the `key` (second last argument) property in the target `object`, creating nested objects if necessary.
+ *
+ * @example
+ * const obj = {};
+ * setobj(obj, 'a', 'b', 1); // 1
+ * // obj is { a: { b: 1 } }
+ *
+ * @param object The target object.
+ * @param key The property name.
+ * @param key2 The name of the property of the first get result.
+ * @param keysOrValue The new value or other keys.
+ */
 export function setobj<T, K extends Keys<T>>(object: T & KeyableObject, key: K | PropertyKey, key2: any, ...keysOrValue: any[]): any;
 export function setobj<T, K extends Keys<T>>(object: T & KeyableObject, key: K | PropertyKey,): any {
   const args = arguments, lt = len(args), value = args[lt - 1];
@@ -75,7 +119,29 @@ export function setobj<T, K extends Keys<T>>(object: T & KeyableObject, key: K |
   return object[key];
 }
 
+/**
+ * Sets the given value as the `key` property in the target `object`.
+ *
+ * @example
+ * const obj = { a: 1 };
+ * set2(obj, 'a', 2); // 2
+ *
+ * @param object The target object.
+ * @param key The property name.
+ * @param value The property value.
+ */
 export function set2<T, K extends Keys<T>>(object: T, key: K, value: T[K]): Maybe<T[K]>;
+/**
+ * Sets the given value as the `key` property in the target `object`.
+ *
+ * @example
+ * const obj = {};
+ * set2(obj, 'a', 1); // 1
+ *
+ * @param object The target object.
+ * @param key The property name.
+ * @param value The property value.
+ */
 export function set2(object: KeyableObject, key: PropertyKey, value: any): any;
 export function set2<T, K extends Keys<T>>(object: T & KeyableObject, key: K | PropertyKey, value: any): Maybe<K> {
   return object ? (object[key] = value, value) : indefinite;
@@ -83,10 +149,12 @@ export function set2<T, K extends Keys<T>>(object: T & KeyableObject, key: K | P
 
 /**
  * Sets the value of the `key` property in the source `object` to the `target` object.
+ *
  * @example
- * setTo(object, 'key', target) // target['key'] = object['key'];
- * @example
- * setTo(object, ['key', 'name'], target) // target['key'] = object['key']; target['name'] = object['name'];
+ * const obj = { key: 1 };
+ * const target = {};
+ * setTo(obj, 'key', target); // { key: 1 }
+ *
  * @param object The source object.
  * @param key The property name.
  * @param target The target object.
@@ -95,10 +163,12 @@ export function setTo<T, K extends Keys<T>>(object: T, key: K | K[], target: T):
 
 /**
  * Sets the value of the `key` property in the source `object` to the `target` object.
+ *
  * @example
- * setTo(object, 'key', target) // target['key'] = object['key'];
- * @example
- * setTo(object, ['key', 'name'], target) // target['key'] = object['key']; target['name'] = object['name'];
+ * const obj = { key: 1 };
+ * const target = {};
+ * setTo(obj, 'key', target); // { key: 1 }
+ *
  * @param object The source object.
  * @param key The property name.
  * @param target The target object.
@@ -106,8 +176,11 @@ export function setTo<T, K extends Keys<T>>(object: T, key: K | K[], target: T):
 export function setTo<T, K extends Keys<T>>(object: T, key: PropertyKey | PropertyKey[], target: T): T;
 /**
  * Sets the value of the descriptor properties in the source `object` to the `target` object.
+ *
  * @example
- * setTo(object, { name: toFloat }, target) // target['name'] = toFloat(source['name'])
+ * const obj = { name: '1' };
+ * const target = {};
+ * setTo(obj, { name: (val) => Number(val) }, target); // { name: 1 }
  *
  * @param object The source object.
  * @param descriptor The keys descriptors
@@ -116,10 +189,12 @@ export function setTo<T, K extends Keys<T>>(object: T, key: PropertyKey | Proper
 export function setTo<T, R = KeyableObject>(object: T, descriptor: SetToDescriptor<T>, target: Partial<R>): R;
 /**
  * Sets the value of the `key` property in the source `object` to the `target` object.
+ *
  * @example
- * setTo(object, 'key', target) // target['key'] = object['key'];
- * @example
- * setTo(object, ['key', 'name'], target) // target['key'] = object['key']; target['name'] = object['name'];
+ * const obj = { key: 1 };
+ * const target = {};
+ * setTo(obj, 'key', target); // { key: 1 }
+ *
  * @param object The source object.
  * @param key The property name.
  * @param target The target object.
@@ -146,12 +221,19 @@ export function setTo<T, K extends Keys<T>>(object: T & KeyableObject, key: K | 
 
 /**
  * Sets the value of the descriptor properties in the source `object` to the `target` object.
- * @example Simple set
+ *
+ * @example
+ * // Simple set
  * setTransform({name: 1}, {name: 'n'}, {}) // { n: 1 }
- * @example Set with transform
+ *
+ * @example
+ * // Set with transform
  * setTransform({name: 1}, {name: {key: 'n', value: String}}, {}) // { n: '1' }
- * @example Set with reverse
+ *
+ * @example
+ * // Set with reverse
  * setTransform({n: 1}, {name: {key: 'n', value: String}}, {}, true) // { name: '1' }
+ *
  * @param source The source object.
  * @param descriptor The keys descriptors.
  * @param target The target object.
