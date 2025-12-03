@@ -55,6 +55,26 @@ export function set<T, K extends Keys<T>>(object: T & KeyableObject, key: K | Pr
   return object[key];
 }
 
+export function setobj<T, K extends Keys<T>>(object: T, key: K, value: T[K]): T[K];
+export function setobj<T, K extends Keys<T>, R = any>(object: T, key: PropertyKey, value: R): R;
+export function setobj<T, K extends Keys<T>>(object: T & KeyableObject, key: K | PropertyKey, key2: any, ...keysOrValue: any[]): any;
+export function setobj<T, K extends Keys<T>>(object: T & KeyableObject, key: K | PropertyKey,): any {
+  const args = arguments, lt = len(args), value = args[lt - 1];
+  if (lt > 3 && isObject(object)) {
+    for (let i = 1; i < lt - 2; i++) {
+      if (!isObject(object[args[i]]))
+        set2(object, args[i], {});
+      object = object[args[i]];
+    }
+    key = args[lt - 2]
+  }
+
+  if (!isObject(object))
+    return indefinite;
+  object[key] = value;
+  return object[key];
+}
+
 export function set2<T, K extends Keys<T>>(object: T, key: K, value: T[K]): Maybe<T[K]>;
 export function set2(object: KeyableObject, key: PropertyKey, value: any): any;
 export function set2<T, K extends Keys<T>>(object: T & KeyableObject, key: K | PropertyKey, value: any): Maybe<K> {
