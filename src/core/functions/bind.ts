@@ -123,3 +123,22 @@ export function binds<T extends (...args: any[]) => any>(fn: T): (source: ThisPa
     return apply<any>(fn, thisArg, slice(arguments, 1))
   };
 }
+
+/**
+ * Creates a function that invokes the original function with `this` provided as the first argument.
+ *
+ * @example
+ * const fn = (self, a) => self.val + a;
+ * const method = methodize(fn);
+ * const obj = { val: 10, method };
+ * obj.method(5); // 15
+ *
+ * @param fn The function to methodize.
+ */
+export function methodize<T extends (...args: any[]) => any>(fn: T): (this: ThisParameterType<T>, ...args: Parameters<T>) => ReturnType<T>
+/*@__NO_SIDE_EFFECTS__*/
+export function methodize<T extends (...args: any[]) => any>(fn: T): (this: ThisParameterType<T>) => ReturnType<T> {
+  return function (this) {
+    return apply<any>(fn, this, concat([this], slice(arguments)))
+  }
+}
