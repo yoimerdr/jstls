@@ -34,7 +34,7 @@ function pathSuffix($this: Path, start?: number): string {
     dot = name.lastIndexOf('.'),
     end = isDefined(start) ? dot : len(name);
   isDefined(start) || (start = dot);
-  return dot === -1 ? "" : name.substring(start!, end);
+  return dot === -1 ? name : name.substring(start!, end);
 }
 
 function fromNormalizedParts(parts: string[], path?: Maybe<Path>): Path {
@@ -129,7 +129,7 @@ export const Path: PathConstructor = funclass2({
       const $this = this,
         parts = $this.parts;
       parts[len(parts) - 1] = $this.prefix + suffix;
-      return fromNormalizedParts(parts);
+      return fromNormalizedParts(parts, $this);
     },
     join() {
       return apply(pathOf, nullable, <any> concat(this.parts, slice(arguments)));
