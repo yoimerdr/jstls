@@ -5,10 +5,22 @@ import {concat} from "@jstls/core/shortcuts/string";
 import {propertyNames} from "@jstls/core/shortcuts/object";
 import {nullable} from "@jstls/core/utils/types";
 
+/**
+ * Copies static properties from the base object to the target object, or sets the prototype.
+ *
+ * @example
+ * const Base = { staticProp: 1 };
+ * const Target = {};
+ * statics(Target, Base);
+ * console.log(Target.staticProp); // 1
+ *
+ * @param target The target object.
+ * @param base The base object.
+ */
 export function statics<T extends WithPrototype>(target: T, base: WithPrototype): T {
   (
     get2(Object, 'setPrototypeOf') ||
-    ({__proto__: []} instanceof Array && function (target: KeyableObject, base: KeyableObject) {
+    ({ __proto__: [] } instanceof Array && function (target: KeyableObject, base: KeyableObject) {
       set2(target, "__proto__", base);
     }) ||
     ((target: T, base: WithPrototype) => setTo(base, propertyNames(base), target))
@@ -17,6 +29,23 @@ export function statics<T extends WithPrototype>(target: T, base: WithPrototype)
   return target;
 }
 
+/**
+ * Sets up the prototype chain for inheritance and copies static properties.
+ *
+ * @example
+ * function Base() {}
+ * Base.prototype.method = function() { return 'base'; };
+ *
+ * function Derived() {}
+ * prototype(Derived, Base);
+ *
+ * const instance = new Derived();
+ * console.log(instance.method()); // 'base'
+ * console.log(instance instanceof Base); // true
+ *
+ * @param target The target constructor.
+ * @param base The base constructor.
+ */
 export function prototype<T extends WithPrototype>(target: T, base: WithPrototype): T;
 export function prototype(target: CallableFunction, base: WithPrototype): WithPrototype {
   if (!isFunction(base) && base !== nullable)
