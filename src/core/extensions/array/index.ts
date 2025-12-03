@@ -2,6 +2,7 @@ import {readonlys} from "@jstls/core/definer/values";
 import {first, firstOrNull, isEmpty, isNotEmpty, last, lastOrNull} from "@jstls/core/extensions/shared/iterables";
 import {ArrayExtensions} from "@jstls/types/core/extensions/array";
 import {counts, extend, filterDefined, remove} from "./fn";
+import {methodize} from "@jstls/core/functions/bind";
 
 export {counts, extend, filterDefined, remove} from "./fn";
 
@@ -20,7 +21,7 @@ export function arrayExtensions(extensions: Partial<ArrayExtensions<any>>) {
  * @see {ArrayExtensions}
  */
 export function applyArrayExtensions() {
-  readonlys(<any>Array.prototype, {
+  readonlys(Array.prototype, {
     first,
     firstOrNull,
     isEmpty,
@@ -30,6 +31,6 @@ export function applyArrayExtensions() {
     counts,
     extends: extend,
     filterDefined,
-    remove
+    remove: methodize(remove)
   })
 }
