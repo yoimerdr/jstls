@@ -7,6 +7,19 @@ import {concat} from "@jstls/core/shortcuts/indexable";
 import {indefinite} from "@jstls/core/utils/types";
 import {slice} from "@jstls/core/iterable";
 
+/**
+ * Creates a class constructor that executes the parent constructor before the child constructor.
+ * Supports instantiation without the `new` keyword.
+ *
+ * @example
+ * const Parent = function() { this.p = 1; };
+ * const Child = functionConstructor(function() { this.c = 2; }, Parent);
+ * const instance = Child(); // Works without `new`
+ * console.log(instance); // { p: 1, c: 2 }
+ *
+ * @param constructor The child constructor.
+ * @param parent The parent constructor.
+ */
 export function functionConstructor(constructor: FunctionClassConstructorFunction<Instanceable, WithPrototype>, parent?: WithPrototype): (this: InstanceableType<Instanceable>, ...params: InstanceableParameters<Instanceable>) => any {
   return function FunClass(this: InstanceableType<Instanceable>,): any {
     const args = slice(arguments);
@@ -20,6 +33,19 @@ export function functionConstructor(constructor: FunctionClassConstructorFunctio
   };
 }
 
+/**
+ * Creates a class constructor that executes the child constructor before the parent constructor.
+ * Supports instantiation without the `new` keyword.
+ *
+ * @example
+ * const Parent = function() { this.p = 1; };
+ * const Child = functionParent(function() { this.c = 2; }, Parent);
+ * const instance = Child(); // Works without `new`
+ * console.log(instance); // { c: 2, p: 1 }
+ *
+ * @param constructor The child constructor.
+ * @param parent The parent constructor.
+ */
 export function functionParent(constructor: FunctionClassConstructorFunction<Instanceable, WithPrototype>, parent?: WithPrototype): (this: InstanceableType<Instanceable>, ...params: InstanceableParameters<Instanceable>) => any {
   return function FunClass(this: InstanceableType<Instanceable>,): any {
     const args = slice(arguments);

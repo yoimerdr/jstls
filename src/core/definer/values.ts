@@ -78,9 +78,69 @@ export const readonly = bind(_value, indefinite, indefinite, indefinite, indefin
    */
   writeable = bind(_value, indefinite, true, indefinite, indefinite) as DefineValueProperty,
 
+  /**
+   * A shortcut for define a new property according to key and value.
+   * @example
+   * // the call:
+   * writeable2(key, value);
+   *
+   * // It is equals to call:
+   * prop(key, {
+   *  enumerable: true,
+   *  value: value,
+   *  writable: true
+   * });
+   *
+   * @param target The target value.
+   * @param key The object key.
+   * @param value The object key descriptor value.
+   *
+   * @see {prop}
+   */
   writeable2 = bind(_value, indefinite, true, true, indefinite) as DefineValueProperty,
 
+  /**
+   * A shortcut for define a new property according to key and value.
+   * @example
+   * // the call:
+   * configurable(key, value);
+   *
+   * // It is equals to call:
+   * prop(key, {
+   *  enumerable: false,
+   *  value: value,
+   *  writable: false,
+   *  configurable: true
+   * });
+   *
+   * @param target The target value.
+   * @param key The object key.
+   * @param value The object key descriptor value.
+   *
+   * @see {prop}
+   */
   configurable = bind(_value, indefinite, indefinite, indefinite, true) as DefineValueProperty,
+
+  /**
+   * A shortcut for define a new property according to key and value.
+   * @example
+   * // the call:
+   * configurable2(key, value);
+   *
+   * // It is equals to call:
+   * prop(key, {
+   *  enumerable: true,
+   *  value: value,
+   *  writable: false,
+   *  configurable: true
+   * });
+   *
+   * @param target The target value.
+   * @param key The object key.
+   * @param value The object key descriptor value.
+   *
+   * @see {prop}
+   */
   configurable2 = bind(_value, indefinite, indefinite, true, true) as DefineValueProperty,
 
   /**
@@ -106,4 +166,10 @@ export const readonly = bind(_value, indefinite, indefinite, indefinite, indefin
    */
   writeables = bind(multiple, indefinite, writeable) as <T>(target: T, values: DefinePropertyValues<T>) => void,
 
+  /**
+   * A shortcut for define new properties according to keys and values.
+   * @param target The target value.
+   * @param values The property keys and values.
+   * @see {configurable}
+   */
   configurables = bind(multiple, indefinite, configurable) as <T>(target: T, values: DefinePropertyValues<T>) => void;
