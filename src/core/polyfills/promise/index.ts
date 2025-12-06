@@ -75,7 +75,7 @@ function finallyPromise(target: Promise<any>, resolve: Function, reject: Functio
 export interface Promise<T> {
   finally<U>(onFinally?: () => U | Promise<U>): Promise<U>;
 
-  catch<R = never>(onrejected?: PromiseRejected<T, R>): Promise<R>;
+  catch<R = never>(onrejected?: PromiseRejected<T, R>): Promise<T>;
 
   then<R = never>(onfulfilled?: PromiseFilled<T, R>, onrejected?: PromiseRejected<T, R>): Promise<R>;
 
