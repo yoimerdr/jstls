@@ -4,7 +4,6 @@ import {len} from "@jstls/core/shortcuts/indexable";
 import {apply} from "@jstls/core/functions/apply";
 import {slice} from "@jstls/core/iterable";
 import {get} from "./getset";
-import {forEach} from "@jstls/core/shortcuts/array";
 import {propertyNames} from "./properties";
 import {indefinite} from "@jstls/core/utils/types";
 
@@ -94,7 +93,7 @@ export function deletes2<T>(object: T, keys: Keys<T>[]): void;
  */
 export function deletes2<T>(object: T, keys: PropertyKey[]): void;
 export function deletes2<T>(object: T, keys: Keys<T>[]): void {
-  forEach(keys, (key) => delete object[key]);
+  keys.forEach((key) => delete object[key]);
 }
 
 /**

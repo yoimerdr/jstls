@@ -1,12 +1,10 @@
 import {KeyableObject} from "@jstls/types/core/objects";
-import {get2, set} from "./objects/handlers/getset";
-import {forEach} from "./shortcuts/array";
+import {get2, set2} from "./objects/handlers/getset";
 import {slice} from "./iterable";
 import {apply} from "./functions/apply";
 import {isFunction} from "./objects/types";
-import {deletes, deletesAll} from "./objects/handlers/deletes";
+import {deletes2, deletesAll} from "./objects/handlers/deletes";
 import {indefinite} from "./utils/types";
-import {concat} from "./shortcuts/indexable";
 import {bind} from "@jstls/core/functions/bind";
 
 export interface Emitter {
@@ -78,7 +76,7 @@ export function emitter(): Emitter {
   return {
     on(name, listener) {
       if (isFunction(listener)) {
-        (get2(listeners, name) || set(listeners, name, []))
+        (get2(listeners, name) || set2(listeners, name, [])!)
           .push(listener);
       }
     },
@@ -89,10 +87,10 @@ export function emitter(): Emitter {
     emit(name, thisArg) {
       const callbacks = get2(listeners, name),
         values = slice(arguments, 2);
-      callbacks && forEach(callbacks, (value) => apply(<any>value, thisArg, values));
+      callbacks && callbacks.forEach((value) => apply(<any>value, thisArg, values));
     },
     dispose() {
-      apply(deletes, indefinite, <any>concat([listeners], slice(arguments)));
+      deletes2(listeners, slice(arguments))
     },
     disposes: bind(deletesAll, indefinite, listeners)
   }

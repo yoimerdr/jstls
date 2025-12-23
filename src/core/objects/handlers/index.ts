@@ -1,7 +1,6 @@
 import {Keys, Maybe} from "@jstls/types/core";
 import {isDefined, isFunction} from "@jstls/core/objects/types";
 import {apply} from "@jstls/core/functions/apply";
-import {returns} from "@jstls/core/utils/fn";
 import {len} from "@jstls/core/shortcuts/indexable";
 import {indefinite} from "@jstls/core/utils/types";
 
@@ -53,8 +52,7 @@ export function string<T>(value: Maybe<T>,): string;
 export function string<T>(value: Maybe<T>, nullableString?: () => string): string {
   if (isDefined(value))
     return value!.toString();
-  nullableString = isFunction(nullableString) ? nullableString! : returns("");
-  return nullableString();
+  return isFunction(nullableString) ? nullableString!() : "";
 }
 
 export function applyFirstDefined<T>(object: Maybe<T>, keys: Keys<T>[], args?: any[]): any;

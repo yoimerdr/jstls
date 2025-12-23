@@ -1,12 +1,12 @@
 import {MethodKeys, SafeParameters, SafeReturnType} from "@jstls/types/core";
 import {ExtendMethodBuilder, ExtendMethodBuilders} from "@jstls/types/core/objects/extender";
 import {multiple} from "@jstls/core/definer/shared";
-import {requiredWithType, requireFunction} from "@jstls/core/objects/validators";
 import {slice} from "@jstls/core/iterable";
 import {apply} from "@jstls/core/functions/apply";
 import {concat} from "@jstls/core/shortcuts/indexable";
 import {bind} from "@jstls/core/functions/bind";
 import {indefinite} from "@jstls/core/utils/types";
+import {isFunction, isObject} from "@jstls/core/objects/types";
 
 /**
  * Extends a method to add additional functionality.
@@ -52,10 +52,14 @@ import {indefinite} from "@jstls/core/utils/types";
  */
 export function method<T extends Object, K extends MethodKeys<T>>(target: T, key: K, builder: ExtendMethodBuilder<T, K>): void;
 export function method<T extends Object, K extends MethodKeys<T>>(target: T, key: K, builder: ExtendMethodBuilder<T, K>): void {
-  builder = requiredWithType(builder, "object", "builder");
+  if(!isObject(builder))
+    throw new Error("For extend a method is required an builder object.");
+
   if (["replace", "modifyParameters", "beforeCall", "afterCall"].some(Object.prototype.hasOwnProperty, builder)) {
     const met: any = target[key];
-    requireFunction(met, 'extend method');
+    if(!isFunction(met))
+      throw new Error("The target property value to extend must be a function.");
+
     const {replace, modifyParameters, beforeCall, afterCall} = builder;
     target[key] = function (this: T): SafeReturnType<T[K]> {
       let args: SafeParameters<T[K]> = slice(arguments) as any,
