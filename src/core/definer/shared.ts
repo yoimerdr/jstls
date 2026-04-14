@@ -12,9 +12,10 @@ import {keach} from "@jstls/core/iterable/each";
  *                  Receives (target, key, descriptor).
  * @param target - The object on which descriptors will be defined.
  * @param descriptors - A map-like object containing property descriptors.
+ * @param override Whether to override existing property if it exists. Default is false.
  */
-export function multiple<T, D>(definer: (target: T, key: Keys<D>, descriptor: NonNullable<D[Keys<D>]>) => void, target: T, descriptors: D,) {
-  keach(descriptors, (descriptor, key) => definer(target, key, descriptor!));
+export function multiple<T, D>(definer: (target: T, key: Keys<D>, descriptor: NonNullable<D[Keys<D>]>, override?: boolean) => void, target: T, descriptors: D, override?: boolean) {
+  keach(descriptors, (descriptor, key) => definer(target, key, descriptor!, override));
 }
 
 /**

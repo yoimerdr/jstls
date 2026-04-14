@@ -7,11 +7,11 @@ import {indefinite} from "@jstls/core/utils/types";
 import {bind} from "@jstls/core/functions/bind";
 
 interface DefineValueProperty {
-  <T, K extends Keys<T> | PropertyKey = PropertyKey>(target: T, key: K, value: MaybeKeyObjectType<T, K>): void;
+  <T, K extends Keys<T> | PropertyKey = PropertyKey>(target: T, key: K, value: MaybeKeyObjectType<T, K>, override?: boolean): void;
 }
 
-function _value<T, K extends Keys<T> | PropertyKey>(writable: MaybeBoolean, numerable: MaybeBoolean, configurable: MaybeBoolean, target: T, key: K, value: MaybeKeyObjectType<T, K>) {
-  prop(target, key, descriptor(value, writable!, configurable!, numerable!))
+function _value<T, K extends Keys<T> | PropertyKey>(writable: MaybeBoolean, numerable: MaybeBoolean, configurable: MaybeBoolean, target: T, key: K, value: MaybeKeyObjectType<T, K>, override?: boolean) {
+  prop(target, key, descriptor(value, writable!, configurable!, numerable!), override)
 }
 
 
@@ -31,6 +31,7 @@ function _value<T, K extends Keys<T> | PropertyKey>(writable: MaybeBoolean, nume
  * @param target The target value.
  * @param key The object key.
  * @param value The object key descriptor value.
+ * @param override Whether to override existing property if it exists. Default is false.
  *
  * @see {prop}
  */
@@ -52,6 +53,7 @@ export const readonly = bind(_value, indefinite, indefinite, indefinite, indefin
    * @param target The target value.
    * @param key The object key.
    * @param value The object key descriptor value.
+   * @param override Whether to override existing property if it exists. Default is false.
    *
    * @see {prop}
    */
@@ -73,6 +75,7 @@ export const readonly = bind(_value, indefinite, indefinite, indefinite, indefin
    * @param target The target value.
    * @param key The object key.
    * @param value The object key descriptor value.
+   * @param override Whether to override existing property if it exists. Default is false.
    *
    * @see {prop}
    */
@@ -94,6 +97,7 @@ export const readonly = bind(_value, indefinite, indefinite, indefinite, indefin
    * @param target The target value.
    * @param key The object key.
    * @param value The object key descriptor value.
+   * @param override Whether to override existing property if it exists. Default is false.
    *
    * @see {prop}
    */
@@ -116,6 +120,7 @@ export const readonly = bind(_value, indefinite, indefinite, indefinite, indefin
    * @param target The target value.
    * @param key The object key.
    * @param value The object key descriptor value.
+   * @param override Whether to override existing property if it exists. Default is false.
    *
    * @see {prop}
    */
@@ -138,6 +143,7 @@ export const readonly = bind(_value, indefinite, indefinite, indefinite, indefin
    * @param target The target value.
    * @param key The object key.
    * @param value The object key descriptor value.
+   * @param override Whether to override existing property if it exists. Default is false.
    *
    * @see {prop}
    */
@@ -147,29 +153,33 @@ export const readonly = bind(_value, indefinite, indefinite, indefinite, indefin
    * A shortcut for define new properties according to keys and values.
    * @param target The target value.
    * @param values The property keys and values.
+   * @param override Whether to override existing property if it exists. Default is false.
    * @see {readonly}
    */
-  readonlys = bind(multiple, indefinite, readonly) as <T>(target: T, values: DefinePropertyValues<T>) => void,
+  readonlys = bind(multiple, indefinite, readonly) as <T>(target: T, values: DefinePropertyValues<T>, override?: boolean) => void,
 
   /**
    * A shortcut for define new properties according to keys and values.
    * @param target The target value.
    * @param values The property keys and values.
+   * @param override Whether to override existing property if it exists. Default is false.
    * @see {readonly2}
    */
-  readonlys2 = bind(multiple, indefinite, readonly) as <T>(target: T, values: DefinePropertyValues<T>) => void,
+  readonlys2 = bind(multiple, indefinite, readonly) as <T>(target: T, values: DefinePropertyValues<T>, override?: boolean) => void,
   /**
    * A shortcut for define new properties according to keys and values.
    * @param target The target value.
    * @param values The property keys and values.
+   * @param override Whether to override existing property if it exists. Default is false.
    * @see {writeable}
    */
-  writeables = bind(multiple, indefinite, writeable) as <T>(target: T, values: DefinePropertyValues<T>) => void,
+  writeables = bind(multiple, indefinite, writeable) as <T>(target: T, values: DefinePropertyValues<T>, override?: boolean) => void,
 
   /**
    * A shortcut for define new properties according to keys and values.
    * @param target The target value.
    * @param values The property keys and values.
+   * @param override Whether to override existing property if it exists. Default is false.
    * @see {configurable}
    */
-  configurables = bind(multiple, indefinite, configurable) as <T>(target: T, values: DefinePropertyValues<T>) => void;
+  configurables = bind(multiple, indefinite, configurable) as <T>(target: T, values: DefinePropertyValues<T>, override?: boolean) => void;
